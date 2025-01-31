@@ -1,1 +1,364 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('css2.css');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 1.8em;
+    color: #555;
+    cursor: default;
+}
+
+.logo span {
+    color: #7d2ae8;
+}
+
+.navigation {
+    display: flex;
+}
+
+.navigation a {
+    font-size: 1em;
+    color: #555;
+    text-decoration: none;
+    margin-right: 20px;
+    font-weight: 500;
+    transition: .3s;
+}
+
+.navigation a:hover {
+    color: #7d2ae8;
+}
+
+.btn-talk {
+    color: #fff;
+    text-decoration: none;
+    padding: 8px 25px;
+    background: #7d2ae8;
+    border-radius: 10px;
+    border: 2px solid #7d2ae8;
+    font-weight: 500;
+    transition: .3s;
+}
+
+.btn-talk:hover {
+    color: #7d2ae8;
+    background: transparent;
+}
+
+.home,
+.about-me,
+.portfolio {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background: url('assets/img/background.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    padding: 30px 50px;
+}
+
+.content {
+    max-width: 500px;
+    color: #555;
+}
+
+.content h2 {
+    font-size: 2.5em;
+}
+
+.content h2 span {
+    color: #7d2ae8;
+}
+
+.content h4 {
+    font-size: 1.8em;
+}
+
+.content p {
+    padding: 10px 0 40px 0;
+}
+
+.btn-group a,
+.btn-group button {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 30px;
+    background: #7d2ae8;
+    border-radius: 10px;
+    border: 2px solid #7d2ae8;
+    font-weight: 500;
+    transition: .3s;
+}
+
+.btn-group a:hover:nth-child(1) {
+    color: #7d2ae8;
+    background: transparent;
+}
+
+.btn-group a:nth-child(2),
+.btn-group button {
+    color: #7d2ae8;
+    background: transparent;
+    margin-left: 20px;
+    padding: 10px 25px;
+}
+
+.btn-group a:hover,
+.btn-group button:hover {
+    color: #fff;
+    background: #7d2ae8;
+    cursor: pointer;
+}
+
+.social-icons {
+    position: absolute;
+    bottom: 50px;
+}
+
+.social-icons a {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    background: #7d2ae8;
+    border-radius: 50%;
+    margin-right: 15px;
+    text-align: center;
+    line-height: 30px;
+    border: 1px solid #fff;
+    outline: 2px solid #7d2ae8;
+    transition: .3s;
+}
+
+.social-icons a:hover {
+    transform: translateY(-5px);
+}
+
+.social-icons a i {
+    color: #fff;
+}
+
+/* Media Queries */
+
+@media (max-width: 992px) {
+    header {
+        padding: 15px 30px;
+    }
+
+    .logo {
+        font-size: 1.5em;
+    }
+
+    .navigation a {
+        font-size: 0.9em;
+        margin-right: 15px;
+    }
+
+    .btn-talk {
+        padding: 6px 20px;
+    }
+
+    .home {
+        padding: 20px 30px;
+    }
+
+    .content h2 {
+        font-size: 2em;
+    }
+
+    .content h4 {
+        font-size: 1.5em;
+    }
+
+    .btn-group a {
+        padding: 8px 20px;
+    }
+}
+
+
+@media (max-width: 768px) {
+    header {
+        padding: 10px 20px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .logo {
+        margin-bottom: 10px;
+    }
+
+    .navigation {
+        flex-direction: column;
+    }
+
+    .navigation a {
+        margin-bottom: 10px;
+    }
+
+    .btn-talk {
+        margin-top: 10px;
+    }
+
+    .home {
+        padding: 10px 20px;
+    }
+
+    .content {
+        max-width: 100%;
+    }
+
+    .content h2 {
+        font-size: 1.8em;
+    }
+
+    .content h4 {
+        font-size: 1.2em;
+    }
+
+    .btn-group a {
+        padding: 6px 15px;
+    }
+
+    .social-icons {
+        bottom: 20px;
+    }
+
+    .social-icons a {
+        width: 25px;
+        height: 25px;
+        line-height: 25px;
+    }
+}
+
+@media (max-width: 576px) {
+    header {
+        padding: 5px 10px;
+    }
+
+    .logo {
+        font-size: 1.2em;
+    }
+
+    .navigation a {
+        font-size: 0.8em;
+    }
+
+    .btn-talk {
+        padding: 4px 10px;
+    }
+
+    .home {
+        padding: 5px 10px;
+    }
+
+    .content h2 {
+        font-size: 1.5em;
+    }
+
+    .content h4 {
+        font-size: 1em;
+    }
+
+    .btn-group a {
+        padding: 4px 10px;
+    }
+
+    .social-icons {
+        bottom: 10px;
+    }
+
+    .social-icons a {
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
+    }
+}
+
+@media (max-width: 320px) {
+    header {
+        padding: 0;
+    }
+
+    .logo {
+        font-size: 1em;
+    }
+
+    .navigation a {
+        font-size: 0.7em;
+    }
+
+    .btn-talk {
+        padding: 2px 5px;
+    }
+
+    .home {
+        padding: 0;
+    }
+
+    .content h2 {
+        font-size: 1.2em;
+    }
+
+    .content h4 {
+        font-size: 0.8em;
+    }
+
+    .btn-group a {
+        padding: 2px 5px;
+    }
+
+    .social-icons {
+        bottom: 0;
+    }
+
+    .social-icons a {
+        width: 15px;
+        height: 15px;
+        line-height: 15px;
+    }
+}
+
+.back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #7d2ae8;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 50px;
+    border: 2px solid #7d2ae8;
+    cursor: pointer;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s ease-in-out;
+}
+
+.back-to-top:hover {
+    color: #7d2ae8;
+    background: transparent;
+}
+
+.back-to-top::before {
+    content: "\f106";
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    font-size: 16px;
+    margin-right: 10px;
+}
