@@ -54,7 +54,9 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "baseHref": "/",
+            "deployUrl": "/"
           },
           "configurations": {
             "production": {

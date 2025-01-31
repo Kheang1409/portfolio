@@ -1,0 +1,14 @@
+[build]
+  command = "ng build --prod"
+  publish = "dist"
+
+[build.processing]
+  skip_processing = true
+
+[build.environment]
+  NODE_ENV = "production"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
