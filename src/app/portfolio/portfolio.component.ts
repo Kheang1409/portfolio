@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-portfolio',
@@ -7,7 +7,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
   templateUrl: './portfolio.component.html',
   styleUrl: './portfolio.component.css'
 })
-export class PortfolioComponent {
+export class PortfolioComponent implements OnInit {
 
   @ViewChild('slider') slider?: ElementRef;
   @ViewChild('scrollLeftButton') scrollLeftButton?: ElementRef;
@@ -16,24 +16,24 @@ export class PortfolioComponent {
 
   projects = [
     {
-      title: 'Project 1',
-      description: 'This is project 1',
-      image: 'https://images.unsplash.com/photo-1572177812156-58036aae439c?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvamVjdHN8ZW58MHx8MHx8fDA%3D',
+      title: 'Web Application Development',
+      description: 'A modern web application developed with Angular and .NET Core to manage tasks efficiently.',
+      image: 'https://cmsv2-assets.apptegy.net/uploads/10914/file/1041385/27209043-719e-4d60-add5-c204af747480.jpeg',
     },
     {
-      title: 'Project 2',
-      description: 'This is project 2',
-      image: 'https://images.unsplash.com/photo-1572177812156-58036aae439c?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvamVjdHN8ZW58MHx8MHx8fDA%3D',
+      title: 'E-Commerce Platform',
+      description: 'A fully-fledged e-commerce platform with payment gateway integration, real-time updates, and product management.',
+      image: 'https://www.iwdagency.com/cdn/shop/articles/eCommerce_Platform_Pic_2000x.jpg?v=1698957713',
     },
     {
-      title: 'Project 3',
-      description: 'This is project 2',
-      image: 'https://images.unsplash.com/photo-1572177812156-58036aae439c?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvamVjdHN8ZW58MHx8MHx8fDA%3D',
+      title: 'Mobile App Design',
+      description: 'UI/UX design for a mobile app focused on improving user experience and interactivity.',
+      image: 'https://img.freepik.com/free-vector/various-screens-violet-public-transport-mobile-app_23-2148704862.jpg',
     },
     {
-      title: 'Project 4',
-      description: 'This is project 2',
-      image: 'https://images.unsplash.com/photo-1572177812156-58036aae439c?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvamVjdHN8ZW58MHx8MHx8fDA%3D',
+      title: 'Machine Learning Model',
+      description: 'A machine learning model for classifying images based on different parameters, trained using TensorFlow.',
+      image: 'https://img.freepik.com/free-vector/ai-technology-brain-background-vector-digital-transformation-concept_53876-117812.jpg?semt=ais_hybrid',
     }
   ];
 

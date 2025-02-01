@@ -6,7 +6,7 @@
             From .NET development to full-stack solutions, I've delivered scalable and efficient projects that meet
             the needs of businesses and organizations.</p>
         <div class="btn-group">
-            <button (click)="scrollToProjects()" class="see-projects">See Projects</button>
+            <a (click)="scrollToProjects()" class="see-projects">See Projects</a>
         </div>
     </div>
 </section>
@@ -14,9 +14,8 @@
 
 <section id="projects" class="projects">
     <div class="project-container" #projectsElement>
-        <button #scrollLeftButton class="scroll-left" (click)="scrollLeft()"><i class="fa fa-chevron-left"></i></button>
-        <button #scrollRightButton class="scroll-right" (click)="scrollRight()"><i
-                class="fa fa-chevron-right"></i></button>
+        <a #scrollLeftButton class="scroll-left" (click)="scrollLeft()"><i class="fa fa-chevron-left"></i></a>
+        <a #scrollRightButton class="scroll-right" (click)="scrollRight()"><i class="fa fa-chevron-right"></i></a>
         <div class="project-slider" #slider>
             <div class="project-slide" *ngFor="let project of projects"
                 [style]="{'background-image': 'url(' + project.image + ')'}">
