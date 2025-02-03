@@ -9,6 +9,7 @@ import { Component } from '@angular/core';
 })
 export class HeaderComponent {
   isMenuVisible = false;
+
   toggleMenu() {
     this.isMenuVisible = !this.isMenuVisible;
   }

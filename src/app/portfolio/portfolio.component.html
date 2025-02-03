@@ -14,13 +14,13 @@
 
 <section id="projects" class="projects">
     <div class="project-container" #projectsElement>
-        <a #scrollLeftButton class="scroll-left" (click)="scrollLeft()"><i class="fa fa-chevron-left"></i></a>
-        <a #scrollRightButton class="scroll-right" (click)="scrollRight()"><i class="fa fa-chevron-right"></i></a>
         <div class="project-slider" #slider>
             <div class="project-slide" *ngFor="let project of projects"
                 [style]="{'background-image': 'url(' + project.image + ')'}">
-                <h2>{{ project.title }}</h2>
-                <p>{{ project.description }}</p>
+                <div class="text-container">
+                    <h2>{{ project.title }}</h2>
+                    <p>{{ project.description }}</p>
+                </div>
             </div>
         </div>
     </div>

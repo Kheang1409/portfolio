@@ -7,20 +7,32 @@
     font-family: 'Poppins', sans-serif;
 }
 
+
 .home,
 .about-me,
 .portfolio,
-.blog {
+.blog,
+.experience,
+.education,
+.contact {
     position: relative;
     width: 100%;
     height: 100vh;
-    background: url('assets/img/background.jpg');
-    background-size: cover;
-    background-position: center;
     display: flex;
     align-items: center;
     padding: 30px 50px;
 }
+
+.home,
+.about-me,
+.portfolio,
+.blog,
+.contact {
+    background: url('assets/img/background.jpg') no-repeat center center/cover;
+    background-size: cover;
+    background-position: center;
+}
+
 
 .content {
     max-width: 500px;
@@ -103,8 +115,16 @@
 
 /* Media Queries */
 @media (max-width: 992px) {
-    .home {
+
+    .home,
+    .about-me,
+    .portfolio,
+    .blog,
+    .experience,
+    .education {
         padding: 20px 30px;
+        background-size: cover;
+        background-position: center;
     }
 
     .content h2 {
@@ -121,8 +141,15 @@
 }
 
 @media (max-width: 768px) {
-    .home {
+
+    .home,
+    .about-me,
+    .portfolio,
+    .blog,
+    .experience,
+    .education {
         padding: 10px 20px;
+        background: none;
     }
 
     .content {
@@ -153,8 +180,15 @@
 }
 
 @media (max-width: 576px) {
-    .home {
+
+    .home,
+    .about-me,
+    .portfolio,
+    .blog,
+    .experience,
+    .education {
         padding: 5px 10px;
+        background: none;
     }
 
     .content h2 {
@@ -181,8 +215,15 @@
 }
 
 @media (max-width: 320px) {
-    .home {
+
+    .home,
+    .about-me,
+    .portfolio,
+    .blog,
+    .experience,
+    .education {
         padding: 0;
+        background: none;
     }
 
     .content h2 {

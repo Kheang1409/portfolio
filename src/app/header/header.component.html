@@ -1,6 +1,6 @@
 <header>
     <h2 class="logo"><span>K</span>ai.</h2>
-    <button class="menu-btn" (click)="toggleMenu()">☰</button>
+    <button class="menu-btn" (click)="toggleMenu()" [attr.aria-expanded]="isMenuVisible.toString()">☰</button>
     <nav class="navigation" [ngClass]="{'show': isMenuVisible}">
         <a href="/">Home</a>
         <a href="/about">About</a>

@@ -1,0 +1,17 @@
+[
+    {
+        "role": "Senior Core Banking Officer",
+        "company": "Sahakrinpheap Microfinance PLC",
+        "description": "Developed and maintained software applications for core banking systems, including windows and web platforms."
+    },
+    {
+        "role": "Web Developer",
+        "company": "Pathmazing Inc.",
+        "description": "Implemented Odoo ERP Web Portal and Web API for enterprise clients using Python (Odoo framework) and RESTful APIs."
+    },
+    {
+        "role": "Web Developer",
+        "company": "Anakut Digital Solution Co. Ltd.",
+        "description": "Developed a Point of Sale (POS) web application system using PHP (CodeIgniter), providing businesses with streamlined inventory and sales management tools tailored to their needs."
+    }
+]

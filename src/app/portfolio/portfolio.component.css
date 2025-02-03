@@ -51,10 +51,22 @@
     flex-shrink: 0;
     scroll-snap-align: start;
     transition: transform 0.3s ease-in-out;
+    position: relative;
+    overflow: hidden;
 }
 
 .project-slide:hover {
     cursor: pointer;
+}
+
+.project-slide .text-container {
+    background: rgba(0, 0, 0, 0.5);
+    /* Semi-transparent dark background */
+    padding: 15px;
+    border-radius: 8px;
+    backdrop-filter: blur(8px);
+    /* Optional: adds blur to the background of the text container */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .project-slide h2 {

@@ -4,20 +4,21 @@ header {
     top: 0;
     left: 0;
     width: 100%;
-    padding: 20px 50px;
+    padding: 15px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     z-index: 100;
     background-color: #fff;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    /* Light shadow for better contrast */
+    transition: all 0.3s ease-in-out;
 }
 
 /* Logo Styling */
 .logo {
-    font-size: 2em;
-    color: #555;
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #333;
     cursor: pointer;
 }
 
@@ -28,44 +29,39 @@ header {
 /* Navigation Styles */
 .navigation {
     display: flex;
-    justify-content: flex-end;
     gap: 20px;
-    transition: all 0.3s ease-in-out;
-    /* Smooth transition for sliding */
 }
 
 .navigation a {
     font-size: 1em;
     color: #333;
     text-decoration: none;
-    transition: color 0.3s ease;
+    font-weight: 500;
+    transition: color 0.3s ease-in-out;
 }
 
 .navigation a:hover {
     color: #7d2ae8;
 }
 
-/* "Let's Talk" Button */
+/* Let's Talk Button */
 .btn-talk {
-    color: #fff;
+    color: white;
     text-decoration: none;
-    padding: 10px 30px;
+    padding: 10px 20px;
     background: #7d2ae8;
-    border-radius: 30px;
+    border-radius: 25px;
     border: 2px solid #7d2ae8;
     font-weight: 500;
-    transition: all 0.3s ease;
-    white-space: nowrap;
-    /* Prevent text from wrapping */
+    transition: all 0.3s ease-in-out;
 }
 
 .btn-talk:hover {
-    color: #7d2ae8;
     background: transparent;
-    border-color: #7d2ae8;
+    color: #7d2ae8;
 }
 
-/* Mobile Menu Button (Visible only on smaller screens) */
+/* Mobile Menu Button */
 .menu-btn {
     display: none;
     cursor: pointer;
@@ -75,79 +71,46 @@ header {
     border: none;
 }
 
-/* Mobile Navigation */
+/* Responsive Navigation */
 @media (max-width: 768px) {
     .menu-btn {
         display: block;
     }
 
-    /* Hide navigation by default */
     .navigation {
         display: none;
-        width: 100%;
         flex-direction: column;
-        gap: 10px;
-        background-color: #fff;
-        padding: 15px 0;
+        gap: 15px;
         position: absolute;
-        top: 80px;
+        top: 70px;
         left: 0;
         right: 0;
+        background: white;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        text-align: center;
+        transition: all 0.3s ease-in-out;
     }
 
-    /* Show menu when "show" class is added */
     .navigation.show {
         display: flex;
-        animation: slideDown 0.4s ease-out;
-        /* Smooth slide animation */
     }
 
-    /* Mobile link styles */
-    .navigation a {
-        font-size: 1.1em;
-        color: #333;
+    .btn-talk {
+        margin-top: 15px;
         padding: 10px 20px;
-        text-align: center;
-    }
-
-    .btn-talk {
-        margin-top: 20px;
-        padding: 10px 25px;
-        max-width: 250px;
+        width: auto;
     }
 }
 
-/* Desktop Navigation */
-@media (min-width: 769px) {
-    .menu-btn {
-        display: none;
-    }
-
-    .navigation {
-        display: flex;
-        gap: 20px;
-        justify-content: flex-end;
-    }
-
-    .navigation a {
-        font-size: 1em;
-        color: #333;
-    }
-
-    .btn-talk {
-        margin-left: 20px;
-    }
-}
-
-/* Smooth slide-down animation for mobile menu */
+/* Smooth animation */
 @keyframes slideDown {
-    0% {
+    from {
         transform: translateY(-20px);
         opacity: 0;
     }
 
-    100% {
+    to {
         transform: translateY(0);
         opacity: 1;
     }
