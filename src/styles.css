@@ -121,7 +121,8 @@
     .portfolio,
     .blog,
     .experience,
-    .education {
+    .education,
+    .contact {
         padding: 20px 30px;
         background-size: cover;
         background-position: center;
@@ -147,7 +148,8 @@
     .portfolio,
     .blog,
     .experience,
-    .education {
+    .education,
+    .contact {
         padding: 10px 20px;
         background: none;
     }
@@ -186,7 +188,8 @@
     .portfolio,
     .blog,
     .experience,
-    .education {
+    .education,
+    .contact {
         padding: 5px 10px;
         background: none;
     }
@@ -221,7 +224,8 @@
     .portfolio,
     .blog,
     .experience,
-    .education {
+    .education,
+    .contact {
         padding: 0;
         background: none;
     }
