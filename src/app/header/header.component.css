@@ -1,0 +1,117 @@
+/* General Header Styles */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+}
+
+/* Logo Styling */
+.logo {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+}
+
+.logo span {
+    color: #7d2ae8;
+}
+
+/* Navigation Styles */
+.navigation {
+    display: flex;
+    gap: 20px;
+}
+
+.navigation a {
+    font-size: 1em;
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease-in-out;
+}
+
+.navigation a:hover {
+    color: #7d2ae8;
+}
+
+/* Let's Talk Button */
+.btn-talk {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    background: #7d2ae8;
+    border-radius: 25px;
+    border: 2px solid #7d2ae8;
+    font-weight: 500;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-talk:hover {
+    background: transparent;
+    color: #7d2ae8;
+}
+
+/* Mobile Menu Button */
+.menu-btn {
+    display: none;
+    cursor: pointer;
+    font-size: 2em;
+    color: #7d2ae8;
+    background: none;
+    border: none;
+}
+
+/* Responsive Navigation */
+@media (max-width: 768px) {
+    .menu-btn {
+        display: block;
+    }
+
+    .navigation {
+        display: none;
+        flex-direction: column;
+        gap: 15px;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: white;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        text-align: center;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .navigation.show {
+        display: flex;
+    }
+
+    .btn-talk {
+        margin-top: 15px;
+        padding: 10px 20px;
+        width: auto;
+    }
+}
+
+/* Smooth animation */
+@keyframes slideDown {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

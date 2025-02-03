@@ -1,0 +1,52 @@
+[
+    {
+        "title": "Announcing .NET 9",
+        "description": "Discover the latest features and improvements in .NET 9, enhancing performance and developer productivity.",
+        "link": "https://devblogs.microsoft.com/dotnet/announcing-dotnet-9/"
+    },
+    {
+        "title": "Top .NET Blog Posts of 2024",
+        "description": "A roundup of the most impactful .NET articles from 2024, covering various advancements and best practices.",
+        "link": "https://devblogs.microsoft.com/dotnet/top-dotnet-blogs-posts-of-2024/"
+    },
+    {
+        "title": "Rick Strahl\"s Web Log",
+        "description": "Insights and experiences from Rick Strahl on .NET development and related technologies.",
+        "link": "https://weblog.west-wind.com/"
+    },
+    {
+        "title": "Scott Hanselman\"s Blog",
+        "description": "Thoughts on .NET, programming, and technology from Scott Hanselman.",
+        "link": "https://www.hanselman.com/blog/"
+    },
+    {
+        "title": "Angular 2025 Strategy",
+        "description": "An overview of Angular\"s strategic direction and focus areas for 2025.",
+        "link": "https://blog.angular.dev/angular-2025-strategy/"
+    },
+    {
+        "title": "Try Out the New Signal Input Migrations",
+        "description": "Learn about the latest input migration features in Angular and how to implement them.",
+        "link": "https://blog.angular.dev/try-out-the-new-signal-input-migrations/"
+    },
+    {
+        "title": "Angular Standalone Components: A Key for Faster and Modern Development",
+        "description": "Explore how standalone components in Angular can accelerate development and modernize your applications.",
+        "link": "https://www.bacancytechnology.com/blog/angular-standalone-components/"
+    },
+    {
+        "title": "Announcing Inertia 2.0: Redefining Frontend Development for Laravel",
+        "description": "Discover the new features in Inertia 2.0 that enhance frontend development in Laravel.",
+        "link": "https://blog.laravel.com/announcing-inertia-2-0/"
+    },
+    {
+        "title": "Laravel Nova 5.0 Now Available",
+        "description": "Learn about the updates in Laravel Nova 5.0, focusing on modernizing core dependencies and improving resource management.",
+        "link": "https://blog.laravel.com/laravel-nova-5-0-now-available/"
+    },
+    {
+        "title": "Programming in the 21st Century",
+        "description": "A blog discussing various aspects of programming, creativity, and the evolution of coding practices.",
+        "link": "https://prog21.dadgum.com/"
+    }
+]

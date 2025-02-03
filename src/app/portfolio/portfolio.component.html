@@ -1,0 +1,27 @@
+<section class="portfolio">
+    <div class="content">
+        <h2>My <span>Portfolio</span></h2>
+        <h4>Here are some of my notable projects</h4>
+        <p>As a driven software developer, I've worked on various projects that demonstrate my skills and expertise.
+            From .NET development to full-stack solutions, I've delivered scalable and efficient projects that meet
+            the needs of businesses and organizations.</p>
+        <div class="btn-group">
+            <a (click)="scrollToProjects()" class="see-projects">See Projects</a>
+        </div>
+    </div>
+</section>
+
+
+<section id="projects" class="projects">
+    <div class="project-container" #projectsElement>
+        <div class="project-slider" #slider>
+            <div class="project-slide" *ngFor="let project of projects"
+                [style]="{'background-image': 'url(' + project.image + ')'}">
+                <div class="text-container">
+                    <h2>{{ project.title }}</h2>
+                    <p>{{ project.description }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

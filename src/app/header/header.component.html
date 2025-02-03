@@ -1,0 +1,12 @@
+<header>
+    <h2 class="logo"><span>K</span>ai.</h2>
+    <button class="menu-btn" (click)="toggleMenu()" [attr.aria-expanded]="isMenuVisible.toString()">☰</button>
+    <nav class="navigation" [ngClass]="{'show': isMenuVisible}">
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+        <a href="/portfolio">Portfolio</a>
+        <a href="/blogs">Blog</a>
+        <a href="/contact">Contact</a>
+    </nav>
+    <a href="/contact" class="btn-talk">Let's Talk</a>
+</header>

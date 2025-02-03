@@ -36,11 +36,11 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/portfolio",
             "index": "src/index.html",
-            "browser": "src/main.ts",
+            "main": "src/main.ts",
             "polyfills": [
               "zone.js"
             ],
@@ -49,12 +49,29 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "_redirects",
+                "input": "src",
+                "output": "/"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets/data",
+                "output": "/assets/data"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets/resume",
+                "output": "/assets/resume"
               }
             ],
             "styles": [
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "baseHref": "/",
+            "deployUrl": "/"
           },
           "configurations": {
             "production": {
@@ -107,6 +124,21 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "_redirects",
+                "input": "src",
+                "output": "/"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets/data",
+                "output": "/assets/data"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets/resume",
+                "output": "/assets/resume"
               }
             ],
             "styles": [
@@ -117,5 +149,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "e7ee0aa4-a5da-40d5-ac3b-23c4f48b7f63"
   }
 }

@@ -1,0 +1,23 @@
+<section class="blog">
+    <div class="content">
+        <h2>My <span>Blog</span></h2>
+        <h4>Check out my latest posts</h4>
+        <p>As a passionate developer, I regularly write about technology trends, coding tutorials, and software
+            development best practices. Feel free to explore my articles.</p>
+        <div class="btn-group">
+            <a (click)="scrollToBlogs()" class="see-blog">See Blog</a>
+        </div>
+    </div>
+</section>
+
+<section id="blogs" class="blogs">
+    <div class="blog-container" #blogElement>
+        <div class="blog-slider">
+            <div class="blog-slide" *ngFor="let blog of blogs">
+                <h2>{{ blog.title }}</h2>
+                <p>{{ blog.description }}</p>
+                <a [href]="blog.link" class="blog-link" target="_blank">Read more</a>
+            </div>
+        </div>
+    </div>
+</section>
