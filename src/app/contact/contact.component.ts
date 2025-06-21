@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
@@ -10,6 +11,9 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
   styleUrl: './contact.component.css'
 })
 export class ContactComponent {
+
+  private http = inject(HttpClient);
+
   contactForm: FormGroup;
   submitted = false;
   loading = false;
@@ -37,12 +41,16 @@ export class ContactComponent {
 
     this.loading = true;
 
-    // Simulated API delay
-    setTimeout(() => {
-      this.loading = false;
-      this.successMessage = 'Your message has been sent successfully!';
-      this.contactForm.reset();
-      this.submitted = false;
-    }, 1500);
+    this.http.post('http://localhost:5000/api/contact', this.contactForm.value).subscribe({
+      next: () => {
+        this.successMessage = 'Your message has been sent successfully!';
+        this.contactForm.reset();
+        this.submitted = false;
+      },
+      error: () => {
+        this.errorMessage = 'Failed to send message.';
+      },
+      complete: () => this.loading = false
+    });
   }
 }
