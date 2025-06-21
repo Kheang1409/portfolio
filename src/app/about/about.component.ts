@@ -56,10 +56,10 @@ export class AboutComponent implements OnInit {
     link.click();
   }
 
-  scrollToElement(element: HTMLElement | undefined) {
+  scrollToElement(element: HTMLElement | undefined, adjustment: number) {
     if (!element) return;
 
-    const targetPosition = element.getBoundingClientRect().top + window.pageYOffset;
+    const targetPosition = element.getBoundingClientRect().top + window.pageYOffset - adjustment;
     const startPosition = window.pageYOffset;
     const distance = targetPosition - startPosition;
     const duration = 600; // ms
@@ -87,10 +87,10 @@ export class AboutComponent implements OnInit {
   }
 
   scrollToExperience(): void {
-    this.scrollToElement(this.experienceElement?.nativeElement);
+    this.scrollToElement(this.experienceElement?.nativeElement, 25);
   }
 
   scrollToEducation(): void {
-    this.scrollToElement(this.educationElement?.nativeElement);
+    this.scrollToElement(this.educationElement?.nativeElement, 0);
   }
 }
