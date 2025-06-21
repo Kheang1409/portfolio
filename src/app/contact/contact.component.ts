@@ -10,7 +10,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
   templateUrl: './contact.component.html',
   styleUrl: './contact.component.css'
 })
-export class ContactComponent {
+export class ContactComponent{
 
   private http = inject(HttpClient);
 
@@ -33,11 +33,18 @@ export class ContactComponent {
   get message() { return this.contactForm.get('message'); }
 
   onSubmit(): void {
+    console.log('Form submission triggered.');
     this.submitted = true;
     this.successMessage = '';
     this.errorMessage = '';
 
-    if (this.contactForm.invalid) return;
+    // 🔥 Force all fields to validate visually and logically
+    this.contactForm.markAllAsTouched();
+
+    if (this.contactForm.invalid) {
+      console.warn('Form is invalid:', this.contactForm.value);
+      return;
+    }
 
     this.loading = true;
 
@@ -53,4 +60,5 @@ export class ContactComponent {
       complete: () => this.loading = false
     });
   }
+
 }

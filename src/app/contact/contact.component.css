@@ -63,6 +63,18 @@
   font-size: 1rem;
 }
 
+.contact input.ng-invalid.ng-touched,
+.contact textarea.ng-invalid.ng-touched {
+  border-color: #e74c3c;
+  box-shadow: 0 0 3px #e74c3c;
+}
+
+.contact input.ng-valid.ng-touched,
+.contact textarea.ng-valid.ng-touched {
+  border-color: #2ecc71;
+  box-shadow: 0 0 3px #2ecc71;
+}
+
 .contact input:focus,
 .contact textarea:focus {
   outline: 2px solid #7d2ae8;

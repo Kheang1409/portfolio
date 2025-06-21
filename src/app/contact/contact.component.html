@@ -53,8 +53,7 @@
               <small *ngIf="message?.errors?.['minlength']">At least 10 characters.</small>
             </div>
           </div>
-
-          <button type="submit" class="btn-send" [disabled]="loading || contactForm.invalid">
+          <button type="submit" class="btn-send" [disabled]="loading || (submitted && contactForm.invalid)">
             {{ loading ? 'Sending...' : 'Send Message' }}
           </button>
 
