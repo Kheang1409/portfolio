@@ -1,12 +1,27 @@
-<header>
-    <h2 class="logo"><span>K</span>ai.</h2>
-    <button class="menu-btn" (click)="toggleMenu()" [attr.aria-expanded]="isMenuVisible.toString()">☰</button>
-    <nav class="navigation" [ngClass]="{'show': isMenuVisible}">
-        <a href="/">Home</a>
-        <a href="/about">About</a>
-        <a href="/portfolio">Portfolio</a>
-        <a href="/blogs">Blog</a>
-        <a href="/contact">Contact</a>
-    </nav>
-    <a href="/contact" class="btn-talk">Let's Talk</a>
+<header role="banner">
+  <a routerLink="/" class="logo" aria-label="Homepage" (click)="closeMenu()"><span>K</span>ai.</a>
+
+  <button
+    class="menu-btn"
+    (click)="toggleMenu()"
+    [attr.aria-expanded]="isMenuVisible.toString()"
+    aria-controls="main-navigation"
+    aria-label="Toggle navigation menu"
+  >
+    ☰
+  </button>
+
+  <nav
+    class="navigation"
+    [class.show]="isMenuVisible"
+    id="main-navigation"
+    role="navigation"
+  >
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">Home</a>
+    <a routerLink="/about" routerLinkActive="active" (click)="closeMenu()">About</a>
+    <a routerLink="/portfolio" routerLinkActive="active" (click)="closeMenu()">Portfolio</a>
+    <a routerLink="/blogs" routerLinkActive="active" (click)="closeMenu()">Blog</a>
+    <a routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">Contact</a>
+    <a routerLink="/contact" class="btn-talk" (click)="closeMenu()">Let's Talk</a>
+  </nav>
 </header>
