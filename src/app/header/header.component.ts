@@ -1,16 +1,21 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-header',
-  imports: [CommonModule],
+  standalone: true,
+  imports: [RouterModule],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.css'
+  styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
   isMenuVisible = false;
 
-  toggleMenu() {
+  toggleMenu(): void {
     this.isMenuVisible = !this.isMenuVisible;
+  }
+
+  closeMenu(): void {
+    this.isMenuVisible = false;
   }
 }

@@ -1,0 +1,53 @@
+.back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: #7d2ae8; /* purple background */
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(125, 42, 232, 0.5);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  z-index: 1000;
+  opacity: 0.85;
+}
+
+.back-to-top:hover {
+  background-color: #5a1fd1;
+  box-shadow: 0 6px 16px rgba(90, 31, 209, 0.7);
+  opacity: 1;
+}
+
+.back-to-top svg {
+  width: 20px;
+  height: 20px;
+  stroke: #fff;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke 0.3s ease;
+}
+
+.back-to-top:hover svg {
+  stroke: #f0eaff;
+}
+
+/* Optional: hide on small screens or adjust positioning */
+@media (max-width: 480px) {
+  .back-to-top {
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .back-to-top svg {
+    width: 16px;
+    height: 16px;
+  }
+}

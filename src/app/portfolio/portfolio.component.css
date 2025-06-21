@@ -1,221 +1,208 @@
+/* Portfolio Section Styling - Styled like About */
+
+.portfolio,
 .projects {
-    padding: 0 20px;
-    margin: 0;
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #f7f7f7;
-    overflow-y: hidden;
-    position: relative;
+  background-color: #fff;
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 30px 50px;
+  transition: background-image 0.5s ease-in-out;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 }
 
-.project-container {
-    width: 100%;
+.portfolio.loaded {
+  background-image: url('/assets/img/background.jpg');
 }
 
-.project-section {
-    background-color: #f7f7f7;
-    overflow-y: hidden;
+.content {
+  max-width: 700px;
+  color: #555;
 }
 
-.project-title {
-    font-size: 2.5em;
-    text-align: center;
-    margin-bottom: 30px;
+.content h2 {
+  font-size: 2.5em;
 }
 
-.project-slider {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    padding: 0.5% 0;
-    margin: 0 auto;
+.content h2 span {
+  color: #7d2ae8;
 }
 
-.project-slide {
-    margin: 0 10px;
-    padding: 20px;
-    width: 70%;
-    max-width: 30%;
-    height: 450px;
-    background-size: cover;
-    background-position: center;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    flex-shrink: 0;
-    scroll-snap-align: start;
-    transition: transform 0.3s ease-in-out;
-    position: relative;
-    overflow: hidden;
+.content h4 {
+  font-size: 1.8em;
+  margin-top: 0.3em;
 }
 
-.project-slide:hover {
-    cursor: pointer;
+.content p {
+  padding: 10px 0 30px;
+  color: #333;
+  line-height: 1.6;
 }
 
-.project-slide .text-container {
-    background: rgba(0, 0, 0, 0.5);
-    /* Semi-transparent dark background */
-    padding: 15px;
-    border-radius: 8px;
-    backdrop-filter: blur(8px);
-    /* Optional: adds blur to the background of the text container */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+.btn-group {
+  margin-top: 20px;
 }
 
-.project-slide h2 {
-    font-size: 1.8em;
-    margin-bottom: 10px;
-    color: #fff;
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+.btn-group a {
+  color: #7d2ae8;
+  background: #fff;
+  text-decoration: none;
+  padding: 10px 30px;
+  border-radius: 10px;
+  border: 2px solid #7d2ae8;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  margin-right: 10px;
 }
 
-.project-slide p {
-    margin-bottom: 20px;
-    color: #fff;
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+.btn-group a:hover {
+  color: #fff;
+  background: #7d2ae8;
+  border-color: #7d2ae8;
+  cursor: pointer;
 }
 
-.project-link {
-    text-decoration: none;
-    color: #7d2ae8;
+/* Project Listing Like Experience/Education */
+
+.project-list {
+  margin-top: 30px;
+  width: 100%;
 }
 
-.project-link:hover {
-    color: #555;
+.project-list ul {
+  list-style: none;
+  padding-left: 0;
 }
 
-/* Custom scrollbar */
-.project-slider::-webkit-scrollbar {
-    height: 8px;
+.project-list li {
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.project-slider::-webkit-scrollbar-thumb {
-    background-color: #7d2ae8;
-    border-radius: 10px;
+.project-list h4 {
+  font-size: 1.4em;
+  font-weight: 600;
+  color: #333;
 }
 
-.project-slider::-webkit-scrollbar-thumb:hover {
-    background-color: #6b38b0;
-    cursor: pointer;
+.project-list p {
+  color: #444;
+  line-height: 1.5;
 }
 
-.project-slider::-webkit-scrollbar-track {
-    background-color: #f7f7f7;
-    border-radius: 10px;
+.project-list .project-link {
+  color: #7d2ae8;
+  text-decoration: underline;
+  font-size: 0.95em;
+  transition: color 0.3s ease;
 }
 
+.project-list .project-link:hover {
+  color: #5a1fd1;
+  cursor: pointer;
+}
+
+/* Responsive styles */
 @media (max-width: 992px) {
-    .project-title {
-        font-size: 2em;
-        margin-bottom: 20px;
-    }
+  .portfolio,
+  .projects {
+    padding: 20px 30px;
+  }
 
-    .project-slide {
-        width: 90%;
-        max-width: 500px;
-        margin: 0 15px;
-    }
+  .content h2 {
+    font-size: 2em;
+  }
+
+  .content h4 {
+    font-size: 1.3em;
+  }
+
+  .btn-group a {
+    padding: 8px 20px;
+  }
 }
 
-/* Small screens (tablets and large phones) */
 @media (max-width: 768px) {
-    .project-title {
-        font-size: 1.8em;
-        margin-bottom: 15px;
-    }
+  .portfolio,
+  .projects {
+    padding: 10px 20px;
+  }
 
-    .project-slide {
-        width: 90%;
-        max-width: 450px;
-        margin: 0 10px;
-    }
+  .content {
+    max-width: 100%;
+  }
 
-    .project-slider::-webkit-scrollbar {
-        height: 8px;
-    }
+  .content h2 {
+    font-size: 1.8em;
+  }
+
+  .content h4 {
+    font-size: 1.2em;
+  }
+
+  .btn-group a {
+    padding: 6px 15px;
+  }
+
+  .project-list h4 {
+    font-size: 1.2em;
+  }
 }
 
-/* Small phones */
 @media (max-width: 576px) {
-    .project-title {
-        font-size: 1.5em;
-        margin-bottom: 10px;
-    }
+  .portfolio,
+  .projects {
+    padding: 5px 10px;
+  }
 
-    .project-slide {
-        width: 95%;
-        max-width: 400px;
-        margin: 0 5px;
-    }
+  .content h2 {
+    font-size: 1.5em;
+  }
 
-    .project-slider::-webkit-scrollbar {
-        height: 6px;
-    }
+  .content h4 {
+    font-size: 1em;
+  }
+
+  .btn-group a {
+    padding: 4px 10px;
+  }
+
+  .project-list h4 {
+    font-size: 1em;
+  }
 }
 
-/* Very small phones */
 @media (max-width: 320px) {
-    .project-title {
-        font-size: 1.2em;
-        margin-bottom: 10px;
-    }
+  .portfolio,
+  .projects {
+    padding: 0;
+  }
 
-    .project-slide {
-        width: 95%;
-        max-width: 350px;
-        margin: 0 5px;
-    }
+  .content h2 {
+    font-size: 1.2em;
+  }
 
-    .project-slider::-webkit-scrollbar {
-        height: 4px;
-    }
+  .content h4 {
+    font-size: 0.8em;
+  }
 
-    .project-slide h2 {
-        font-size: 1.2em;
-    }
+  .btn-group a {
+    padding: 2px 5px;
+  }
 
-    .project-slide p {
-        font-size: 0.9em;
-    }
-}
+  .project-list h4 {
+    font-size: 0.85em;
+  }
 
-.scroll-left,
-.scroll-right {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: transparent;
-    border: none;
-    padding: 10px;
-    font-size: 20px;
-    cursor: pointer;
-    z-index: 1;
-    color: #7d2ae8;
-    transition: color 0.2s ease;
-}
-
-.scroll-left {
-    left: 0;
-}
-
-.scroll-right {
-    right: 0;
-}
-
-.scroll-left:hover,
-.scroll-right:hover {
-    color: #ccc;
-}
-
-.scroll-left.hidden,
-.scroll-right.hidden {
-    opacity: 0;
-    pointer-events: none;
+  .project-list p {
+    font-size: 0.85em;
+  }
 }

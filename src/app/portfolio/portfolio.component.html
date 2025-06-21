@@ -1,4 +1,4 @@
-<section class="portfolio">
+<section class="portfolio" [ngClass]="{'loaded': backgroundImageLoaded}">
     <div class="content">
         <h2>My <span>Portfolio</span></h2>
         <h4>Here are some of my notable projects</h4>
@@ -12,16 +12,15 @@
 </section>
 
 
-<section id="projects" class="projects">
-    <div class="project-container" #projectsElement>
-        <div class="project-slider" #slider>
-            <div class="project-slide" *ngFor="let project of projects"
-                [style]="{'background-image': 'url(' + project.image + ')'}">
-                <div class="text-container">
-                    <h2>{{ project.title }}</h2>
-                    <p>{{ project.description }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
+<section class="projects">
+  <div class="content project-list" #projectsElement>
+    <h2>Project <span>List</span></h2>
+    <ul>
+      <li *ngFor="let project of projects">
+        <h4>{{ project.title }}</h4>
+        <p>{{ project.description }}</p>
+        <a *ngIf="project.link" [href]="project.link" target="_blank" class="project-link">View Project</a>
+      </li>
+    </ul>
+  </div>
 </section>
