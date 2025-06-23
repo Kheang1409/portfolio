@@ -6,7 +6,10 @@
 
   <div class="chatbot-body" *ngIf="isOpen">
     <div class="chat-messages">
-      <div *ngFor="let msg of messages" [class.user]="msg.sender === 'user'" [class.bot]="msg.sender === 'bot'">
+      <div *ngFor="let msg of messages"
+           [class.user]="msg.sender === 'user'"
+           [class.bot]="msg.sender === 'bot'"
+           class="message-bubble">
         <ng-container *ngIf="msg.sender === 'user'; else botMessage">
           {{ msg.text }}
         </ng-container>
