@@ -48,7 +48,7 @@ export class ContactComponent{
 
     this.loading = true;
 
-    this.http.post('https://contactformapi-j6hw.onrender.com/api/contact', this.contactForm.value).subscribe({
+    this.http.post('https://contactformapi-j6hw.onrender.com/api/contacts', this.contactForm.value).subscribe({
       next: () => {
         this.successMessage = 'Your message has been sent successfully!';
         this.contactForm.reset();
