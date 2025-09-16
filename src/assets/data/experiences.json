@@ -1,17 +1,17 @@
 [
-    {
-        "role": "Senior .Net Developer & Core Banking Officer",
-        "company": "Sahakrinpheap Microfinance PLC",
-        "description": "Developed and maintained software applications for core banking systems, including windows and web platforms."
-    },
-    {
-        "role": "Web Developer",
-        "company": "Pathmazing Inc.",
-        "description": "Implemented Odoo ERP Web Portal and Web API for enterprise clients using Python (Odoo framework) and RESTful APIs."
-    },
-    {
-        "role": "Web Developer",
-        "company": "Anakut Digital Solution Co. Ltd.",
-        "description": "Developed a Point of Sale (POS) web application system using PHP (CodeIgniter), providing businesses with streamlined inventory and sales management tools tailored to their needs."
-    }
+  {
+    "role": "Senior .NET Developer",
+    "company": "Sahakrinpheap Microfinance PLC",
+    "description": "Built and maintained core banking systems. Unified legacy plugins into a single .NET app, reducing crashes by 40% and saving 20+ hours/month. Developed a ZKTeco biometric attendance system, accelerating payroll by 7 days, and a Telegram Bot for real-time alerts, boosting system reliability to 99%. Mentored junior developers and authored technical documentation."
+  },
+  {
+    "role": ".NET Full-Stack Developer",
+    "company": "Pathmazing Inc.",
+    "description": "Developed Python REST APIs and Odoo ERP modules, upgraded Odoo to v14, integrated Microsoft Teams, and connected ABA PayWay for 1,000+ monthly transactions. Launched KhmerCare fundraising platform raising $70.8K and improving workflows with 99% user satisfaction."
+  },
+  {
+    "role": ".NET & Angular Developer",
+    "company": "Anakut Digital Solution Co. Ltd.",
+    "description": "Built POS, Hotel Management, and Clinic systems with full-stack .NET/Angular, improving efficiency, reducing errors by 99%, and cutting wait/check-in times by up to 50%. Configured Odoo ERP for e-commerce to enhance order tracking and retention."
+  }
 ]

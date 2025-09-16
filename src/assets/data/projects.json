@@ -1,57 +1,52 @@
 [
-    {
-        "title": "Core Banking System Development",
-        "description": "Developed and maintained a core banking system, merging two applications into a single solution with .NET Framework.",
-        "image": "https://1602894.fs1.hubspotusercontent-na1.net/hub/1602894/hubfs/183889214_m_normal_none%20%281%29.webp?width=1170&name=183889214_m_normal_none%20%281%29.webp"
-    },
-    {
-        "title": "Automated Reporting & ETL System",
-        "description": "Built an ETL-based reporting system using Laravel, consolidating financial data for internal use.",
-        "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2dKmsA_JK9WzNh-wce3V0Q-3PRa-AwudZag&s"
-    },
-    {
-        "title": "Attendance Checker Tool",
-        "description": "Developed an attendance tracking system with ZKTeco API and MariaDB, optimizing employee check-in and payroll processing.",
-        "image": "https://cdn.prod.website-files.com/620e4b3d823b71ee91fa6d60/673b36f2fb275007047dfd2c_Blog%20Thumbnail%20-%201200x630%20-%2001.png"
-    },
-    {
-        "title": "Telegram Notification Bot",
-        "description": "Integrated a real-time Telegram bot for detecting data failures and alerting system administrators.",
-        "image": "https://cdn.prod.website-files.com/6462655e6f1811aabe80d8bd/66592abd80edb0b4e2cf3850_Top%2010%20AI%20Telegram%20bots%20for%20every%20need-1.png"
-    },
-    {
-        "title": "Odoo ERP Web Development",
-        "description": "Developed and optimized Odoo ERP modules, improving PostgreSQL query performance by 50%.",
-        "image": "https://media.licdn.com/dms/image/v2/D4D12AQGAcN4YzqfY6A/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1704114312781?e=2147483647&v=beta&t=nmLUvtalJ5TEJHHL6HcNyvPpqyJaCCv-io92_FqvDRs"
-    },
-    {
-        "title": "Payment Gateway Integration",
-        "description": "Integrated ABA PayWay into e-commerce platforms for seamless online transactions.",
-        "image": "https://ps.w.org/aba-payway-woocommerce-payment-gateway/assets/icon.svg?rev=2149905"
-    },
-    {
-        "title": "KhmerCare Fundraising Platform",
-        "description": "Built a Next.js fundraising platform hosting over 198 campaigns, enabling donations and campaign tracking.",
-        "image": "https://khmercare.com/assets/banner.png"
-    },
-    {
-        "title": "Firearms Metrics Platform (SFMP)",
-        "description": "Developed a React.js web portal for law enforcement to track firearm-related incidents.",
-        "image": "https://github.com/Kheang1409/Kheang1409/blob/main/SFMP.png?raw=true"
-    },
-    {
-        "title": "POS System for Retail",
-        "description": "Developed a Point of Sale (POS) system using Laravel & MySQL for retail businesses.",
-        "image": "https://mir-s3-cdn-cf.behance.net/projects/404/65db54208279079.Y3JvcCw4MDgsNjMyLDAsMA.jpg"
-    },
-    {
-        "title": "Hotel Management System",
-        "description": "Created a hotel booking system with payment tracking and room management.",
-        "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpJw9ApPwZNrnAVRVNMGuRWYv1JHodgYL_Gw&s"
-    },
-    {
-        "title": "Clinic Appointment System",
-        "description": "Developed a web-based appointment booking system for clinics using Laravel.",
-        "image": "https://3582037.fs1.hubspotusercontent-na1.net/hub/3582037/hubfs/custom-video-thumbnails/patient%20schedule%20product%20overview-thumb-2.jpeg?length=1920"
-    }
+  {
+    "title": "Core Banking Platform Modernization",
+    "description": "Unified dual legacy core banking plugins into a single .NET application, reducing system crashes by 40% and saving 20+ hours per month in maintenance.",
+    "image": "https://1602894.fs1.hubspotusercontent-na1.net/hub/1602894/hubfs/183889214_m_normal_none%20%281%29.webp?width=1170&name=183889214_m_normal_none%20%281%29.webp"
+  },
+  {
+    "title": "Biometric Attendance Tracking",
+    "description": "Architected a ZKTeco-based biometric attendance system that accelerated payroll cycles by 7 days and improved check-in accuracy across departments.",
+    "image": "https://cdn.prod.website-files.com/620e4b3d823b71ee91fa6d60/673b36f2fb275007047dfd2c_Blog%20Thumbnail%20-%201200x630%20-%2001.png"
+  },
+  {
+    "title": "Real-Time Notification Bot",
+    "description": "Developed a Telegram Bot API for monitoring core banking operations, improving response times and increasing system reliability to 99%.",
+    "image": "https://cdn.prod.website-files.com/6462655e6f1811aabe80d8bd/66592abd80edb0b4e2cf3850_Top%2010%20AI%20Telegram%20bots%20for%20every%20need-1.png"
+  },
+  {
+    "title": "Optimized Financial Reporting System",
+    "description": "Refined SQL queries, indexing, and caching in reporting pipelines, cutting report generation from 30 minutes to under 2 seconds.",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2dKmsA_JK9WzNh-wce3V0Q-3PRa-AwudZag&s"
+  },
+  {
+    "title": "Odoo ERP Integration & Enhancements",
+    "description": "Upgraded Odoo to version 14, integrated Microsoft Teams, and connected ABA PayWay, supporting 1,000+ monthly transactions and improving workflow efficiency.",
+    "image": "https://media.licdn.com/dms/image/v2/D4D12AQGAcN4YzqfY6A/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1704114312781?e=2147483647&v=beta&t=nmLUvtalJ5TEJHHL6HcNyvPpqyJaCCv-io92_FqvDRs"
+  },
+  {
+    "title": "KhmerCare Fundraising Platform",
+    "description": "Built a Next.js real-time fundraising platform powering 198+ campaigns and raising $70.8K. Awarded Best Project & Team Effort at Pathmazing Inc.",
+    "image": "https://khmercare.com/assets/banner.png"
+  },
+  {
+    "title": "Firearms Metrics Platform (SFMP)",
+    "description": "Enhanced data processing in a React.js portal used by law enforcement, reducing reporting time from 30 minutes to under 5 and enabling faster data-driven decisions.",
+    "image": "https://github.com/Kheang1409/Kheang1409/blob/main/SFMP.png?raw=true"
+  },
+  {
+    "title": "Retail POS System with Device Integration",
+    "description": "Developed a POS system with automated inventory and scale integration, eliminating 99% of manual entry errors and streamlining retail operations.",
+    "image": "https://mir-s3-cdn-cf.behance.net/projects/404/65db54208279079.Y3JvcCw4MDgsNjMyLDAsMA.jpg"
+  },
+  {
+    "title": "Hotel Booking & Management System",
+    "description": "Engineered a full-scale hotel management system with real-time booking engine, reducing guest check-in time by 50% and increasing booking efficiency by 30%.",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpJw9ApPwZNrnAVRVNMGuRWYv1JHodgYL_Gw&s"
+  },
+  {
+    "title": "Clinic Appointment & Tracking System",
+    "description": "Built a clinic management system with scheduling, notifications, and patient tracking, cutting wait times by 45% and improving staff utilization by 20%.",
+    "image": "https://3582037.fs1.hubspotusercontent-na1.net/hub/3582037/hubfs/custom-video-thumbnails/patient%20schedule%20product%20overview-thumb-2.jpeg?length=1920"
+  }
 ]
