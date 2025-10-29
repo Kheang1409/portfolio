@@ -1,0 +1,8 @@
+{
+  "/api": {
+    "target": "https://portfolio-backend-api-s8gb.onrender.com",
+    "secure": true,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}

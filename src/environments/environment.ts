@@ -1,5 +1,5 @@
 export const environment = {
-  production: false,
+  production: true,
   apiUrl: 'assets/data',
   backendApiUrl: '/api',
 };
