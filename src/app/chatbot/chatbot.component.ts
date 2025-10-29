@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { DataServerService } from '../services/data-server.service';
 import { MarkdownModule } from 'ngx-markdown';
 
 @Component({
@@ -9,7 +9,7 @@ import { MarkdownModule } from 'ngx-markdown';
   standalone: true,
   imports: [CommonModule, FormsModule, MarkdownModule],
   templateUrl: './chatbot.component.html',
-  styleUrls: ['./chatbot.component.css']
+  styleUrls: ['./chatbot.component.css'],
 })
 export class ChatbotComponent {
   isOpen = false;
@@ -17,7 +17,7 @@ export class ChatbotComponent {
   loading = false;
   messages: { sender: 'user' | 'bot'; text: string }[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private dataServer: DataServerService) {}
 
   toggleChat() {
     this.isOpen = !this.isOpen;
@@ -31,17 +31,19 @@ export class ChatbotComponent {
     this.userInput = '';
     this.loading = true;
 
-    this.http.post('https://contactformapi-j6hw.onrender.com/api/assistants/ask', { question }, { responseType: 'text' })
-      .subscribe({
-        next: (res) => {
-          this.loading = false;
-          this.messages.push({ sender: 'bot', text: res || 'No response.' });
-        },
-        error: (err) => {
-          this.loading = false;
-          console.error(err);
-          this.messages.push({ sender: 'bot', text: 'Error getting response.' });
-        }
-      });
+    this.dataServer.askAssistant(question).subscribe({
+      next: (res) => {
+        this.loading = false;
+        this.messages.push({ sender: 'bot', text: res || 'No response.' });
+      },
+      error: (err) => {
+        this.loading = false;
+        console.error(err);
+        this.messages.push({
+          sender: 'bot',
+          text: 'Error getting response.',
+        });
+      },
+    });
   }
 }

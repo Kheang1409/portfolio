@@ -1,21 +1,19 @@
-# Stage 1: Build Angular application
-FROM node:22 AS build
+# Stage 1: Build Angular application (smaller base & better cache)
+FROM node:20-alpine AS build
 
 WORKDIR /app
 
-# Copy package.json and package-lock.json first for better caching
+# Copy package manifests first to install dependencies and leverage cache
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install
+# Use npm ci for reproducible installs and faster builds
+RUN npm ci --silent
 
-# Copy the rest of the source code
+# Copy source and build
 COPY . .
-
-# Build Angular app (it will use environment.prod.ts automatically)
 RUN npm run build --configuration=production
 
-# Stage 2: Serve with Nginx
+# Stage 2: Serve with Nginx (lightweight)
 FROM nginx:alpine
 
 WORKDIR /usr/share/nginx/html
@@ -29,8 +27,6 @@ COPY --from=build /app/dist/portfolio/ ./
 # Copy custom Nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Expose port 80 for serving
 EXPOSE 80
 
-# Start Nginx server
 ENTRYPOINT ["nginx", "-g", "daemon off;"]

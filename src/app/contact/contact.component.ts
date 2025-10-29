@@ -1,18 +1,22 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { DataServerService } from '../services/data-server.service';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-contact',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './contact.component.html',
-  styleUrl: './contact.component.css'
+  styleUrl: './contact.component.css',
 })
-export class ContactComponent{
-
-  private http = inject(HttpClient);
+export class ContactComponent {
+  private dataServer = inject(DataServerService);
 
   contactForm: FormGroup;
   submitted = false;
@@ -24,13 +28,22 @@ export class ContactComponent{
     this.contactForm = new FormGroup({
       name: new FormControl('', [Validators.required, Validators.minLength(2)]),
       email: new FormControl('', [Validators.required, Validators.email]),
-      message: new FormControl('', [Validators.required, Validators.minLength(10)])
+      message: new FormControl('', [
+        Validators.required,
+        Validators.minLength(10),
+      ]),
     });
   }
 
-  get name() { return this.contactForm.get('name'); }
-  get email() { return this.contactForm.get('email'); }
-  get message() { return this.contactForm.get('message'); }
+  get name() {
+    return this.contactForm.get('name');
+  }
+  get email() {
+    return this.contactForm.get('email');
+  }
+  get message() {
+    return this.contactForm.get('message');
+  }
 
   onSubmit(): void {
     console.log('Form submission triggered.');
@@ -38,7 +51,6 @@ export class ContactComponent{
     this.successMessage = '';
     this.errorMessage = '';
 
-    // 🔥 Force all fields to validate visually and logically
     this.contactForm.markAllAsTouched();
 
     if (this.contactForm.invalid) {
@@ -48,7 +60,7 @@ export class ContactComponent{
 
     this.loading = true;
 
-    this.http.post('https://contactformapi-j6hw.onrender.com/api/contacts', this.contactForm.value).subscribe({
+    this.dataServer.sendContact(this.contactForm.value).subscribe({
       next: () => {
         this.successMessage = 'Your message has been sent successfully!';
         this.contactForm.reset();
@@ -57,8 +69,7 @@ export class ContactComponent{
       error: () => {
         this.errorMessage = 'Failed to send message.';
       },
-      complete: () => this.loading = false
+      complete: () => (this.loading = false),
     });
   }
-
 }
