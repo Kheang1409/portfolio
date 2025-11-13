@@ -1,0 +1,215 @@
+@import "highlight.js/styles/atom-one-dark.css";
+:root {
+  --bg: #ffffff;
+  /* header height used to calculate available viewport for sections */
+  --header-height: 64px;
+  --text: #0b1220;
+  --accent: #0b5cff;
+}
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html,
+body,
+#__next {
+  /* modal basics */
+  line-height: 1.4em;
+  height: 1.4em;
+}
+
+/* Smooth scrolling and account for sticky header when jumping to anchors */
+html {
+  scroll-behavior: smooth;
+  /* fallback for browser anchor offset */
+  scroll-padding-top: var(--header-height);
+}
+
+/* Ensure in-page anchor jumps leave room for the sticky header */
+section {
+  scroll-margin-top: var(--header-height);
+}
+
+/* Soft scroll-snap for section-to-section navigation: proximity allows gentle, non-forced snapping */
+.page-scroll {
+  scroll-snap-type: y proximity;
+  /* ensure the header space is accounted for when snapping */
+  scroll-padding-top: var(--header-height);
+}
+
+main.page-scroll {
+  padding-top: var(--header-height);
+}
+
+/* Optional stronger snap mode */
+.page-scroll.page-scroll--strong {
+  scroll-snap-type: y mandatory;
+}
+
+/* class to temporarily disable snapping during a programmatic scroll */
+.page-scroll--nosnap {
+  scroll-snap-type: none !important;
+}
+
+/* Responsive override: on narrow screens the header may be taller (hamburger + padding) */
+@media (max-width: 640px) {
+  :root {
+    --header-height: 80px;
+  }
+}
+
+/* each section should be an alignment target for snapping */
+section {
+  scroll-snap-align: start;
+}
+
+@media (max-width: 760px) {
+  .hero {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+  }
+  .hero-avatar-wrap {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    padding-bottom: 8px;
+  }
+}
+
+.project-row {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+}
+.project-row > * {
+  flex: 0 0 280px;
+  scroll-snap-align: start;
+}
+
+.project-row {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.project-row::-webkit-scrollbar {
+  height: 0px;
+  display: none;
+}
+
+/* helper class to force visible horizontal scrollbar for carousels */
+.show-horizontal-scrollbar {
+  -ms-overflow-style: auto; /* IE/Edge */
+  scrollbar-width: thin; /* Firefox */
+}
+.show-horizontal-scrollbar::-webkit-scrollbar {
+  height: 8px;
+}
+.show-horizontal-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.show-horizontal-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(11, 92, 255, 0.16);
+  border-radius: 6px;
+}
+.show-horizontal-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(11, 92, 255, 0.28);
+}
+
+/* profile avatar */
+.hero-avatar {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 6px solid rgba(11, 92, 255, 0.08);
+  box-shadow: 0 8px 30px rgba(11, 92, 255, 0.08);
+}
+
+/* social icons */
+.social-icons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.social-icons a {
+  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background: transparent;
+  transition: background 120ms ease, color 120ms ease, transform 120ms ease;
+}
+.social-icons a:hover,
+.social-icons a:focus {
+  background: rgba(11, 92, 255, 0.08);
+  color: var(--accent);
+  transform: translateY(-2px);
+}
+.social-icons svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
+@media (max-width: 640px) {
+  .social-icons {
+    justify-content: flex-start;
+    gap: 12px;
+  }
+}
+
+/* modal basics */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 70;
+}
+.modal {
+  background: white;
+  max-width: 720px;
+  width: 100%;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+}
+
+.contact-form {
+  display: grid;
+  gap: 0.5rem;
+  max-width: 600px;
+}
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+.field-error {
+  color: #c92a2a;
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+}
+input[aria-invalid="true"],
+textarea[aria-invalid="true"] {
+  outline: 2px solid rgba(201, 42, 42, 0.12);
+  border-color: #c92a2a;
+}
+button {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+}

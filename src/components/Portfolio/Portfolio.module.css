@@ -1,0 +1,309 @@
+.portfolioGrid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.projectCard {
+  padding: 12px;
+  border-radius: 10px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+@media (prefers-color-scheme: dark) {
+  .projectCard {
+    background: #0b0b0b;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+  }
+}
+.projectRow {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+  scroll-snap-type: x mandatory;
+  -ms-overflow-style: none;
+  scrollbar-width: thin;
+}
+
+.center {
+  max-width: 980px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.intro {
+  display: block;
+}
+
+.title {
+  margin: 0 0 12px 0;
+  font-size: 2.25rem;
+  line-height: 1.05;
+}
+
+.intro .lead,
+.lead {
+  margin: 0 0 20px 0;
+  font-size: clamp(1rem, 0.95rem + 0.4vw, 1.08rem);
+  line-height: 1.75;
+  color: var(--text, rgba(0, 0, 0, 0.92));
+  max-width: 70ch;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+.projectRow > * {
+  flex: 0 0 280px;
+  scroll-snap-align: start;
+}
+
+.projectRow::-webkit-scrollbar {
+  height: 8px;
+}
+.projectRow::-webkit-scrollbar-track {
+  background: transparent;
+}
+.projectRow::-webkit-scrollbar-thumb {
+  background: rgba(11, 92, 255, 0.16);
+  border-radius: 6px;
+  transition: background 120ms ease;
+}
+.projectRow::-webkit-scrollbar-thumb:hover {
+  background: rgba(11, 92, 255, 0.28);
+}
+.projectRow:focus {
+  outline: none;
+}
+.projectRow > *:focus-visible {
+  outline: 3px solid rgba(0, 0, 0, 0.12);
+  outline-offset: 4px;
+}
+
+.projectRow :global(.card):hover {
+  transform: none !important;
+  box-shadow: 0 8px 20px rgba(12, 15, 20, 0.04) !important;
+}
+
+.projectRow :global(.card) p {
+  color: rgba(0, 0, 0, 0.92);
+  margin: 0.4rem 0 0 0;
+  font-size: 0.96rem;
+}
+@media (max-width: 880px) {
+  .projectRow > * {
+    flex: 0 0 220px;
+  }
+}
+
+@media (max-width: 480px) {
+  .projectRow > * {
+    flex: 0 0 180px;
+  }
+}
+
+.fullSection {
+  min-height: calc(100vh - var(--header-height));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 48px 20px;
+}
+
+.fullSection h2 {
+  margin: 0 0 12px 0;
+  font-size: 2.25rem;
+  line-height: 1.05;
+  color: var(--text);
+}
+
+.fullSection p {
+  margin: 0 0 20px 0;
+  font-size: clamp(1rem, 0.95rem + 0.4vw, 1.08rem);
+  line-height: 1.75;
+  color: rgba(0, 0, 0, 0.92);
+  max-width: 70ch;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+@media (prefers-color-scheme: dark) {
+  .fullSection p {
+    color: rgba(255, 255, 255, 0.92);
+  }
+  .projectRow :global(.card) p {
+    color: rgba(255, 255, 255, 0.9);
+  }
+  .lead {
+    color: rgba(255, 255, 255, 0.92);
+  }
+}
+
+@media (max-width: 720px) {
+  .fullSection {
+    padding: 36px 16px;
+  }
+
+  .fullSection h2 {
+    font-size: 1.6rem;
+  }
+
+  .fullSection p {
+    font-size: 1rem;
+  }
+  .title {
+    font-size: 1.6rem;
+  }
+  .lead {
+    font-size: 1rem;
+  }
+}
+.projectRow {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+  scroll-snap-type: x mandatory;
+  -ms-overflow-style: none;
+  scrollbar-width: thin;
+}
+
+.center {
+  max-width: 980px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.intro {
+  display: block;
+}
+
+.title {
+  margin: 0 0 12px 0;
+  font-size: 2.25rem;
+  line-height: 1.05;
+}
+
+.intro .lead,
+.lead {
+  margin: 0 0 20px 0;
+  font-size: clamp(1rem, 0.95rem + 0.4vw, 1.08rem);
+  line-height: 1.75;
+  color: var(--text, rgba(0, 0, 0, 0.92));
+  max-width: 70ch;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+.projectRow > * {
+  flex: 0 0 280px;
+  scroll-snap-align: start;
+}
+
+.projectRow::-webkit-scrollbar {
+  height: 6px;
+}
+.projectRow::-webkit-scrollbar-track {
+  background: transparent;
+}
+.projectRow::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 6px;
+}
+.projectRow:focus {
+  outline: none;
+}
+.projectRow > *:focus-visible {
+  outline: 3px solid rgba(0, 0, 0, 0.12);
+  outline-offset: 4px;
+}
+
+.projectRow :global(.card):hover {
+  transform: none !important;
+  box-shadow: 0 8px 20px rgba(12, 15, 20, 0.04) !important;
+}
+
+.projectRow :global(.card) p {
+  color: rgba(0, 0, 0, 0.92);
+  margin: 0.4rem 0 0 0;
+  font-size: 0.96rem;
+}
+@media (max-width: 880px) {
+  .projectRow > * {
+    flex: 0 0 220px;
+  }
+}
+
+@media (max-width: 480px) {
+  .projectRow > * {
+    flex: 0 0 180px;
+  }
+}
+
+/* make portfolio section use remaining viewport height and neutral text */
+.fullSection {
+  min-height: calc(100vh - var(--header-height));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* match About section padding for consistent vertical rhythm */
+  padding: 48px 20px;
+}
+
+.fullSection h2 {
+  /* match About.title */
+  margin: 0 0 12px 0;
+  font-size: 2.25rem;
+  line-height: 1.05;
+  color: var(--text);
+}
+
+.fullSection p {
+  /* match About.lead / aboutSection p */
+  margin: 0 0 20px 0;
+  font-size: clamp(1rem, 0.95rem + 0.4vw, 1.08rem);
+  line-height: 1.75;
+  color: rgba(0, 0, 0, 0.92);
+  max-width: 70ch;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+@media (prefers-color-scheme: dark) {
+  .fullSection p {
+    color: rgba(255, 255, 255, 0.92);
+  }
+  .projectRow :global(.card) p {
+    color: rgba(255, 255, 255, 0.9);
+  }
+  .lead {
+    color: rgba(255, 255, 255, 0.92);
+  }
+}
+
+@media (max-width: 720px) {
+  .fullSection {
+    padding: 36px 16px;
+  }
+
+  .fullSection h2 {
+    font-size: 1.6rem;
+  }
+
+  .fullSection p {
+    font-size: 1rem;
+  }
+  .title {
+    font-size: 1.6rem;
+  }
+  .lead {
+    font-size: 1rem;
+  }
+}

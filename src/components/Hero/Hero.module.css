@@ -1,0 +1,389 @@
+.hero {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  padding: 48px 20px;
+}
+
+.title {
+  font-size: 2.25rem;
+  margin: 0 0 12px 0;
+}
+
+.subtitle {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+@media (prefers-color-scheme: dark) {
+  .subtitle {
+    color: rgba(255, 255, 255, 0.85);
+  }
+}
+.hero {
+  display: flex;
+  gap: 1.25rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.fullSection {
+  min-height: calc(100vh - var(--header-height));
+  display: flex;
+  align-items: center;
+  padding: 48px 20px;
+}
+
+.center {
+  max-width: 980px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.intro {
+  display: block;
+}
+
+.title {
+  margin: 0 0 12px 0;
+  font-size: 2.25rem;
+  line-height: 1.05;
+}
+
+.lead {
+  margin: 0 0 20px 0;
+  font-size: clamp(1rem, 0.95rem + 0.4vw, 1.08rem);
+  line-height: 1.75;
+  color: var(--text, rgba(0, 0, 0, 0.92));
+  max-width: 70ch;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.heroContent {
+  flex: 1 1 60%;
+}
+
+.columns {
+  display: flex;
+  gap: 1.25rem;
+  align-items: center;
+}
+
+.textCol {
+  flex: 1 1 auto;
+}
+
+.avatarCol {
+  flex: 0 0 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heroAvatarWrap {
+  flex: 0 0 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rotatingTitle {
+  margin-top: 6px;
+  margin-bottom: 8px;
+  color: rgba(11, 92, 255, 0.9);
+  font-family: monospace;
+  display: flex;
+  align-items: center;
+  font-size: 1.25rem;
+  font-weight: 500;
+  white-space: nowrap;
+  gap: 6px;
+}
+
+.rotatingItem {
+  display: inline-block;
+  white-space: nowrap;
+  text-overflow: clip;
+  overflow: hidden;
+}
+
+.cursor {
+  display: inline-block;
+  margin-left: 4px;
+  width: 2px;
+  height: 1.2em;
+  background-color: rgba(11, 92, 255, 0.9);
+  animation: blink 0.8s step-start infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.heroAvatar {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 6px solid rgba(11, 92, 255, 0.08);
+  box-shadow: 0 8px 30px rgba(11, 92, 255, 0.08);
+}
+
+.socialIcons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.socialIcons a {
+  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background: transparent;
+  transition: background 120ms ease, color 120ms ease, transform 120ms ease;
+}
+
+.socialIcons a:hover,
+.socialIcons a:focus {
+  background: rgba(11, 92, 255, 0.08);
+  color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.socialIcons svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
+@media (max-width: 760px) {
+  .hero {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+  }
+
+  .heroAvatarWrap {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    padding-bottom: 8px;
+  }
+
+  .heroAvatar {
+    width: 120px;
+    height: 120px;
+  }
+
+  .rotatingTitle {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 720px) {
+  .fullSection {
+    padding: 36px 16px;
+  }
+
+  .title {
+    font-size: 1.6rem;
+  }
+
+  .lead {
+    font-size: 1rem;
+  }
+}
+.hero {
+  display: flex;
+  gap: 1.25rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.fullSection {
+  min-height: calc(100vh - var(--header-height));
+  display: flex;
+  align-items: center;
+  /* match About/Portfolio vertical rhythm */
+  padding: 48px 20px;
+}
+
+/* center container to constrain content width like About */
+.center {
+  max-width: 980px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Intro / title / lead to match About styles */
+.intro {
+  display: block;
+}
+
+.title {
+  margin: 0 0 12px 0;
+  font-size: 2.25rem;
+  line-height: 1.05;
+}
+
+.lead {
+  margin: 0 0 20px 0;
+  font-size: clamp(1rem, 0.95rem + 0.4vw, 1.08rem);
+  line-height: 1.75;
+  color: var(--text, rgba(0, 0, 0, 0.92));
+  max-width: 70ch;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.heroContent {
+  flex: 1 1 60%;
+}
+
+.columns {
+  display: flex;
+  gap: 1.25rem;
+  align-items: center;
+}
+
+.textCol {
+  flex: 1 1 auto;
+}
+
+.avatarCol {
+  flex: 0 0 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heroAvatarWrap {
+  flex: 0 0 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rotatingTitle {
+  margin-top: 6px;
+  margin-bottom: 8px;
+  color: rgba(11, 92, 255, 0.9);
+  font-family: monospace;
+  display: flex;
+  align-items: center;
+  font-size: 1.25rem;
+  font-weight: 500;
+  white-space: nowrap;
+  gap: 6px;
+}
+
+.rotatingItem {
+  display: inline-block;
+  /* ensure text doesn't wrap and overflow is hidden when using reserved width */
+  white-space: nowrap;
+  text-overflow: clip;
+  overflow: hidden;
+}
+
+.cursor {
+  display: inline-block;
+  margin-left: 4px;
+  width: 2px;
+  height: 1.2em;
+  background-color: rgba(11, 92, 255, 0.9);
+  animation: blink 0.8s step-start infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.heroAvatar {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 6px solid rgba(11, 92, 255, 0.08);
+  box-shadow: 0 8px 30px rgba(11, 92, 255, 0.08);
+}
+
+.socialIcons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.socialIcons a {
+  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background: transparent;
+  transition: background 120ms ease, color 120ms ease, transform 120ms ease;
+}
+
+.socialIcons a:hover,
+.socialIcons a:focus {
+  background: rgba(11, 92, 255, 0.08);
+  color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.socialIcons svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 760px) {
+  .hero {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+  }
+
+  .heroAvatarWrap {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    padding-bottom: 8px;
+  }
+
+  .heroAvatar {
+    width: 120px;
+    height: 120px;
+  }
+
+  .rotatingTitle {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 720px) {
+  .fullSection {
+    padding: 36px 16px;
+  }
+
+  .title {
+    font-size: 1.6rem;
+  }
+
+  .lead {
+    font-size: 1rem;
+  }
+}

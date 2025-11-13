@@ -1,0 +1,303 @@
+.timeSection {
+  min-height: calc(100vh - var(--header-height));
+  display: flex;
+  align-items: center;
+  padding: 48px 20px;
+  color: var(--text);
+}
+
+.center {
+  max-width: 980px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.mainTimeline {
+  font-family: Tahoma, sans-serif;
+  padding: 20px 0;
+  position: relative;
+}
+
+.mainTimeline::before,
+.mainTimeline::after {
+  content: "";
+  height: 40px;
+  width: 40px;
+  background-color: #e7e7e7;
+  border-radius: 50%;
+  border: 10px solid #303334;
+  transform: translateX(-50%);
+  position: absolute;
+  left: 50%;
+  z-index: 2;
+}
+
+.mainTimeline::before {
+  top: -15px;
+}
+
+.mainTimeline::after {
+  bottom: 15px;
+}
+
+.timeline {
+  padding: 35px 0;
+  margin-top: -30px;
+  position: relative;
+  z-index: 1;
+  /* create a new block formatting context so floated children don't collapse the parent height */
+  display: flow-root;
+}
+
+.timeline::before,
+.timeline::after {
+  content: "";
+  height: 100%;
+  width: 50%;
+  border-radius: 110px 0 0 110px;
+  border: 15px solid #dcdcdc;
+  border-right: none;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -1;
+}
+
+.timeline::after {
+  height: calc(100% - 30px);
+  width: calc(50% - 12px);
+  border-color: #d0d0d0;
+  left: 12px;
+  top: 15px;
+}
+
+.timelineContent {
+  /* make the clickable area a block so children can position inside predictably */
+  display: block;
+  text-decoration: none;
+}
+
+.timelineYear {
+  /* neutral dark grey for good contrast */
+  color: #333333;
+  font-size: 50px;
+  font-weight: 600;
+  transform: translateY(-50%);
+  position: absolute;
+  top: 50%;
+  left: 8%;
+  /* reserve some width for the year label so it doesn't overlap content */
+  width: 12%;
+  text-align: left;
+}
+
+.content {
+  color: #909090;
+  width: 50%;
+  padding: 20px;
+  float: right;
+}
+
+.title {
+  /* medium-dark grey for titles */
+  color: #444444;
+  font-size: 20px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin: 0 0 5px 0;
+}
+
+.subtitle {
+  margin: 0 0 8px 0;
+  font-size: 0.95rem;
+  color: #6f6f6f;
+  font-weight: 500;
+}
+
+.description {
+  font-size: 16px;
+  margin: 0;
+}
+
+.timeline:nth-child(even)::before {
+  left: auto;
+  right: 0;
+  border-radius: 0 110px 110px 0;
+  border: 15px solid #cfcfcf;
+  border-left: none;
+}
+
+.timeline:nth-child(even)::after {
+  left: auto;
+  right: 12px;
+  border-radius: 0 100px 100px 0;
+  border: 15px solid #c2c2c2;
+  border-left: none;
+}
+
+.timeline:nth-child(even) .content {
+  float: left;
+}
+
+.timeline:nth-child(even) .timelineYear {
+  left: auto;
+  right: 8%;
+  text-align: right;
+}
+
+/* Ensure explicit alternation for odd items */
+.timeline:nth-child(odd) .timelineYear {
+  left: 8%;
+  right: auto;
+  text-align: left;
+}
+.timeline:nth-child(odd) .content {
+  float: right;
+}
+
+.timeline:nth-child(5n + 1)::before {
+  border-color: #e6e6e6;
+}
+.timeline:nth-child(5n + 1)::after {
+  border-color: #dcdcdc;
+}
+.timeline:nth-child(5n + 1) .timelineYear,
+.timeline:nth-child(5n + 1) .title {
+  color: #333333;
+}
+
+.timeline:nth-child(5n + 2)::before {
+  border-color: #dcdcdc;
+}
+.timeline:nth-child(5n + 2)::after {
+  border-color: #d0d0d0;
+}
+.timeline:nth-child(5n + 2) .timelineYear,
+.timeline:nth-child(5n + 2) .title {
+  color: #3a3a3a;
+}
+
+.timeline:nth-child(5n + 3)::before {
+  border-color: #cfcfcf;
+}
+.timeline:nth-child(5n + 3)::after {
+  border-color: #c2c2c2;
+}
+.timeline:nth-child(5n + 3) .timelineYear,
+.timeline:nth-child(5n + 3) .title {
+  color: #444444;
+}
+
+.timeline:nth-child(5n + 4)::before {
+  border-color: #bfbfbf;
+}
+.timeline:nth-child(5n + 4)::after {
+  border-color: #b3b3b3;
+}
+.timeline:nth-child(5n + 4) .timelineYear,
+.timeline:nth-child(5n + 4) .title {
+  color: #4d4d4d;
+}
+
+.timeline:nth-child(5n + 5)::before {
+  border-color: #9f9f9f;
+}
+.timeline:nth-child(5n + 5)::after {
+  border-color: #8f8f8f;
+}
+.timeline:nth-child(5n + 5) .timelineYear,
+.timeline:nth-child(5n + 5) .title {
+  color: #555555;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 1200px) {
+  .timeline::after {
+    border-radius: 88px 0 0 88px;
+  }
+
+  .timeline:nth-child(even)::after {
+    border-radius: 0 88px 88px 0;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .timeline {
+    margin-top: -19px;
+  }
+
+  .timeline::before {
+    border-radius: 50px 0 0 50px;
+    border-width: 10px;
+  }
+
+  .timeline::after {
+    height: calc(100% - 18px);
+    width: calc(50% - 9px);
+    border-radius: 43px 0 0 43px;
+    border-width: 10px;
+    top: 9px;
+    left: 9px;
+  }
+
+  .timeline:nth-child(even)::before {
+    border-radius: 0 50px 50px 0;
+    border-width: 10px;
+  }
+
+  .timeline:nth-child(even)::after {
+    height: calc(100% - 18px);
+    width: calc(50% - 9px);
+    border-radius: 0 43px 43px 0;
+    border-width: 10px;
+    top: 9px;
+    right: 9px;
+  }
+
+  .timelineYear {
+    font-size: 40px;
+  }
+
+  /* On tablet and below, stack items for readability */
+  .timelineYear {
+    position: relative;
+    transform: none;
+    top: auto;
+    left: auto;
+    right: auto;
+    width: 100%;
+    text-align: left;
+    font-size: 40px;
+    margin-bottom: 8px;
+  }
+
+  .content {
+    width: 100%;
+    float: none;
+    padding: 12px 0;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .timelineYear {
+    font-size: 25px;
+    transform: none;
+    top: 65%;
+    left: 9%;
+  }
+
+  .content {
+    width: 68%;
+    padding: 10px;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+
+  /* icons removed: no rules needed here */
+
+  .timeline:nth-child(even) .timelineYear {
+    right: 9%;
+  }
+}

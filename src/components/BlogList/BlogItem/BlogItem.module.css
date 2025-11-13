@@ -1,0 +1,166 @@
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.title {
+  font-weight: 700;
+  margin: 0;
+}
+
+.excerpt {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+@media (prefers-color-scheme: dark) {
+  .item {
+    background: #0b0b0b;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+  }
+
+  .excerpt {
+    color: rgba(255, 255, 255, 0.75);
+  }
+}
+.cardLink {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--text, #000);
+  background: var(--card-bg, #fff);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+  box-shadow: 0 6px 18px rgba(12, 15, 20, 0.06);
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.cardLink:focus-visible {
+  outline: 3px solid rgba(0, 0, 0, 0.12);
+  outline-offset: 4px;
+}
+
+.cardContent {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: flex-start;
+}
+
+.cardTitle {
+  margin: 0 0 8px 0;
+  color: var(--text);
+  font-size: 1.05rem;
+  line-height: 1.15;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.cardLink:hover .cardTitle,
+.cardLink:focus-visible .cardTitle {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.cardImage {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.cardDescription {
+  margin: 0;
+  color: var(--text, rgba(0, 0, 0, 0.92));
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  font-size: 0.96rem;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  text-overflow: ellipsis;
+}
+.cardLink {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--text, #000);
+  background: var(--card-bg, #fff);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+  box-shadow: 0 6px 18px rgba(12, 15, 20, 0.06);
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.cardLink:focus-visible {
+  outline: 3px solid rgba(0, 0, 0, 0.12);
+  outline-offset: 4px;
+}
+
+.cardContent {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: flex-start;
+}
+
+.cardTitle {
+  margin: 0 0 8px 0;
+  color: var(--text);
+  font-size: 1.05rem;
+  line-height: 1.15;
+  /* single-line truncation with ellipsis */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* ensure hover/focus on the card does not change title layout or color */
+.cardLink:hover .cardTitle,
+.cardLink:focus-visible .cardTitle {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.cardImage {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  object-position: center;
+  /* visually separate the image from the card content */
+  display: block;
+}
+
+.cardDescription {
+  margin: 0;
+  color: var(--text, rgba(0, 0, 0, 0.92));
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  font-size: 0.96rem;
+  /* make sure long words don't break layout and show ellipsis when clamped */
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  text-overflow: ellipsis;
+}
