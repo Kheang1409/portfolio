@@ -1,15 +1,7 @@
 import { useState } from "react";
 import styles from "./Contact.module.css";
-
-type ContactRequest = {
-  name: string;
-  email: string;
-  message: string;
-};
-
-type ContactResponse = {
-  message: string;
-};
+import { postContact } from "../../lib/contacts";
+import type { ContactRequest } from "../../lib/types";
 
 export default function Contact() {
   const [form, setForm] = useState<ContactRequest>({
@@ -24,8 +16,6 @@ export default function Contact() {
     Partial<Record<keyof ContactRequest, string>>
   >({});
   const [flipped, setFlipped] = useState(false);
-
-  const proxyUrl = "/api/contacts";
 
   function validateEmail(value: string) {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -90,25 +80,16 @@ export default function Contact() {
     setSuccess(null);
     setLoading(true);
     try {
-      const res = await fetch(proxyUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) {
-        setError("Something went wrong. Please try again.");
-        const body = await res.text().catch(() => null);
-        console.error("Contact form submit error (server):", res.status, body);
-        return;
-      }
-
-      const data = (await res.json()) as ContactResponse | null;
+      const data = await postContact(payload);
       setSuccess(data?.message ?? "Message sent successfully.");
       setForm({ name: "", email: "", message: "" });
-    } catch (err: any) {
-      console.error("Contact form submit error (network):", err);
-      setError("Something went wrong. Please try again.");
+    } catch (err: unknown) {
+      console.error("Contact form submit error:", err);
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Something went wrong. Please try again."
+      );
     } finally {
       setLoading(false);
     }

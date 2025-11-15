@@ -115,11 +115,9 @@
   overflow: hidden;
 }
 
-/* flip card for contact details */
 .flip {
   perspective: 900px;
   position: relative;
-  /* give the container a min-height so absolute children don't collapse and overlap the following content when transformed */
   min-height: 520px;
 }
 .flipInner {
@@ -149,7 +147,6 @@
   justify-content: center;
 }
 
-/* ghost / subtle secondary button used inside aside */
 .ghost {
   margin-top: 6px;
   background: transparent;

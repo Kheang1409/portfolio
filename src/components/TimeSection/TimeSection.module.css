@@ -45,7 +45,6 @@
   margin-top: -30px;
   position: relative;
   z-index: 1;
-  /* create a new block formatting context so floated children don't collapse the parent height */
   display: flow-root;
 }
 
@@ -72,13 +71,11 @@
 }
 
 .timelineContent {
-  /* make the clickable area a block so children can position inside predictably */
   display: block;
   text-decoration: none;
 }
 
 .timelineYear {
-  /* neutral dark grey for good contrast */
   color: #333333;
   font-size: 50px;
   font-weight: 600;
@@ -86,9 +83,9 @@
   position: absolute;
   top: 50%;
   left: 8%;
-  /* reserve some width for the year label so it doesn't overlap content */
-  width: 12%;
+  min-width: 140px;
   text-align: left;
+  white-space: nowrap;
 }
 
 .content {
@@ -256,46 +253,64 @@
 
   .timelineYear {
     font-size: 40px;
-  }
-
-  /* On tablet and below, stack items for readability */
-  .timelineYear {
-    position: relative;
-    transform: none;
-    top: auto;
-    left: auto;
-    right: auto;
-    width: 100%;
-    text-align: left;
-    font-size: 40px;
-    margin-bottom: 8px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    min-width: 110px;
+    white-space: nowrap;
   }
 
   .content {
     width: 100%;
     float: none;
-    padding: 12px 0;
+    padding: 12px 0 12px 140px;
+  }
+
+  .timeline:nth-child(even) .content {
+    padding-left: 12px;
+    padding-right: 140px;
+  }
+
+  .timeline:nth-child(even) .timelineYear {
+    left: auto;
+    right: 8%;
+    text-align: right;
   }
 }
 
 @media screen and (max-width: 479px) {
   .timelineYear {
-    font-size: 25px;
-    transform: none;
-    top: 65%;
-    left: 9%;
+    font-size: 20px;
+    /* rotate the year label for narrow screens (vertical text) */
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%) rotate(-90deg);
+    transform-origin: center center;
+    min-width: 0;
+    white-space: nowrap;
   }
 
   .content {
-    width: 68%;
-    padding: 10px;
+    width: 100%;
+    padding: 10px 0 10px 160px;
+  }
+
+  .timeline:nth-child(even) .content {
+    padding-left: 12px;
+    padding-right: 160px;
+  }
+
+  .timeline:nth-child(even) .timelineYear {
+    left: auto;
+    right: 12px;
+    transform: translateY(-50%) rotate(90deg);
+    text-align: center;
   }
 
   .title {
     font-size: 18px;
   }
-
-  /* icons removed: no rules needed here */
 
   .timeline:nth-child(even) .timelineYear {
     right: 9%;

@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import styles from "./Header.module.css";
 import NavItem from "./NavItem";
+import { navItems } from "../../data/data";
 
 export default function Header() {
   const router = useRouter();
@@ -187,60 +188,19 @@ export default function Header() {
           ref={navRef}
           className={`${styles.nav} ${open ? styles.open : ""}`}
         >
-          <NavItem
-            href="/"
-            onClick={(e) => {
-              setOpen(false);
-              handleNav(e, "home");
-            }}
-          >
-            Home
-          </NavItem>
-          <NavItem
-            href="/"
-            onClick={(e) => {
-              setOpen(false);
-              handleNav(e, "about");
-            }}
-          >
-            About
-          </NavItem>
-          <NavItem
-            href="/"
-            onClick={(e) => {
-              setOpen(false);
-              handleNav(e, "portfolio");
-            }}
-          >
-            Portfolio
-          </NavItem>
-          <NavItem
-            href="/"
-            onClick={(e) => {
-              setOpen(false);
-              handleNav(e, "timeline");
-            }}
-          >
-            Timeline
-          </NavItem>
-          <NavItem
-            href="/"
-            onClick={(e) => {
-              setOpen(false);
-              handleNav(e, "blog");
-            }}
-          >
-            Blog
-          </NavItem>
-          <NavItem
-            href="/"
-            onClick={(e) => {
-              setOpen(false);
-              handleNav(e, "contact");
-            }}
-          >
-            Contact
-          </NavItem>
+          {navItems.map((n) => (
+            <NavItem
+              key={n.id}
+              href={n.href}
+              ariaLabel={`Navigate to ${n.label}`}
+              onClick={(e) => {
+                setOpen(false);
+                handleNav(e, n.section ?? "home", n.href);
+              }}
+            >
+              {n.label}
+            </NavItem>
+          ))}
         </nav>
       </div>
     </header>

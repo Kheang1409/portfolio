@@ -19,7 +19,7 @@ export default function NavItem({
     <a
       href={href}
       onClick={(e) => {
-        onClick?.(e as any);
+        onClick?.(e);
       }}
       className={className}
       aria-label={ariaLabel}

@@ -4,8 +4,12 @@ import styles from "./Assistant.module.css";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
+import type { Pluggable } from "unified";
+import { askAssistant } from "../../lib/assistants";
 
-type Msg = { sender: "user" | "bot"; text: string };
+import type { AssistantMsg } from "../../lib/assistants";
+
+type Msg = AssistantMsg;
 
 const STORAGE_KEY = "kai_assistant_history_v1";
 
@@ -19,7 +23,6 @@ export default function Assistant() {
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  // load persisted messages
   useEffect(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
@@ -27,18 +30,13 @@ export default function Assistant() {
         const parsed = JSON.parse(raw) as Msg[];
         if (Array.isArray(parsed)) setMessages(parsed);
       }
-    } catch (e) {
-      // ignore
-    }
+    } catch (e) {}
   }, []);
 
-  // persist messages when they change
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(messages.slice(-200)));
-    } catch (e) {
-      // ignore quota errors
-    }
+    } catch (e) {}
   }, [messages]);
 
   useEffect(() => {
@@ -62,33 +60,10 @@ export default function Assistant() {
     setLoading(true);
 
     try {
-      // Use the Next.js proxy endpoint to avoid CORS in dev
-      const res = await fetch(`/api/assistants/ask`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text }),
-      });
-
-      if (!res.ok) {
-        const errText = await res.text().catch(() => "");
-        const statusMsg = `HTTP ${res.status}`;
-        // store dev details separately so we can show a collapsible panel
-        if (process.env.NODE_ENV === "development") {
-          setDevDetails(`${statusMsg}: ${errText}`);
-        }
-        // show a short, friendly message to the user
-        setMessages((m) => [
-          ...m,
-          { sender: "bot", text: "Something went wrong. Please try again." },
-        ]);
-        console.error(statusMsg, errText);
-      } else {
-        const body = await res.text();
-        const botMsg: Msg = { sender: "bot", text: body };
-        setMessages((m) => [...m, botMsg]);
-      }
-    } catch (err: any) {
-      // keep user-facing message generic; surface details in dev panel and logs
+      const reply = await askAssistant(text);
+      const botMsg: Msg = { sender: "bot", text: reply };
+      setMessages((m) => [...m, botMsg]);
+    } catch (err: unknown) {
       console.error(err);
       if (process.env.NODE_ENV === "development") {
         setDevDetails(String(err));
@@ -113,9 +88,7 @@ export default function Assistant() {
     setMessages([]);
     try {
       localStorage.removeItem(STORAGE_KEY);
-    } catch (e) {
-      // ignore
-    }
+    } catch (e) {}
   }
 
   return (
@@ -148,7 +121,7 @@ export default function Assistant() {
                 {m.sender === "bot" ? (
                   <ReactMarkdown
                     remarkPlugins={[remarkGfm]}
-                    rehypePlugins={[rehypeHighlight as any]}
+                    rehypePlugins={[rehypeHighlight as Pluggable]}
                   >
                     {m.text}
                   </ReactMarkdown>

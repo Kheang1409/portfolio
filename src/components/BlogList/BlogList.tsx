@@ -1,9 +1,10 @@
 import React, { useRef, useEffect, useState } from "react";
 import styles from "./BlogList.module.css";
 import BlogItem from "./BlogItem/BlogItem";
+import { blogs as defaultBlogs, BlogPost } from "../../data/data";
 
 type Props = {
-  blogs: any[];
+  blogs?: BlogPost[];
 };
 
 export default function BlogList({ blogs }: Props) {
@@ -108,8 +109,8 @@ export default function BlogList({ blogs }: Props) {
               aria-label="Blog posts carousel"
               onWheel={handleWheel}
             >
-              {(blogs || []).map((b: any, i: number) => (
-                <BlogItem key={b.id ?? i} blog={b} index={i} />
+              {(blogs ?? defaultBlogs).map((b: BlogPost) => (
+                <BlogItem key={b.id} blog={b} />
               ))}
             </div>
           </div>

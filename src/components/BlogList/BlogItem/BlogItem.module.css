@@ -127,14 +127,12 @@
   color: var(--text);
   font-size: 1.05rem;
   line-height: 1.15;
-  /* single-line truncation with ellipsis */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
 }
 
-/* ensure hover/focus on the card does not change title layout or color */
 .cardLink:hover .cardTitle,
 .cardLink:focus-visible .cardTitle {
   color: var(--text);
@@ -146,7 +144,6 @@
   height: 120px;
   object-fit: cover;
   object-position: center;
-  /* visually separate the image from the card content */
   display: block;
 }
 
@@ -159,7 +156,6 @@
   line-clamp: 3;
   -webkit-box-orient: vertical;
   font-size: 0.96rem;
-  /* make sure long words don't break layout and show ellipsis when clamped */
   overflow-wrap: anywhere;
   word-break: break-word;
   text-overflow: ellipsis;

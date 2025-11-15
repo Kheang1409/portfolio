@@ -1,28 +1,30 @@
 import styles from "./TimeSection.module.css";
-import timelineData from "../../data/timeline.json";
+import { timelines as defaultTimelines, TimelineItem } from "../../data/data";
 
-function formatYear(item: any) {
+function formatYear(item: TimelineItem) {
   if (!item?.start_date) return "";
   const start = item.start_date.slice(0, 4);
   const end = item.end_date ? item.end_date.slice(0, 4) : null;
   return end ? `${start} - ${end}` : `${start} -  Pres.`;
 }
 
-function formatTitle(item: any) {
+function formatTitle(item: TimelineItem) {
   if (item.role) return item.role;
   if (item.degree) return item.degree;
   return item.type || "";
 }
 
-function formatSubtitle(item: any) {
+function formatSubtitle(item: TimelineItem) {
   return item.company ?? item.university ?? "";
 }
 
-export default function TimeSection({ timelines }: { timelines?: any[] }) {
+export default function TimeSection({
+  timelines,
+}: {
+  timelines?: TimelineItem[];
+}) {
   const data =
-    Array.isArray(timelines) && timelines.length
-      ? timelines
-      : (timelineData as any[]);
+    Array.isArray(timelines) && timelines.length ? timelines : defaultTimelines;
 
   return (
     <section id="timeline" className={styles.timeSection}>

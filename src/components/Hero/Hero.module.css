@@ -212,18 +212,15 @@
   min-height: calc(100vh - var(--header-height));
   display: flex;
   align-items: center;
-  /* match About/Portfolio vertical rhythm */
   padding: 48px 20px;
 }
 
-/* center container to constrain content width like About */
 .center {
   max-width: 980px;
   margin: 0 auto;
   width: 100%;
 }
 
-/* Intro / title / lead to match About styles */
 .intro {
   display: block;
 }
@@ -288,7 +285,6 @@
 
 .rotatingItem {
   display: inline-block;
-  /* ensure text doesn't wrap and overflow is hidden when using reserved width */
   white-space: nowrap;
   text-overflow: clip;
   overflow: hidden;

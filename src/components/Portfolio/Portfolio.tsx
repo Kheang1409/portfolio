@@ -1,9 +1,10 @@
-import React, { useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import Card from "../Card";
 import styles from "./Portfolio.module.css";
+import { projects as defaultProjects, Project } from "../../data/data";
 
 type Props = {
-  projects: any[];
+  projects?: Project[];
 };
 
 export default function Portfolio({ projects }: Props) {
@@ -98,7 +99,7 @@ export default function Portfolio({ projects }: Props) {
             tabIndex={0}
             aria-label="Projects carousel"
           >
-            {projects.map((p: any, i: number) => (
+            {(projects ?? defaultProjects).map((p: Project, i: number) => (
               <Card
                 key={i}
                 front={
