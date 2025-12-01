@@ -68,7 +68,7 @@ export default function Hero({ avatarSrc = "/avatar.jpg" }: Props) {
           <div className={styles.intro}>
             <div className={styles.columns}>
               <div className={styles.textCol}>
-                <h1 className={styles.title}>Hi, I'm Kai Taing</h1>
+                <h1 className={styles.title}>Hi, I'm Hang Kheang Taing</h1>
 
                 <h3 className={styles.rotatingTitle}>
                   <span
