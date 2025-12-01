@@ -5,7 +5,7 @@
     "university": "Maharishi International University",
     "description": "Pursuing a Master's degree focusing on advanced software development, distributed systems, and AI applications.",
     "start_date": "2024-05",
-    "end_date": "2025-12"
+    "end_date": "2026-12"
   },
   {
     "type": "experience",
@@ -13,7 +13,7 @@
     "company": "Sahakrinpheap Microfinance PLC",
     "description": "Architected and scaled core banking systems using .NET and SQL Server. Automated biometric attendance tracking with ZKTeco devices, reducing payroll processing time by 7 days. Consolidated two legacy banking plugins into a unified .NET application, cutting system failures by 40% and saving 20+ maintenance hours per month. Implemented real-time Telegram Bot alerts to improve incident response by 50% and maintain 99% uptime. Redesigned SQL reporting pipelines, reducing query times from minutes to under 2 seconds. Mentored junior developers, improving onboarding efficiency and code quality.",
     "start_date": "2021-09",
-    "end_date": "2024-05"
+    "end_date": "2025-12"
   },
   {
     "type": "experience",
