@@ -139,7 +139,7 @@ export default function Hero({ avatarSrc = "/avatar.jpg" }: Props) {
                 <div className={styles.heroAvatarWrap}>
                   <img
                     src={avatarSrc}
-                    alt="Kai Taing profile"
+                    alt="Hang Kheang Taing profile"
                     className={styles.heroAvatar}
                   />
                 </div>

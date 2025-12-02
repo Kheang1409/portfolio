@@ -9,7 +9,7 @@
   },
   {
     "type": "experience",
-    "role": "Senior .NET Developer",
+    "role": "Senior Software Engineer",
     "company": "Sahakrinpheap Microfinance PLC",
     "description": "Architected and scaled core banking systems using .NET and SQL Server. Automated biometric attendance tracking with ZKTeco devices, reducing payroll processing time by 7 days. Consolidated two legacy banking plugins into a unified .NET application, cutting system failures by 40% and saving 20+ maintenance hours per month. Implemented real-time Telegram Bot alerts to improve incident response by 50% and maintain 99% uptime. Redesigned SQL reporting pipelines, reducing query times from minutes to under 2 seconds. Mentored junior developers, improving onboarding efficiency and code quality.",
     "start_date": "2021-09",
@@ -17,7 +17,7 @@
   },
   {
     "type": "experience",
-    "role": ".NET Full-Stack Developer",
+    "role": "Full-Stack Engineer",
     "company": "Pathmazing Inc.",
     "description": "Developed and integrated Python REST APIs and Odoo ERP modules to streamline business operations. Upgraded Odoo from v13 to v14, improving performance and reliability. Integrated Microsoft Teams to boost meeting adoption by 35% and connected ABA PayWay for secure online transactions supporting 1,000+ monthly payments. Co-launched the KhmerCare fundraising platform, raising $70.8K across 30+ partner organizations. Optimized law enforcement reporting systems, cutting report generation time from 30 minutes to under 5 minutes. Awarded 'Best Project & Team Effort of the Year' for outstanding technical excellence and teamwork on KhmerCare.",
     "start_date": "2021-03",
@@ -25,7 +25,7 @@
   },
   {
     "type": "experience",
-    "role": ".NET & Angular Developer",
+    "role": "Application Developer",
     "company": "Anakut Digital Solution Co. Ltd.",
     "description": "Delivered enterprise-grade full-stack systems using .NET and Angular. Built a POS system with automated inventory and scale integration, eliminating 99% of manual entry errors. Designed and implemented hotel and clinic management systems that reduced check-in and wait times by up to 50%. Configured Odoo ERP for e-commerce, enabling real-time order tracking and increasing customer retention by 15%.",
     "start_date": "2020-10",

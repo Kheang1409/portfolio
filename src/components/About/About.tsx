@@ -27,7 +27,7 @@ export default function About() {
             <a
               href="/resume.pdf"
               className={styles.primary}
-              download="Kai_Taing_Resume.pdf"
+              download="Hang_Kheang_Taing_Resume.pdf"
               style={{ marginLeft: 12 }}
             >
               Download Resume
