@@ -203,7 +203,7 @@ export default function Contact() {
                 onChange={handleChange}
                 required
                 className="w-full px-md py-sm rounded-md bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-text-primary dark:text-dark-text-primary focus:outline-none focus:border-light-primary dark:focus:border-dark-primary focus:ring-2 focus:ring-light-primary/20 dark:focus:ring-dark-primary/20 transition-all"
-                placeholder="your.email@example.com"
+                placeholder="hangkheangtaing@gmail.com"
               />
             </motion.div>
 
