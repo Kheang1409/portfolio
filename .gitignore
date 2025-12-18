@@ -1,33 +1,38 @@
-# Node modules
-/node_modules
+# Ignore all dependencies
+node_modules/
 
-# Next.js build output
-/.next
-/out
+# Build output
+.next/
+out/
+build/
+dist/
 
-# Production
-/dist
+# Environment files
+.env
+.env.local
+.env.*.local
 
-# Environment variables
-/.env
-/.env.*
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
 
-# Logs
-npm-debug.log*
-Yarn-debug.log*
-yarn-error.log*
+# OS
+.DS_Store
+Thumbs.db
 
-# OS files
-/.DS_Store
+# Dependencies
+npm-debug.log
+npm-error.log
+yarn-error.log
+pnpm-debug.log
 
-# Editor directories
-/.vscode/
-/.idea/
-
-# Test coverage
-/coverage
+# Testing
+coverage/
+.nyc_output/
 
 # Misc
-.cache
-*.log
-node_modules
+*.pem
+.cache/

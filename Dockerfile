@@ -1,41 +1,32 @@
-# Stage 1: Build
-FROM node:24-bullseye-slim AS builder
+FROM node:18-alpine AS builder
+
 WORKDIR /app
 
-# Disable Next.js telemetry
-ENV NEXT_TELEMETRY_DISABLED=1
-
-# Copy package manifests first to leverage Docker layer caching
 COPY package*.json ./
+RUN npm ci
 
-# Install dependencies
-RUN if [ -f package-lock.json ]; then \
-      npm ci --legacy-peer-deps --no-audit --no-progress; \
-    else \
-      npm install --legacy-peer-deps --no-audit --no-progress; \
-    fi
-
-# Copy source code and build Next.js app
 COPY . .
+
 RUN npm run build
 
-# Stage 2: Production
-FROM node:24-bullseye-slim AS runner
+# Remove dev dependencies after build to shrink runtime image
+RUN npm prune --production
+
+FROM node:18-alpine
+
 WORKDIR /app
 
 ENV NODE_ENV=production
-ENV PORT=3000
-ENV HOSTNAME=0.0.0.0
 
-# Copy build output and static assets
-COPY --from=builder --chown=node:node /app/.next/standalone . 
-COPY --from=builder --chown=node:node /app/.next/static ./.next/static
-COPY --from=builder --chown=node:node /app/public ./public
+RUN addgroup -g 1001 -S nodejs && adduser -S nextjs -u 1001
 
-# Switch to non-root user
-USER node
+COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/public ./public
 
-EXPOSE $PORT
+USER nextjs
 
-# Start the Next.js standalone server
-CMD ["node", "server.js"]
+EXPOSE 3000
+
+CMD ["npm", "start"]

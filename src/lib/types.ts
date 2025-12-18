@@ -5,7 +5,8 @@ export type ContactRequest = {
 };
 
 export type ContactResponse = {
-  message: string;
+  message?: string;
+  Message?: string; // Backend may return capitalized
 };
 
 export type AssistantRequest = {

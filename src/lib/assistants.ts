@@ -1,10 +1,10 @@
-import { AssistantRequest } from "./types";
+import type { AssistantRequest } from "./types";
 
 export type AssistantMsg = { sender: "user" | "bot"; text: string };
 
 export async function askAssistant(message: string): Promise<string> {
   const payload: AssistantRequest = { message };
-  const envBackend = process.env.NEXT_PUBLIC_BACKEND_API_URL;
+  const envBackend = process.env.PUBLIC_BACKEND_API_URL;
   const fallbackDefault = "http://localhost:5000";
 
   const backend =
