@@ -9,6 +9,7 @@ const nextConfig = {
     maxInactiveAge: 25 * 1000,
     pagesBufferLength: 2,
   },
+  output: "standalone",
 };
 
 module.exports = nextConfig;
