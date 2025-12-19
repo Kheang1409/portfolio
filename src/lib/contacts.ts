@@ -3,7 +3,7 @@ import type { ContactRequest, ContactResponse } from "./types";
 export async function postContact(
   payload: ContactRequest
 ): Promise<ContactResponse> {
-  const envBackend = process.env.PUBLIC_BACKEND_API_URL;
+  const envBackend = process.env.NEXT_PUBLIC_BACKEND_API_URL;
   const fallbackDefault = "http://localhost:5000";
 
   const backend =
