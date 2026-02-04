@@ -8,6 +8,7 @@ import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
 import type { Pluggable } from "unified";
 import { askAssistant, AssistantMsg } from "@/lib/assistants";
+import type { ConversationMessage } from "@/lib/types";
 
 const STORAGE_KEY = "kai_assistant_history_v2";
 
@@ -56,7 +57,16 @@ export default function Assistant() {
     setLoading(true);
 
     try {
-      const reply = await askAssistant(text);
+      // Convert messages to conversation history format (excluding the current user message)
+      const history: ConversationMessage[] = messages
+        .slice(0, -1)
+        .map((msg) => ({
+          role:
+            msg.sender === "user" ? ("user" as const) : ("assistant" as const),
+          content: msg.text,
+        }));
+
+      const reply = await askAssistant(text, history);
       const botMsg: AssistantMsg = { sender: "bot", text: reply };
       setMessages((m) => [...m, botMsg]);
     } catch (err: unknown) {

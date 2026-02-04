@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 const experiences = [
   {
     company: "Sahakrinpheap Microfinance PLC",
-    role: "Senior Software Engineer",
+    role: "Software Engineer III",
     duration: "Sep 2021 - May 2024",
     location: "Phnom Penh, Cambodia",
     description:
@@ -22,7 +22,7 @@ const experiences = [
   },
   {
     company: "Pathmazing Inc",
-    role: "Full-Stack Engineer",
+    role: "Software Engineer II",
     duration: "Mar 2021 - Sep 2021",
     location: "Phnom Penh, Cambodia",
     description:
@@ -38,7 +38,7 @@ const experiences = [
   },
   {
     company: "Anakut Digital Solution, Co. Ltd",
-    role: "Application Developer",
+    role: "Software Engineer II",
     duration: "Oct 2020 - May 2021",
     location: "Phnom Penh, Cambodia",
     description:
@@ -48,6 +48,18 @@ const experiences = [
       "Designed Hotel Management System with booking engine, halving check-in time and boosting efficiency by 30%",
       "Delivered Clinic Management System with scheduling and patient tracking, reducing wait times by 45%",
       "Configured Odoo ERP for e-commerce, enabling real-time order tracking and increasing retention by 15%",
+    ],
+  },
+  {
+    company: "Arrow Dot",
+    role: "Software Engineer I",
+    duration: "Oct 2019 - Oct 2020",
+    location: "Phnom Penh, Cambodia",
+    description:
+      "Developed and optimized internal business systems and customer-facing web solutions to improve operational efficiency and online engagement.",
+    achievements: [
+      "Built and optimized POS and academic systems, improving productivity and desktop app flexibility by ~30%",
+      "Developed company website for global access, generating 200+ user registrations and 50+ online sales within 6 months",
     ],
   },
 ];

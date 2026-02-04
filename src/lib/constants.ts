@@ -35,18 +35,18 @@ export const COLORS = {
 // ============================================================================
 
 export const PERSONAL_INFO = {
-  NAME: "Kai",
+  NAME: "Kheang",
   TITLE: "Software Engineer",
   TAGLINE:
     "I craft elegant solutions to complex problems using cutting-edge technologies.",
   SHORT_BIO:
-    "Full-stack software engineer with 5+ years of experience building scalable applications.",
-  EMAIL: "hello@example.com",
-  PHONE: "+1 (555) 123-4567",
-  LOCATION: "San Francisco, CA",
-  GITHUB: "https://github.com/yourprofile",
-  LINKEDIN: "https://linkedin.com/in/yourprofile",
-  WEBSITE: "https://yourwebsite.com",
+    "Full-stack software engineer with 6+ years of experience building scalable applications.",
+  EMAIL: "hangkheangtaing@gmail.com",
+  PHONE: "+1 (641) 233-0129",
+  LOCATION: "Lrving, TX",
+  GITHUB: "https://www.github.com/Kheang1409",
+  LINKEDIN: "https://www.linkedin.com/in/hang-kheang-taing/",
+  WEBSITE: "https://kaitaing.netlify.app/",
 };
 
 // ============================================================================
