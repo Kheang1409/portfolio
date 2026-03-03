@@ -123,7 +123,7 @@ export default function Assistant() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="w-[360px] md:w-[420px] overflow-hidden rounded-2xl border border-light-border/60 bg-light-surface/90 shadow-[0_20px_70px_-30px_rgba(0,0,0,0.45)] backdrop-blur dark:border-dark-border/60 dark:bg-dark-surface/80"
+          className="w-full max-w-[360px] md:max-w-[420px] overflow-hidden rounded-2xl border border-light-border/60 bg-light-surface/90 shadow-[0_20px_70px_-30px_rgba(0,0,0,0.45)] backdrop-blur dark:border-dark-border/60 dark:bg-dark-surface/80"
         >
           <div className="relative flex items-center justify-between px-md py-sm">
             <div className="flex items-center gap-2 font-semibold">
@@ -224,10 +224,11 @@ export default function Assistant() {
               <button
                 onClick={send}
                 disabled={loading}
-                className="flex items-center gap-1 rounded-lg bg-gradient-to-br from-light-primary via-light-primary to-light-accent px-md py-sm text-sm font-semibold text-white shadow-md transition hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60 dark:from-dark-primary dark:via-dark-primary dark:to-dark-accent"
+                aria-label="Send message"
+                className="flex items-center gap-2 sm:gap-1 flex-shrink-0 rounded-lg bg-gradient-to-br from-light-primary via-light-primary to-light-accent px-3 sm:px-md py-sm text-sm font-semibold text-white shadow-md transition hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60 dark:from-dark-primary dark:via-dark-primary dark:to-dark-accent"
               >
                 <Send className="h-4 w-4" />
-                Send
+                <span className="hidden sm:inline">Send</span>
               </button>
             </div>
           </div>

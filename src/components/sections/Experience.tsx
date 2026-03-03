@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 const experiences = [
   {
     company: "Sahakrinpheap Microfinance PLC",
-    role: "Software Engineer III",
+    role: "Software Engineer",
     duration: "Sep 2021 - May 2024",
     location: "Phnom Penh, Cambodia",
     description:
@@ -22,7 +22,7 @@ const experiences = [
   },
   {
     company: "Pathmazing Inc",
-    role: "Software Engineer II",
+    role: "Software Engineer",
     duration: "Mar 2021 - Sep 2021",
     location: "Phnom Penh, Cambodia",
     description:
@@ -38,7 +38,7 @@ const experiences = [
   },
   {
     company: "Anakut Digital Solution, Co. Ltd",
-    role: "Software Engineer II",
+    role: "Software Engineer",
     duration: "Oct 2020 - May 2021",
     location: "Phnom Penh, Cambodia",
     description:
@@ -52,7 +52,7 @@ const experiences = [
   },
   {
     company: "Arrow Dot",
-    role: "Software Engineer I",
+    role: "Software Engineer",
     duration: "Oct 2019 - Oct 2020",
     location: "Phnom Penh, Cambodia",
     description:
