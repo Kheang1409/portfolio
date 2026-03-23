@@ -100,6 +100,7 @@ export default function Projects() {
   return (
     <section
       id="projects"
+      aria-labelledby="projects-heading"
       className="py-4xl md:py-[100px] bg-light-background dark:bg-dark-background"
     >
       <div className="max-w-container mx-auto px-sm md:px-lg">
@@ -111,7 +112,10 @@ export default function Projects() {
           viewport={{ once: true, margin: "-100px" }}
           className="mb-3xl"
         >
-          <h2 className="text-h2 font-bold text-light-text-primary dark:text-dark-text-primary mb-sm">
+          <h2
+            id="projects-heading"
+            className="text-h2 font-bold text-light-text-primary dark:text-dark-text-primary mb-sm"
+          >
             Featured Projects
           </h2>
           <div className="w-12 h-1 bg-light-primary dark:bg-dark-primary rounded-full" />
@@ -153,7 +157,12 @@ export default function Projects() {
         </div>
 
         {error && (
-          <div className="mb-lg text-red-600 dark:text-red-400">{error}</div>
+          <div
+            aria-live="polite"
+            className="mb-lg text-red-600 dark:text-red-400"
+          >
+            {error}
+          </div>
         )}
 
         <motion.div

@@ -73,6 +73,7 @@ export default function Experience() {
   return (
     <section
       id="experience"
+      aria-labelledby="experience-heading"
       className="py-4xl md:py-[100px] bg-light-surface dark:bg-dark-surface"
     >
       <div className="max-w-container mx-auto px-sm md:px-lg">
@@ -84,7 +85,10 @@ export default function Experience() {
           viewport={{ once: true, margin: "-100px" }}
           className="mb-3xl"
         >
-          <h2 className="text-h2 font-bold text-light-text-primary dark:text-dark-text-primary mb-sm">
+          <h2
+            id="experience-heading"
+            className="text-h2 font-bold text-light-text-primary dark:text-dark-text-primary mb-sm"
+          >
             Experience
           </h2>
           <div className="w-12 h-1 bg-light-primary dark:bg-dark-primary rounded-full" />
@@ -95,8 +99,8 @@ export default function Experience() {
 
           <div className="space-y-lg">
             {experiences.map((exp, idx) => (
-              <motion.div
-                key={idx}
+              <motion.article
+                key={`${exp.company}-${exp.role}`}
                 initial="hidden"
                 whileInView="visible"
                 variants={fadeInVariants}
@@ -145,7 +149,7 @@ export default function Experience() {
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </motion.article>
             ))}
           </div>
         </div>

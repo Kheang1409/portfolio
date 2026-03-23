@@ -31,7 +31,7 @@ export default function Contact() {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setFormState((prev) => ({ ...prev, [name]: value }));
@@ -64,6 +64,7 @@ export default function Contact() {
   return (
     <section
       id="contact"
+      aria-labelledby="contact-heading"
       className="py-4xl md:py-[100px] bg-light-background dark:bg-dark-background"
     >
       <div className="max-w-container mx-auto px-sm md:px-lg">
@@ -75,7 +76,10 @@ export default function Contact() {
           viewport={{ once: true, margin: "-100px" }}
           className="mb-3xl text-center"
         >
-          <h2 className="text-h2 font-bold text-light-text-primary dark:text-dark-text-primary mb-sm">
+          <h2
+            id="contact-heading"
+            className="text-h2 font-bold text-light-text-primary dark:text-dark-text-primary mb-sm"
+          >
             Contact
           </h2>
           <div className="w-12 h-1 bg-light-primary dark:bg-dark-primary rounded-full mx-auto mb-md" />
@@ -130,12 +134,14 @@ export default function Contact() {
               },
             ].map((item, idx) => {
               const Icon = item.icon;
+              const isExternal = item.href.startsWith("http");
               return (
                 <motion.a
                   key={idx}
                   href={item.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  target={isExternal ? "_blank" : undefined}
+                  rel={isExternal ? "noopener noreferrer" : undefined}
+                  aria-label={`${item.label}: ${item.value}`}
                   initial="hidden"
                   whileInView="visible"
                   variants={fadeInVariants}
@@ -161,6 +167,7 @@ export default function Contact() {
 
           <motion.form
             onSubmit={handleSubmit}
+            aria-label="Contact form"
             initial="hidden"
             whileInView="visible"
             variants={fadeInVariants}
@@ -179,10 +186,14 @@ export default function Contact() {
               transition={{ duration: 0.4, delay: 0.2 }}
               viewport={{ once: true, margin: "-100px" }}
             >
-              <label className="block text-small font-medium text-light-text-primary dark:text-dark-text-primary mb-xs">
+              <label
+                htmlFor="contact-name"
+                className="block text-small font-medium text-light-text-primary dark:text-dark-text-primary mb-xs"
+              >
                 Name
               </label>
               <input
+                id="contact-name"
                 type="text"
                 name="name"
                 value={formState.name}
@@ -200,10 +211,14 @@ export default function Contact() {
               transition={{ duration: 0.4, delay: 0.25 }}
               viewport={{ once: true, margin: "-100px" }}
             >
-              <label className="block text-small font-medium text-light-text-primary dark:text-dark-text-primary mb-xs">
+              <label
+                htmlFor="contact-email"
+                className="block text-small font-medium text-light-text-primary dark:text-dark-text-primary mb-xs"
+              >
                 Email
               </label>
               <input
+                id="contact-email"
                 type="email"
                 name="email"
                 value={formState.email}
@@ -221,10 +236,14 @@ export default function Contact() {
               transition={{ duration: 0.4, delay: 0.3 }}
               viewport={{ once: true, margin: "-100px" }}
             >
-              <label className="block text-small font-medium text-light-text-primary dark:text-dark-text-primary mb-xs">
+              <label
+                htmlFor="contact-message"
+                className="block text-small font-medium text-light-text-primary dark:text-dark-text-primary mb-xs"
+              >
                 Message
               </label>
               <textarea
+                id="contact-message"
                 name="message"
                 value={formState.message}
                 onChange={handleChange}
@@ -261,12 +280,18 @@ export default function Contact() {
             </motion.button>
 
             {submitStatus === "success" && (
-              <p className="text-small text-green-600 dark:text-green-400 text-center">
+              <p
+                aria-live="polite"
+                className="text-small text-green-600 dark:text-green-400 text-center"
+              >
                 Thanks for your message! I&apos;ll get back to you soon.
               </p>
             )}
             {submitStatus === "error" && (
-              <p className="text-small text-red-600 dark:text-red-400 text-center">
+              <p
+                aria-live="polite"
+                className="text-small text-red-600 dark:text-red-400 text-center"
+              >
                 Something went wrong. Please try again.
               </p>
             )}

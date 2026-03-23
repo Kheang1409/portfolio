@@ -13,6 +13,7 @@ export default function About() {
   return (
     <section
       id="about"
+      aria-labelledby="about-heading"
       className="py-4xl md:py-[100px] bg-light-surface dark:bg-dark-surface"
     >
       <div className="max-w-container mx-auto px-sm md:px-lg">
@@ -24,7 +25,10 @@ export default function About() {
           viewport={{ once: true, margin: "-100px" }}
           className="mb-3xl"
         >
-          <h2 className="text-h2 font-bold text-light-text-primary dark:text-dark-text-primary mb-sm">
+          <h2
+            id="about-heading"
+            className="text-h2 font-bold text-light-text-primary dark:text-dark-text-primary mb-sm"
+          >
             About
           </h2>
           <div className="w-12 h-1 bg-light-primary dark:bg-dark-primary rounded-full" />

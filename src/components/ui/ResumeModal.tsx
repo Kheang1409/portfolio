@@ -1,7 +1,7 @@
 "use client";
 
 import { Download, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 type ResumeModalProps = {
@@ -15,6 +15,17 @@ export default function ResumeModal({
 }: ResumeModalProps) {
   const [isOpen, setIsOpen] = useState(false);
 
+  useEffect(() => {
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setIsOpen(false);
+      }
+    }
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
+
   const handleDownload = () => {
     const link = document.createElement("a");
     link.href = "/resume.pdf";
@@ -26,7 +37,14 @@ export default function ResumeModal({
 
   return (
     <>
-      <button onClick={() => setIsOpen(true)} className={triggerClassName}>
+      <button
+        type="button"
+        onClick={() => setIsOpen(true)}
+        className={triggerClassName}
+        aria-haspopup="dialog"
+        aria-expanded={isOpen}
+        aria-controls="resume-preview-modal"
+      >
         {trigger || (
           <>
             <Download className="w-5 h-5" />
@@ -45,6 +63,10 @@ export default function ResumeModal({
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-sm"
           >
             <motion.div
+              id="resume-preview-modal"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="resume-preview-title"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
@@ -53,11 +75,15 @@ export default function ResumeModal({
               className="relative max-h-[90vh] w-full max-w-3xl overflow-hidden rounded-lg bg-light-background dark:bg-dark-background shadow-2xl"
             >
               <div className="sticky top-0 z-10 flex items-center justify-between border-b border-light-border dark:border-dark-border bg-light-surface dark:bg-dark-surface px-lg py-md">
-                <h2 className="text-lg font-semibold text-light-text-primary dark:text-dark-text-primary">
+                <h2
+                  id="resume-preview-title"
+                  className="text-lg font-semibold text-light-text-primary dark:text-dark-text-primary"
+                >
                   Resume Preview
                 </h2>
                 <div className="flex items-center gap-md">
                   <button
+                    type="button"
                     onClick={handleDownload}
                     className="flex items-center gap-2 px-md py-sm rounded-md bg-light-primary dark:bg-dark-primary text-white font-semibold hover:shadow-lg transition-all duration-300"
                   >
@@ -65,6 +91,7 @@ export default function ResumeModal({
                     <span className="hidden sm:inline">Download</span>
                   </button>
                   <button
+                    type="button"
                     onClick={() => setIsOpen(false)}
                     className="p-2 rounded-md hover:bg-light-border dark:hover:bg-dark-border transition-colors"
                     aria-label="Close modal"

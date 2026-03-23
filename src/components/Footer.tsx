@@ -5,6 +5,12 @@ import Link from "next/link";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const quickLinks = [
+    { label: "About", href: "#about" },
+    { label: "Projects", href: "#projects" },
+    { label: "Experience", href: "#experience" },
+    { label: "Contact", href: "#contact" },
+  ];
   const socialLinks = [
     { icon: Github, href: "https://github.com/Kheang1409", label: "GitHub" },
     {
@@ -19,11 +25,26 @@ export default function Footer() {
     <footer className="bg-light-surface dark:bg-dark-surface border-t border-light-border dark:border-dark-border">
       <div className="max-w-container mx-auto px-sm md:px-lg py-3xl">
         <div className="flex flex-col md:flex-row items-center justify-between gap-lg">
-          <div className="text-light-text-secondary dark:text-dark-text-secondary text-small">
+          <div className="text-light-text-secondary dark:text-dark-text-secondary text-small text-center md:text-left">
             <p>&copy; {currentYear} All rights reserved.</p>
           </div>
 
-          <div className="text-light-text-secondary dark:text-dark-text-secondary text-small font-medium">
+          <nav
+            aria-label="Footer quick links"
+            className="flex items-center gap-md"
+          >
+            {quickLinks.map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                className="text-small font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-light-primary dark:hover:text-dark-primary transition-colors"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+
+          <div className="text-light-text-secondary dark:text-dark-text-secondary text-small font-medium text-center md:text-left">
             Designed & Built by Hang Kheang Taing
           </div>
 

@@ -23,10 +23,14 @@ export default function Navigation() {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-light-background/95 dark:bg-dark-background/95 backdrop-blur-sm border-b border-light-border dark:border-dark-border">
+    <nav
+      aria-label="Primary"
+      className="fixed top-0 left-0 right-0 z-50 bg-light-background/95 dark:bg-dark-background/95 backdrop-blur-sm border-b border-light-border dark:border-dark-border"
+    >
       <div className="max-w-container mx-auto px-sm md:px-lg h-20 flex items-center justify-between">
         <Link
-          href="#"
+          href="/"
+          aria-label="Hang Kheang Taing homepage"
           className="flex items-center gap-2 font-bold text-xl text-light-secondary dark:text-dark-secondary hover:text-light-primary dark:hover:text-dark-primary transition-colors"
         >
           <div className="w-8 h-8 bg-light-primary dark:bg-dark-primary rounded-md flex items-center justify-center text-white font-bold">
@@ -66,6 +70,8 @@ export default function Navigation() {
             onClick={() => setMobileOpen(!mobileOpen)}
             className="md:hidden p-2 rounded-md hover:bg-light-border dark:hover:bg-dark-border"
             aria-label="Toggle menu"
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-primary-nav"
           >
             {mobileOpen ? (
               <X className="w-5 h-5" />
@@ -77,7 +83,10 @@ export default function Navigation() {
       </div>
 
       {mobileOpen && (
-        <div className="md:hidden bg-light-surface dark:bg-dark-surface border-t border-light-border dark:border-dark-border">
+        <div
+          id="mobile-primary-nav"
+          className="md:hidden bg-light-surface dark:bg-dark-surface border-t border-light-border dark:border-dark-border"
+        >
           <div className="px-sm py-lg space-y-3 flex flex-col">
             {navLinks.map((link) => (
               <Link

@@ -31,7 +31,10 @@ export default function Hero() {
   };
 
   return (
-    <section className="min-h-screen flex items-center pt-20 bg-light-background dark:bg-dark-background">
+    <section
+      aria-labelledby="hero-heading"
+      className="min-h-screen flex items-center pt-20 bg-light-background dark:bg-dark-background"
+    >
       <div className="max-w-container mx-auto px-sm md:px-lg w-full">
         <motion.div
           variants={containerVariants}

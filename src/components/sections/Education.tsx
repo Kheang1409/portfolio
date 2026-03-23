@@ -46,6 +46,7 @@ export default function Education() {
   return (
     <section
       id="education"
+      aria-labelledby="education-heading"
       className="py-4xl md:py-[100px] bg-light-surface dark:bg-dark-surface"
     >
       <div className="max-w-container mx-auto px-sm md:px-lg">
@@ -57,7 +58,10 @@ export default function Education() {
           viewport={{ once: true, margin: "-100px" }}
           className="mb-3xl"
         >
-          <h2 className="text-h2 font-bold text-light-text-primary dark:text-dark-text-primary mb-sm">
+          <h2
+            id="education-heading"
+            className="text-h2 font-bold text-light-text-primary dark:text-dark-text-primary mb-sm"
+          >
             Education & Honors
           </h2>
           <div className="w-12 h-1 bg-light-primary dark:bg-dark-primary rounded-full" />
@@ -155,9 +159,9 @@ export default function Education() {
                       {cert.year}
                     </span>
                   </div>
-                  <button className="text-small font-medium text-light-primary dark:text-dark-primary hover:underline mt-sm group-hover:translate-x-1 transition-transform">
+                  <span className="inline-block text-small font-medium text-light-primary dark:text-dark-primary mt-sm group-hover:translate-x-1 transition-transform">
                     {cert.credential} →
-                  </button>
+                  </span>
                 </motion.div>
               ))}
             </div>

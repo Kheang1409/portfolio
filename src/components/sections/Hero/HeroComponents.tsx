@@ -26,6 +26,7 @@ type HeadingProps = {
 export function Heading({ variants }: HeadingProps) {
   return (
     <motion.h1
+      id="hero-heading"
       variants={variants}
       className="text-h1 font-bold text-light-text-primary dark:text-dark-text-primary mb-md leading-tight"
     >
@@ -69,6 +70,7 @@ export function CTAButtons({ variants }: CTAButtonsProps) {
     >
       <Link
         href="#projects"
+        aria-label="Jump to featured projects"
         className="px-xl py-sm rounded-md bg-light-primary dark:bg-dark-primary text-white font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300 flex items-center gap-2 min-h-[44px]"
       >
         View Projects

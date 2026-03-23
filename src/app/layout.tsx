@@ -1,70 +1,28 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import Assistant from "@/components/sections/Assistant";
 import VisitorTracker from "@/components/VisitorTracker";
+import { buildPageMetadata, siteConfig } from "@/lib/seo";
 
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://kaitaing.netlify.app";
-const siteName = "Hang Kheang Taing | Software Engineer";
-const description =
-  "Software Engineer portfolio of Hang Kheang Taing: C#, .NET Core, ASP.NET Core, React, cloud-native architecture, and production-grade systems.";
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-sans",
+});
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+  ...buildPageMetadata({
+    title: siteConfig.fullTitle,
+    description: siteConfig.description,
+    path: "/",
+  }),
   title: {
-    default: siteName,
+    default: siteConfig.fullTitle,
     template: "%s | Hang Kheang Taing",
-  },
-  description,
-  keywords: [
-    "Hang Kheang Taing",
-    "Software Engineer",
-    "C# developer",
-    ".NET Core",
-    "ASP.NET Core",
-    "React",
-    "Portfolio",
-  ],
-  authors: [{ name: "Hang Kheang Taing", url: siteUrl }],
-  creator: "Hang Kheang Taing",
-  publisher: "Hang Kheang Taing",
-  alternates: {
-    canonical: "/",
-  },
-  openGraph: {
-    type: "website",
-    url: siteUrl,
-    siteName,
-    title: siteName,
-    description,
-    images: [
-      {
-        url: "/avatar.png",
-        width: 512,
-        height: 512,
-        alt: "Hang Kheang Taing",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: siteName,
-    description,
-    images: ["/avatar.png"],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
   },
   verification: {
     google: process.env.GOOGLE_SITE_VERIFICATION,
@@ -83,9 +41,15 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         suppressHydrationWarning
-        className="transition-colors duration-300 bg-light-background dark:bg-dark-background text-light-text-primary dark:text-dark-text-primary"
+        className={`${inter.variable} font-sans transition-colors duration-300 bg-light-background dark:bg-dark-background text-light-text-primary dark:text-dark-text-primary`}
       >
         <Providers>
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] rounded-md bg-light-primary px-4 py-2 text-white"
+          >
+            Skip to main content
+          </a>
           <VisitorTracker />
           <Navigation />
           {children}

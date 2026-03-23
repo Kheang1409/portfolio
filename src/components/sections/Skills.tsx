@@ -124,6 +124,7 @@ export default function Skills() {
   return (
     <section
       id="skills"
+      aria-labelledby="skills-heading"
       className="py-4xl md:py-[100px] bg-light-background dark:bg-dark-background"
     >
       <div className="max-w-container mx-auto px-sm md:px-lg">
@@ -135,7 +136,10 @@ export default function Skills() {
           viewport={{ once: true, margin: "-100px" }}
           className="mb-3xl"
         >
-          <h2 className="text-h2 font-bold text-light-text-primary dark:text-dark-text-primary mb-sm">
+          <h2
+            id="skills-heading"
+            className="text-h2 font-bold text-light-text-primary dark:text-dark-text-primary mb-sm"
+          >
             Skills & Expertise
           </h2>
           <div className="w-12 h-1 bg-light-primary dark:bg-dark-primary rounded-full" />
@@ -145,7 +149,7 @@ export default function Skills() {
           {skillsData.map((category, categoryIdx) => {
             const CategoryIcon = category.icon;
             return (
-              <motion.div
+              <motion.article
                 key={categoryIdx}
                 initial="hidden"
                 whileInView="visible"
@@ -207,7 +211,7 @@ export default function Skills() {
                     </motion.div>
                   ))}
                 </div>
-              </motion.div>
+              </motion.article>
             );
           })}
         </div>
