@@ -6,8 +6,12 @@ import Link from "next/link";
 export default function Footer() {
   const currentYear = new Date().getFullYear();
   const socialLinks = [
-    { icon: Github, href: "https://github.com", label: "GitHub" },
-    { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
+    { icon: Github, href: "https://github.com/Kheang1409", label: "GitHub" },
+    {
+      icon: Linkedin,
+      href: "https://www.linkedin.com/in/hang-kheang-taing/",
+      label: "LinkedIn",
+    },
     { icon: Mail, href: "mailto:hangkheangtaing@gmail.com", label: "Email" },
   ];
 
@@ -20,7 +24,7 @@ export default function Footer() {
           </div>
 
           <div className="text-light-text-secondary dark:text-dark-text-secondary text-small font-medium">
-            Designed & Built by Kheang
+            Designed & Built by Hang Kheang Taing
           </div>
 
           <div className="flex items-center gap-md">

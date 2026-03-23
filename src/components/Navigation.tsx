@@ -32,7 +32,7 @@ export default function Navigation() {
           <div className="w-8 h-8 bg-light-primary dark:bg-dark-primary rounded-md flex items-center justify-center text-white font-bold">
             K
           </div>
-          <span className="hidden sm:inline">Kheang</span>
+          <span className="hidden sm:inline">Hang Kheang</span>
         </Link>
 
         <div className="hidden md:flex items-center gap-8">

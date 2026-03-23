@@ -40,12 +40,14 @@ export default function About() {
             className="space-y-md"
           >
             <p className="text-body text-light-text-secondary dark:text-dark-text-secondary leading-relaxed">
-              I&apos;m passionate about staying up-to-date with the latest
-              technologies and trends, ensuring my skills remain relevant and
-              effective. With a strong foundation in computer science and a
-              drive to continuously learn, I&apos;m committed to delivering
-              high-quality solutions that meet the evolving needs of businesses
-              and organizations.
+              Software Engineer with hands-on experience delivering backend and
+              frontend systems across finance, ERP, and high-traffic products. I
+              focus on C#, .NET Core, ASP.NET Core, React/Angular,
+              microservices, event-driven architectures, and cloud-native
+              delivery on AWS and Azure. My work has reduced production crashes
+              by 40%, accelerated reporting pipelines from minutes to seconds,
+              and improved reliability, security, and developer velocity through
+              scalable architecture and strong engineering practices.
             </p>
 
             <div className="pt-md">

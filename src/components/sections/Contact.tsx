@@ -7,6 +7,7 @@ import {
   Linkedin,
   Github,
   Phone,
+  Globe,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { postContact } from "@/lib/contacts";
@@ -106,20 +107,26 @@ export default function Contact() {
               {
                 icon: Phone,
                 label: "Phone",
-                value: "+1 641 233 0129",
+                value: "+1 (641) 233-0129",
                 href: "tel:+16412330129",
               },
               {
                 icon: Linkedin,
                 label: "LinkedIn",
                 value: "linkedin.com/in/hang-kheang-taing",
-                href: "https://www.linkedin.com/in/hang-kheang-taing",
+                href: "https://www.linkedin.com/in/hang-kheang-taing/",
               },
               {
                 icon: Github,
                 label: "GitHub",
                 value: "github.com/Kheang1409",
                 href: "https://github.com/Kheang1409",
+              },
+              {
+                icon: Globe,
+                label: "Website",
+                value: "kaitaing.netlify.app",
+                href: "https://kaitaing.netlify.app/",
               },
             ].map((item, idx) => {
               const Icon = item.icon;

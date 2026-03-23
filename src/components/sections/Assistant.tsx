@@ -7,25 +7,85 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
 import type { Pluggable } from "unified";
-import { askAssistant, AssistantMsg } from "@/lib/assistants";
-import type { ConversationMessage } from "@/lib/types";
+import { streamAssistant } from "@/lib/assistants";
+import type { AssistantContext, ConversationMessage } from "@/lib/types";
 
 const STORAGE_KEY = "kai_assistant_history_v2";
 
+type ChatMessage = {
+  id: string;
+  sender: "user" | "bot";
+  text: string;
+  status: "streaming" | "final" | "error";
+};
+
+function createId(): string {
+  if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
+    return crypto.randomUUID();
+  }
+
+  return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+}
+
 export default function Assistant() {
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<AssistantMsg[]>([]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [lastModelUsed, setLastModelUsed] = useState<string | null>(null);
+  const [lastLatencyMs, setLastLatencyMs] = useState<number | null>(null);
+  const [lastTtftMs, setLastTtftMs] = useState<number | null>(null);
+  const [retryMessage, setRetryMessage] = useState<string | null>(null);
+  const [lastErrorText, setLastErrorText] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const streamAbortRef = useRef<AbortController | null>(null);
+  const sessionIdRef = useRef<string>(
+    typeof crypto !== "undefined" && "randomUUID" in crypto
+      ? crypto.randomUUID()
+      : `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+  );
 
   useEffect(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
-        const parsed = JSON.parse(raw) as AssistantMsg[];
-        if (Array.isArray(parsed)) setMessages(parsed);
+        const parsed = JSON.parse(raw) as unknown[];
+        if (Array.isArray(parsed)) {
+          const normalized = parsed
+            .map((entry) => {
+              if (!entry || typeof entry !== "object") {
+                return null;
+              }
+
+              const e = entry as Record<string, unknown>;
+              const sender =
+                e.sender === "user"
+                  ? "user"
+                  : e.sender === "bot"
+                    ? "bot"
+                    : null;
+              const text = typeof e.text === "string" ? e.text : "";
+              if (!sender) {
+                return null;
+              }
+
+              return {
+                id: typeof e.id === "string" ? e.id : createId(),
+                sender,
+                text,
+                status:
+                  e.status === "streaming" ||
+                  e.status === "error" ||
+                  e.status === "final"
+                    ? e.status
+                    : "final",
+              } satisfies ChatMessage;
+            })
+            .filter((x): x is ChatMessage => x !== null);
+
+          setMessages(normalized);
+        }
       }
     } catch (e) {}
   }, []);
@@ -43,40 +103,184 @@ export default function Assistant() {
   }, [messages, open]);
 
   useEffect(() => {
+    return () => {
+      if (streamAbortRef.current) {
+        streamAbortRef.current.abort();
+      }
+    };
+  }, []);
+
+  useEffect(() => {
     if (open && inputRef.current) {
       inputRef.current.focus();
     }
   }, [open]);
 
-  async function send() {
-    const text = input.trim();
+  async function send(overrideText?: string) {
+    if (loading) return;
+
+    const text = (overrideText ?? input).trim();
     if (!text) return;
-    const userMsg: AssistantMsg = { sender: "user", text };
-    setMessages((m) => [...m, userMsg]);
-    setInput("");
+
+    setRetryMessage(null);
+    setLastErrorText(null);
+
+    const userId = createId();
+    const botId = createId();
+
+    const userMsg: ChatMessage = {
+      id: userId,
+      sender: "user",
+      text,
+      status: "final",
+    };
+    const botMsg: ChatMessage = {
+      id: botId,
+      sender: "bot",
+      text: "",
+      status: "streaming",
+    };
+
+    const baseMessages = [...messages, userMsg];
+    setMessages((m) => [...m, userMsg, botMsg]);
+    if (!overrideText) {
+      setInput("");
+    }
     setLoading(true);
 
+    const abortController = new AbortController();
+    streamAbortRef.current = abortController;
+
     try {
-      // Convert messages to conversation history format (excluding the current user message)
-      const history: ConversationMessage[] = messages
-        .slice(0, -1)
+      const history: ConversationMessage[] = baseMessages
+        .filter((msg) => msg.text.trim().length > 0)
         .map((msg) => ({
           role:
             msg.sender === "user" ? ("user" as const) : ("assistant" as const),
           content: msg.text,
         }));
 
-      const reply = await askAssistant(text, history);
-      const botMsg: AssistantMsg = { sender: "bot", text: reply };
-      setMessages((m) => [...m, botMsg]);
+      const context: AssistantContext = {
+        systemPersona: "Hang Kheang Taing portfolio assistant",
+        metadata: {
+          sessionId: sessionIdRef.current,
+          uiSurface: "portfolio-assistant",
+          locale:
+            typeof navigator !== "undefined" ? navigator.language : "en-US",
+        },
+      };
+
+      await streamAssistant(
+        text,
+        history,
+        context,
+        {
+          onDelta: (event) => {
+            setLastModelUsed(event.modelUsed ?? null);
+
+            setMessages((current) =>
+              current.map((message) =>
+                message.id === botId
+                  ? {
+                      ...message,
+                      text: message.text + (event.text ?? ""),
+                      status: "streaming",
+                    }
+                  : message,
+              ),
+            );
+          },
+          onCompleted: (event) => {
+            setLastModelUsed(event.modelUsed ?? null);
+            setLastLatencyMs(event.latencyMs ?? null);
+            setLastTtftMs(event.ttftMs ?? null);
+
+            setMessages((current) =>
+              current.map((message) =>
+                message.id === botId
+                  ? {
+                      ...message,
+                      text:
+                        message.text.trim().length > 0
+                          ? message.text
+                          : "I couldn't generate a response.",
+                      status: "final",
+                    }
+                  : message,
+              ),
+            );
+          },
+          onError: (event) => {
+            const friendly =
+              event.errorCode === "RATE_LIMITED"
+                ? "Rate limit reached. Please wait and try again."
+                : (event.errorMessage ??
+                  "Something went wrong. Please try again.");
+
+            setLastErrorText(friendly);
+            setRetryMessage(text);
+            setMessages((current) =>
+              current.map((message) =>
+                message.id === botId
+                  ? {
+                      ...message,
+                      text:
+                        message.text.trim().length > 0
+                          ? message.text
+                          : friendly,
+                      status: "error",
+                    }
+                  : message,
+              ),
+            );
+          },
+        },
+        abortController.signal,
+      );
     } catch (err: unknown) {
-      setMessages((m) => [
-        ...m,
-        { sender: "bot", text: "Something went wrong. Please try again." },
-      ]);
+      if ((err as { name?: string })?.name !== "AbortError") {
+        setRetryMessage(text);
+        const friendly = "Network error. Please retry.";
+        setLastErrorText(friendly);
+        setMessages((current) =>
+          current.map((message) =>
+            message.id === botId
+              ? {
+                  ...message,
+                  text:
+                    message.text.trim().length > 0 ? message.text : friendly,
+                  status: "error",
+                }
+              : message,
+          ),
+        );
+      }
     } finally {
       setLoading(false);
+      streamAbortRef.current = null;
     }
+  }
+
+  function cancelStreaming() {
+    if (streamAbortRef.current) {
+      streamAbortRef.current.abort();
+      streamAbortRef.current = null;
+    }
+    setLoading(false);
+    setMessages((current) =>
+      current.map((message) =>
+        message.status === "streaming"
+          ? {
+              ...message,
+              status: "final",
+              text:
+                message.text.trim().length > 0
+                  ? message.text
+                  : "Response cancelled.",
+            }
+          : message,
+      ),
+    );
   }
 
   function handleKey(e: React.KeyboardEvent<HTMLInputElement>) {
@@ -116,7 +320,7 @@ export default function Assistant() {
             >
               <MessageSquare className="h-4 w-4" />
             </motion.span>
-            Ask Kai's Assistant
+            Ask Hang Kheang's Assistant
           </span>
         </button>
       ) : (
@@ -131,9 +335,11 @@ export default function Assistant() {
                 <Sparkles className="h-4 w-4" />
               </span>
               <div>
-                <div className="leading-none">Kheang's Assistant</div>
+                <div className="leading-none">Hang Kheang's Assistant</div>
                 <div className="text-[11px] font-normal text-light-text-secondary dark:text-dark-text-secondary">
-                  Online · Quick replies
+                  {lastModelUsed
+                    ? `Model: ${lastModelUsed}${lastTtftMs ? ` · TTFT ${Math.round(lastTtftMs)}ms` : ""}${lastLatencyMs ? ` · ${Math.round(lastLatencyMs)}ms` : ""}`
+                    : "Online · Quick replies"}
                 </div>
               </div>
             </div>
@@ -168,9 +374,9 @@ export default function Assistant() {
               </div>
             )}
 
-            {messages.map((m, i) => (
+            {messages.map((m) => (
               <div
-                key={i}
+                key={m.id}
                 className={`flex ${
                   m.sender === "user" ? "justify-end" : "justify-start"
                 }`}
@@ -188,7 +394,7 @@ export default function Assistant() {
                       remarkPlugins={[remarkGfm]}
                       rehypePlugins={[rehypeHighlight as Pluggable]}
                     >
-                      {m.text}
+                      {m.text || "..."}
                     </ReactMarkdown>
                   ) : (
                     <span className="whitespace-pre-wrap leading-relaxed">
@@ -196,7 +402,7 @@ export default function Assistant() {
                     </span>
                   )}
                   <span className="absolute -bottom-4 text-[10px] font-medium uppercase tracking-wide text-light-text-secondary dark:text-dark-text-secondary">
-                    {m.sender === "user" ? "You" : "Kai"}
+                    {m.sender === "user" ? "You" : "Assistant"}
                   </span>
                 </div>
               </div>
@@ -205,7 +411,27 @@ export default function Assistant() {
             {loading && (
               <div className="flex items-center gap-2 text-small text-light-text-secondary dark:text-dark-text-secondary">
                 <span className="h-2 w-2 animate-pulse rounded-full bg-light-accent dark:bg-dark-accent" />
-                Thinking...
+                is typing...
+              </div>
+            )}
+
+            {!loading && lastErrorText && (
+              <div className="rounded-lg border border-light-border/80 bg-light-background/70 px-sm py-sm text-small text-light-text-secondary dark:border-dark-border/80 dark:bg-dark-background/60 dark:text-dark-text-secondary">
+                {lastErrorText}
+              </div>
+            )}
+
+            {!loading && retryMessage && (
+              <div className="flex items-center justify-between rounded-lg border border-light-border/80 bg-light-background/70 px-sm py-sm text-small dark:border-dark-border/80 dark:bg-dark-background/60">
+                <span className="text-light-text-secondary dark:text-dark-text-secondary">
+                  Request failed. Retry?
+                </span>
+                <button
+                  onClick={() => send(retryMessage)}
+                  className="rounded-md bg-light-primary px-sm py-1 text-xs font-semibold text-white hover:opacity-90 dark:bg-dark-primary"
+                >
+                  Retry
+                </button>
               </div>
             )}
           </div>
@@ -222,13 +448,24 @@ export default function Assistant() {
                 className="flex-1 bg-transparent px-sm py-sm text-small placeholder:text-light-text-secondary focus:outline-none dark:placeholder:text-dark-text-secondary"
               />
               <button
-                onClick={send}
-                disabled={loading}
+                onClick={() => {
+                  if (loading) {
+                    cancelStreaming();
+                  } else {
+                    void send();
+                  }
+                }}
                 aria-label="Send message"
                 className="flex items-center gap-2 sm:gap-1 flex-shrink-0 rounded-lg bg-gradient-to-br from-light-primary via-light-primary to-light-accent px-3 sm:px-md py-sm text-sm font-semibold text-white shadow-md transition hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60 dark:from-dark-primary dark:via-dark-primary dark:to-dark-accent"
               >
-                <Send className="h-4 w-4" />
-                <span className="hidden sm:inline">Send</span>
+                {loading ? (
+                  <X className="h-4 w-4" />
+                ) : (
+                  <Send className="h-4 w-4" />
+                )}
+                <span className="hidden sm:inline">
+                  {loading ? "Stop" : "Send"}
+                </span>
               </button>
             </div>
           </div>

@@ -10,14 +10,14 @@ const experiences = [
     duration: "Sep 2021 - May 2024",
     location: "Phnom Penh, Cambodia",
     description:
-      "Architected and scaled backend systems for microfinance operations, mentoring junior developers, and delivering mission-critical financial solutions.",
+      "Re-architected legacy banking modules into full-stack microservices using C#/.NET Core backend services with React/Angular frontends for reliable financial operations.",
     achievements: [
-      "Automated biometric attendance tracking, accelerating payroll processing by 7 days",
-      "Consolidated legacy banking plugins into single application, reducing system crashes by 40%",
-      "Implemented real-time Telegram Bot notifications, improving incident response by 50%",
-      "Redesigned SQL reporting pipelines, reducing query times from minutes to under 2 seconds",
-      "Maintained 99% system uptime with OAuth2 and CORS security policies",
-      "Mentored 2 junior developers, reducing onboarding time by 30%",
+      "Cut system crashes by 40% and reduced maintenance by 20+ hours/month through microservice re-architecture",
+      "Built event-driven monitoring and alerting services on Azure, improving incident response by 50% and sustaining 99% uptime",
+      "Optimized SQL Server and PostgreSQL reporting pipelines from minutes to 2 seconds",
+      "Designed and automated payroll and attendance backend services, reducing processing time by 7 days",
+      "Implemented OAuth2, JWT, and RBAC with zero unauthorized access incidents",
+      "Mentored engineers and led code reviews, reducing onboarding time by 30% and lowering defect rates",
     ],
   },
   {
@@ -26,14 +26,13 @@ const experiences = [
     duration: "Mar 2021 - Sep 2021",
     location: "Phnom Penh, Cambodia",
     description:
-      "Engineered Python REST APIs and custom ERP integrations, streamlining enterprise workflows and achieving high user satisfaction.",
+      "Designed secure payment APIs and ERP integrations with C# .NET backend and React frontend for higher reliability and performance.",
     achievements: [
-      "Developed Python REST APIs and custom Odoo ERP integrations, achieving 99% user satisfaction",
-      "Integrated Microsoft Teams with Odoo, increasing meeting adoption by 35%",
-      "Upgraded Odoo 13 to 14, improving page load times by 20% and optimizing 3 module workflows",
-      "Connected Odoo with ABA PayWay, enhancing transaction reliability by 30% for 1,000+ monthly payments",
-      "Launched Khmer Care fundraising platform, raising $70.8K and partnering with 30+ organizations",
-      "Optimized Firearms Metrics Platform, reducing reporting time from 30 minutes to under 5 minutes",
+      "Increased transaction reliability by 30% through secure payment API integration",
+      "Developed and scaled backend services and ERP integrations to reduce manual workflows",
+      "Optimized database queries and upgraded core components, improving performance by 20%",
+      "Improved reporting pipelines from 30 minutes to 5 minutes",
+      "Contributed backend support to fundraising platform enabling $70.8K raised across 30+ organizations",
     ],
   },
   {
@@ -42,12 +41,13 @@ const experiences = [
     duration: "Oct 2020 - May 2021",
     location: "Phnom Penh, Cambodia",
     description:
-      "Developed enterprise management systems and integrated ERP solutions for hospitality, retail, and healthcare sectors.",
+      "Built scalable backend systems for POS and management platforms with ERP integration and real-time communication features.",
     achievements: [
-      "Developed POS system with automated inventory and scale integration, eliminating 99% of manual entry errors",
-      "Designed Hotel Management System with booking engine, halving check-in time and boosting efficiency by 30%",
-      "Delivered Clinic Management System with scheduling and patient tracking, reducing wait times by 45%",
-      "Configured Odoo ERP for e-commerce, enabling real-time order tracking and increasing retention by 15%",
+      "Eliminated 99% of manual data entry errors by delivering scalable backend systems",
+      "Delivered ERP-integrated backend services enabling real-time tracking and operational reporting",
+      "Designed booking and scheduling services that reduced processing time by 50%",
+      "Implemented SignalR real-time communication features, reducing user wait times by 45%",
+      "Applied modular architecture and design patterns to improve maintainability and scalability",
     ],
   },
   {
@@ -56,10 +56,10 @@ const experiences = [
     duration: "Oct 2019 - Oct 2020",
     location: "Phnom Penh, Cambodia",
     description:
-      "Developed and optimized internal business systems and customer-facing web solutions to improve operational efficiency and online engagement.",
+      "Developed and deployed web applications with CI/CD pipelines, Docker containers, and Kubernetes to improve release reliability.",
     achievements: [
-      "Built and optimized POS and academic systems, improving productivity and desktop app flexibility by ~30%",
-      "Developed company website for global access, generating 200+ user registrations and 50+ online sales within 6 months",
+      "Improved deployment reliability and reduced manual release effort with automated CI/CD",
+      "Enhanced backend services and database performance, increasing overall system efficiency by about 30%",
     ],
   },
 ];

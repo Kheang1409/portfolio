@@ -49,12 +49,10 @@ export function Tagline({ variants }: TaglineProps) {
       variants={variants}
       className="text-lg md:text-xl text-light-text-secondary dark:text-dark-text-secondary mb-xl max-w-2xl"
     >
-      As a driven software developer with a passion for innovation, I leverage
-      technology to drive business growth and improvement. With expertise in
-      .NET, full-stack development, and database management, I deliver scalable
-      solutions that enhance operational efficiency. Currently pursuing an MS in
-      Computer Science at Maharishi International University, I&apos;m committed
-      to lifelong learning and staying ahead of industry trends.
+      Software Engineer with experience designing, developing, and scaling
+      backend and frontend systems for finance, ERP, and high-traffic platforms.
+      I specialize in C#, .NET Core, ASP.NET Core, React/Angular, microservices,
+      and cloud-native architecture on AWS and Azure.
     </motion.p>
   );
 }

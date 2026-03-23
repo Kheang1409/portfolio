@@ -20,19 +20,19 @@ const skillsData = [
     icon: Server,
     skills: [
       { name: "C#", level: 90 },
-      { name: ".NET", level: 90 },
+      { name: ".NET Core", level: 90 },
       { name: "ASP.NET Core", level: 88 },
-      { name: "Microservices", level: 85 },
+      { name: "Microservices", level: 86 },
     ],
   },
   {
-    category: "Messaging & APIs",
-    icon: Zap,
+    category: "Frontend",
+    icon: Code2,
     skills: [
-      { name: "REST APIs", level: 90 },
-      { name: "Kafka", level: 80 },
-      { name: "gRPC", level: 78 },
-      { name: "SignalR", level: 75 },
+      { name: "React", level: 84 },
+      { name: "Angular", level: 84 },
+      { name: "Next.js", level: 82 },
+      { name: "JavaScript/TypeScript", level: 85 },
     ],
   },
   {
@@ -40,39 +40,39 @@ const skillsData = [
     icon: Database,
     skills: [
       { name: "SQL Server", level: 88 },
-      { name: "PostgreSQL", level: 80 },
+      { name: "PostgreSQL", level: 85 },
       { name: "MongoDB", level: 82 },
-      { name: "Redis", level: 78 },
+      { name: "EF Core / Dapper", level: 86 },
     ],
   },
   {
     category: "Cloud & DevOps",
     icon: Cloud,
     skills: [
-      { name: "Docker", level: 85 },
-      { name: "Kubernetes", level: 80 },
-      { name: "AWS", level: 80 },
-      { name: "Azure", level: 80 },
+      { name: "Azure", level: 84 },
+      { name: "AWS", level: 84 },
+      { name: "Docker", level: 86 },
+      { name: "Kubernetes", level: 82 },
     ],
   },
   {
-    category: "Frontend",
-    icon: Code2,
+    category: "Messaging & Real-time",
+    icon: Zap,
     skills: [
-      { name: "Angular", level: 82 },
-      { name: "React", level: 78 },
-      { name: "TypeScript", level: 80 },
-      { name: "Tailwind CSS", level: 80 },
+      { name: "REST APIs", level: 90 },
+      { name: "Kafka", level: 82 },
+      { name: "Redis", level: 78 },
+      { name: "SignalR", level: 80 },
     ],
   },
   {
     category: "Testing & Security",
     icon: Shield,
     skills: [
-      { name: "xUnit", level: 80 },
-      { name: "NUnit", level: 78 },
-      { name: "Swagger", level: 85 },
-      { name: "JWT", level: 85 },
+      { name: "OAuth2 / JWT / RBAC", level: 86 },
+      { name: "xUnit / NUnit", level: 82 },
+      { name: "Clean Architecture / CQRS", level: 86 },
+      { name: "Design Patterns / SOLID", level: 86 },
     ],
   },
 ];
@@ -81,40 +81,38 @@ const skillIcons: { [key: string]: React.ReactNode } = {
   // Frontend
   Angular: <Boxes className="w-4 h-4" />,
   React: <Code2 className="w-4 h-4" />,
-  TypeScript: <Terminal className="w-4 h-4" />,
-  "Tailwind CSS": <Zap className="w-4 h-4" />,
+  "Next.js": <Code2 className="w-4 h-4" />,
+  "JavaScript/TypeScript": <Terminal className="w-4 h-4" />,
 
   // Backend & Architecture
   "C#": <Code2 className="w-4 h-4" />,
-  ".NET": <Server className="w-4 h-4" />,
+  ".NET Core": <Server className="w-4 h-4" />,
   "ASP.NET Core": <Server className="w-4 h-4" />,
   Microservices: <Server className="w-4 h-4" />,
 
   // Messaging & APIs
   "REST APIs": <Shield className="w-4 h-4" />,
   Kafka: <Zap className="w-4 h-4" />,
-  gRPC: <Zap className="w-4 h-4" />,
   SignalR: <Zap className="w-4 h-4" />,
 
   // Databases
   "SQL Server": <Database className="w-4 h-4" />,
   PostgreSQL: <Database className="w-4 h-4" />,
   MongoDB: <Database className="w-4 h-4" />,
-  Redis: <Database className="w-4 h-4" />,
+  "EF Core / Dapper": <Database className="w-4 h-4" />,
 
   // Cloud & DevOps
   Docker: <Box className="w-4 h-4" />,
   Kubernetes: <Boxes className="w-4 h-4" />,
   Azure: <Cloud className="w-4 h-4" />,
   AWS: <Cloud className="w-4 h-4" />,
-  "CI/CD": <Zap className="w-4 h-4" />,
-  Git: <GitBranch className="w-4 h-4" />,
+  "OAuth2 / JWT / RBAC": <Shield className="w-4 h-4" />,
+  "xUnit / NUnit": <Shield className="w-4 h-4" />,
+  "Clean Architecture / CQRS": <GitBranch className="w-4 h-4" />,
+  "Design Patterns / SOLID": <Shield className="w-4 h-4" />,
 
   // Testing & Security
-  xUnit: <Shield className="w-4 h-4" />,
-  NUnit: <Shield className="w-4 h-4" />,
-  Swagger: <Shield className="w-4 h-4" />,
-  JWT: <Shield className="w-4 h-4" />,
+  Redis: <Database className="w-4 h-4" />,
 };
 
 export default function Skills() {

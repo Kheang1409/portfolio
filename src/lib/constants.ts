@@ -35,15 +35,15 @@ export const COLORS = {
 // ============================================================================
 
 export const PERSONAL_INFO = {
-  NAME: "Kheang",
+  NAME: "Hang Kheang Taing",
   TITLE: "Software Engineer",
   TAGLINE:
-    "I craft elegant solutions to complex problems using cutting-edge technologies.",
+    "Software Engineer building scalable backend and frontend systems for finance, ERP, and high-traffic platforms.",
   SHORT_BIO:
-    "Full-stack software engineer with 6+ years of experience building scalable applications.",
+    "Expert in C#, .NET Core, ASP.NET Core, React/Angular, microservices, and cloud-native solutions on AWS and Azure.",
   EMAIL: "hangkheangtaing@gmail.com",
   PHONE: "+1 (641) 233-0129",
-  LOCATION: "Lrving, TX",
+  LOCATION: "Lrving, TX, USA",
   GITHUB: "https://www.github.com/Kheang1409",
   LINKEDIN: "https://www.linkedin.com/in/hang-kheang-taing/",
   WEBSITE: "https://kaitaing.netlify.app/",

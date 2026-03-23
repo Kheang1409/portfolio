@@ -6,30 +6,34 @@ import { motion } from "framer-motion";
 const education = [
   {
     school: "Maharishi International University",
-    degree: "Master of Science in Computer Science",
-    year: "2024 - 2026",
-    gpa: "In Progress",
+    degree: "Master of Science",
+    year: "May 2024 - Dec 2026",
+    detail: "Major: Computer Science",
     highlights: [
-      "Advanced Software Development",
-      "Enterprise Architecture",
-      "AI & Machine Learning",
+      "Graduate studies focused on advanced computer science concepts",
+      "Applied software engineering for scalable systems",
+      "Cross-functional collaboration and research-driven implementation",
     ],
   },
   {
     school: "Royal University of Phnom Penh",
-    degree: "Bachelor of Science in Computer Science",
-    year: "2016 - 2020",
-    gpa: "Distinction",
-    highlights: ["Software Engineering", "Database Systems", "Web Development"],
+    degree: "Bachelor of Science",
+    year: "Nov 2016 - Nov 2020",
+    detail: "Major: Computer Science & Engineering",
+    highlights: [
+      "Strong foundation in software engineering and systems design",
+      "Database and web engineering fundamentals",
+      "Computer science and engineering core curriculum",
+    ],
   },
 ];
 
 const certifications = [
   {
     name: "Best Project & Team Effort of The Year",
-    issuer: "Pathmazing Inc - Khmer Care Project",
-    year: "2021",
-    credential: "View Achievement",
+    issuer: "Khmer Care, Pathmazing Inc",
+    year: "06/2021",
+    credential: "Honor",
   },
 ];
 
@@ -54,7 +58,7 @@ export default function Education() {
           className="mb-3xl"
         >
           <h2 className="text-h2 font-bold text-light-text-primary dark:text-dark-text-primary mb-sm">
-            Education & Certifications
+            Education & Honors
           </h2>
           <div className="w-12 h-1 bg-light-primary dark:bg-dark-primary rounded-full" />
         </motion.div>
@@ -92,7 +96,7 @@ export default function Education() {
                   </div>
 
                   <p className="text-small text-light-text-secondary dark:text-dark-text-secondary mb-md">
-                    GPA: <span className="font-semibold">{edu.gpa}</span>
+                    <span className="font-semibold">{edu.detail}</span>
                   </p>
 
                   <div className="flex flex-wrap gap-2xs">
@@ -118,7 +122,7 @@ export default function Education() {
             viewport={{ once: true, margin: "-100px" }}
           >
             <h3 className="text-h3 font-semibold text-light-text-primary dark:text-dark-text-primary mb-lg">
-              Certifications
+              Honors
             </h3>
 
             <div className="space-y-sm">
