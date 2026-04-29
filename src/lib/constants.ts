@@ -72,134 +72,8 @@ export const CORE_VALUES = [
   },
 ];
 
-// ============================================================================
-// SKILLS DATA STRUCTURE
-// ============================================================================
-
-export interface Skill {
-  name: string;
-  level: number; // 0-100
-}
-
-export interface SkillCategory {
-  category: string;
-  icon: string; // Lucide icon name or similar
-  skills: Skill[];
-}
-
-export const SKILLS_EXAMPLE: SkillCategory[] = [
-  {
-    category: "Frontend",
-    icon: "Code2",
-    skills: [
-      { name: "React", level: 90 },
-      { name: "TypeScript", level: 88 },
-      { name: "Next.js", level: 85 },
-      { name: "Tailwind CSS", level: 92 },
-    ],
-  },
-  {
-    category: "Backend",
-    icon: "Server",
-    skills: [
-      { name: "Node.js", level: 87 },
-      { name: "C#", level: 80 },
-      { name: ".NET", level: 82 },
-      { name: "SQL", level: 85 },
-    ],
-  },
-];
-
-// ============================================================================
-// EXPERIENCE DATA STRUCTURE
-// ============================================================================
-
-export interface Experience {
-  company: string;
-  role: string;
-  duration: string;
-  location: string;
-  description: string;
-  achievements: string[];
-}
-
-export const EXPERIENCE_EXAMPLE: Experience[] = [
-  {
-    company: "Tech Corp",
-    role: "Senior Full-Stack Engineer",
-    duration: "2022 - Present",
-    location: "San Francisco, CA",
-    description: "Leading development of microservices architecture...",
-    achievements: [
-      "Architected cloud-native solutions using Azure",
-      "Reduced API response time by 90%",
-      "Mentored 5 junior developers",
-    ],
-  },
-];
-
-// ============================================================================
-// PROJECTS DATA STRUCTURE
-// ============================================================================
-
-export interface Project {
-  title: string;
-  description: string;
-  tech: string[];
-  github: string;
-  demo: string;
-  featured: boolean;
-}
-
-export const PROJECTS_EXAMPLE: Project[] = [
-  {
-    title: "AI Assistant Platform",
-    description:
-      "Full-stack web application for AI-powered customer support...",
-    tech: ["React", "Node.js", "MongoDB", "Azure"],
-    github: "https://github.com/yourprofile/project",
-    demo: "https://example.com",
-    featured: true,
-  },
-];
-
-// ============================================================================
-// EDUCATION DATA STRUCTURE
-// ============================================================================
-
-export interface Education {
-  school: string;
-  degree: string;
-  year: string;
-  gpa: string;
-  highlights: string[];
-}
-
-export interface Certification {
-  name: string;
-  issuer: string;
-  year: string;
-  credential: string;
-}
-
-export const EDUCATION_EXAMPLE: Education[] = [
-  {
-    school: "University of Technology",
-    degree: "B.S. Computer Science",
-    year: "2019",
-    gpa: "3.8 / 4.0",
-    highlights: ["Dean's List", "Full Scholarship", "Computer Science Award"],
-  },
-];
-
-export const CERTIFICATIONS_EXAMPLE: Certification[] = [
-  {
-    name: "AWS Certified Solutions Architect",
-    issuer: "Amazon Web Services",
-    year: "2023",
-    credential: "View Credential",
-  },
-];
+// Note: Components define their own data structures locally (Skills.tsx, Experience.tsx, etc.)
+// This keeps data coupled with presentation and simplifies refactoring
 
 // ============================================================================
 // SOCIAL MEDIA LINKS
@@ -304,21 +178,7 @@ export const TYPOGRAPHY = {
 // ============================================================================
 
 /**
- * Format date range (e.g., "2022 - Present")
- */
-export function formatDateRange(start: string, end: string): string {
-  return `${start} - ${end}`;
-}
-
-/**
- * Calculate years of experience
- */
-export function calculateYearsExperience(startYear: number): number {
-  return new Date().getFullYear() - startYear;
-}
-
-/**
- * Get initials from name
+ * Get initials from name (e.g., "John Doe" -> "JD")
  */
 export function getInitials(name: string): string {
   return name
@@ -326,16 +186,6 @@ export function getInitials(name: string): string {
     .map((n) => n[0])
     .join("")
     .toUpperCase();
-}
-
-/**
- * Format skill level to percentage text
- */
-export function formatSkillLevel(level: number): string {
-  if (level >= 90) return "Expert";
-  if (level >= 75) return "Proficient";
-  if (level >= 60) return "Intermediate";
-  return "Learning";
 }
 
 // ============================================================================
@@ -346,18 +196,10 @@ export default {
   COLORS,
   PERSONAL_INFO,
   CORE_VALUES,
-  SKILLS_EXAMPLE,
-  EXPERIENCE_EXAMPLE,
-  PROJECTS_EXAMPLE,
-  EDUCATION_EXAMPLE,
-  CERTIFICATIONS_EXAMPLE,
   SOCIAL_LINKS,
   ANIMATION,
   SPACING,
   BREAKPOINTS,
   TYPOGRAPHY,
-  formatDateRange,
-  calculateYearsExperience,
   getInitials,
-  formatSkillLevel,
 };
