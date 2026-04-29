@@ -64,18 +64,19 @@ npm run type-check
 
 ## Run Locally
 
-### Frontend only
-
-From `frontend`:
+### Frontend Only (Quick Dev)
 
 ```bash
+cd frontend
 npm install
 npm run dev
 ```
 
-Open `http://localhost:3000`.
+Open `http://localhost:3000` and start building!
 
-### Full stack with Docker Compose
+**Note**: Features requiring backend (assistant chat, contact form) will use fallback to `http://localhost:5000` or the value of `NEXT_PUBLIC_BACKEND_API_URL`.
+
+### Full Stack with Docker Compose
 
 From repository root:
 
@@ -83,10 +84,134 @@ From repository root:
 docker-compose up -d --build
 ```
 
-Default local ports:
-
+Services:
 - Frontend: `http://localhost:3000`
-- Backend: `http://localhost:5000`
+- Backend: `http://localhost:5000` (proxied) and `http://localhost:8080` (direct)
+- MongoDB and Redis for backend dependencies
+
+## Development Workflow
+
+### Hot Reload
+
+The dev server watches for changes automatically:
+
+```bash
+npm run dev
+```
+
+Changes to components, pages, and styles appear instantly.
+
+### Type Checking
+
+Ensure TypeScript has no errors:
+
+```bash
+npm run type-check
+```
+
+### Linting
+
+Check code quality:
+
+```bash
+npm run lint
+
+# Auto-fix fixable issues
+npm run lint -- --fix
+```
+
+### Build for Production
+
+```bash
+npm run build
+```
+
+This creates an optimized standalone build in `.next/`.
+
+## Building and Deploying
+
+### Docker Build
+
+The included `Dockerfile` creates a minimal Node.js runtime image:
+
+```bash
+# Build locally
+docker build -t portfolio-frontend .
+
+# Run
+docker run -p 3000:3000 portfolio-frontend
+```
+
+### Vercel / Netlify
+
+This Next.js app is optimized for Vercel:
+
+1. Push to GitHub
+2. Connect repository to Vercel
+3. Environment variables are automatically configured from `.env.local` or secrets
+4. Deploy on push
+
+## Troubleshooting
+
+### Port 3000 Already In Use
+
+```bash
+# Use a different port
+npm run dev -- -p 3001
+
+# Or kill the process
+lsof -ti:3000 | xargs kill -9  # macOS/Linux
+netstat -ano | findstr :3000   # Windows
+```
+
+### Backend API Not Reachable
+
+**Issue**: Assistant chat shows "Connection failed"
+
+**Solution**: Verify backend is running and accessible
+
+```bash
+# Check backend health
+curl http://localhost:8080/api/health
+
+# Check NEXT_PUBLIC_BACKEND_API_URL env var
+echo $NEXT_PUBLIC_BACKEND_API_URL
+```
+
+If needed, set it in `.env.local`:
+
+```bash
+NEXT_PUBLIC_BACKEND_API_URL=http://localhost:8080
+```
+
+### GitHub Projects Not Loading
+
+**Issue**: Projects section is empty
+
+**Possible causes**:
+1. `GITHUB_TOKEN` not set (optional but improves rate limits)
+2. GitHub API rate limited (public requests limited to 60/hour)
+
+**Solution**:
+```bash
+# Set your GitHub token in .env.local
+GITHUB_TOKEN=your-github-token-here
+
+# Restart dev server
+npm run dev
+```
+
+### Build Fails with Memory Issues
+
+**Solution**: Increase Node.js memory
+
+```bash
+# macOS/Linux
+NODE_OPTIONS=--max_old_space_size=4096 npm run build
+
+# Windows (PowerShell)
+$env:NODE_OPTIONS="--max_old_space_size=4096"; npm run build
+```
 
 ## Folder Map (Key Areas)
 
