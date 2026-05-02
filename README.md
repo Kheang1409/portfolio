@@ -1,56 +1,80 @@
 # Portfolio Frontend
 
-Production-oriented Next.js portfolio UI with integrated AI assistant.
+Next.js 16 portfolio site with a live assistant widget and GitHub-backed project cards.
 
 ## Stack
 
-- Next.js 16 (App Router)
+- Next.js 16 App Router
 - React 18 + TypeScript
 - Tailwind CSS
 - Framer Motion
-- React Markdown + syntax highlighting (assistant message rendering)
+- React Markdown with GitHub-flavored markdown support
 
-## Current Features
+## What The Frontend Actually Does
 
-- Multi-section portfolio landing page:
-  - Hero, About, Skills, Experience, Projects, Education, Contact
-- Floating AI assistant chat widget:
-  - Streaming-first conversation flow
-  - Automatic fallback to buffered assistant responses
-  - Local chat history persistence
-- GitHub projects integration via server route
-- SEO metadata, robots, and sitemap support
-- Dark/light mode support via theme provider
+- Renders the home page sections in `src/app/page.tsx`: Hero, About, Skills, Experience, Projects, Education, Contact.
+- Renders a dedicated resume page at `/resume`.
+- Shows a floating assistant launcher from the root layout.
+- Tracks visits with a best-effort POST to the backend.
+- Loads GitHub project data from a Next.js server route.
 
-## API Integration Design
+## API Integration
 
-### Client -> Backend (direct)
+### Assistant Chat
 
-The frontend directly calls backend APIs using `NEXT_PUBLIC_BACKEND_API_URL` (fallback: `http://localhost:5000`):
+The browser talks to the Next.js proxy route at `/api/assistant`.
 
-- `POST /api/assistants/ask`
-- `POST /api/assistants/stream`
-- `POST /api/contacts`
+That route forwards requests to the backend assistant endpoint at `POST /api/assistant` and keeps the streaming NDJSON response intact.
 
-### Frontend Server Routes (BFF style)
+The UI attaches a stable browser session id in metadata so the backend can persist conversation context across messages and refreshes.
 
-Implemented Next.js API routes:
+Example request body sent through the proxy:
 
-- `GET /api/github/projects`
-  - Fetches and filters repositories from GitHub API.
+```json
+{
+	"message": "What is my name?",
+	"history": [
+		{
+			"role": "user",
+			"content": "My name is Alice"
+		}
+	],
+	"context": {
+		"systemPersona": "Hang Kheang Taing portfolio assistant",
+		"metadata": {
+			"sessionId": "browser-session-123",
+			"uiSurface": "portfolio-assistant",
+			"locale": "en-US"
+		}
+	}
+}
+```
+
+### Contact Form
+
+The contact form posts directly to the backend at `POST /api/contacts`.
+
+### Visitor Tracking
+
+The visitor tracker posts directly to the backend at `POST /api/visits`.
+
+### GitHub Projects
+
+The projects section calls the Next.js route at `GET /api/github/projects`, which fetches repositories from GitHub and filters them for the portfolio display.
 
 ## Environment Variables
 
-### Public / Client-Visible
+### Public / Client Visible
 
-- `NEXT_PUBLIC_BACKEND_API_URL`
-- `NEXT_PUBLIC_SITE_URL`
+- `NEXT_PUBLIC_BACKEND_API_URL` - backend base URL. Defaults to `http://localhost:5000`.
+- `NEXT_PUBLIC_SITE_URL` - used for metadata and canonical URLs.
 
-### Server-Side (Next runtime)
+### Server Side
 
-- `GITHUB_TOKEN` (optional, increases GitHub API reliability)
-- `GITHUB_USER_AGENT` (optional)
-- `GOOGLE_SITE_VERIFICATION` (optional)
+- `GITHUB_TOKEN` - optional GitHub API token.
+- `GITHUB_USER_AGENT` - optional custom user agent for GitHub requests.
+- `GOOGLE_SITE_VERIFICATION` - optional Google Search Console verification token.
+- `NEXT_PUBLIC_DEBUG_AI` - optional debug flag for assistant request logging.
 
 ## Scripts
 
@@ -64,7 +88,7 @@ npm run type-check
 
 ## Run Locally
 
-### Frontend Only (Quick Dev)
+### Frontend Only
 
 ```bash
 cd frontend
@@ -72,157 +96,33 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:3000` and start building!
+Open `http://localhost:3000`.
 
-**Note**: Features requiring backend (assistant chat, contact form) will use fallback to `http://localhost:5000` or the value of `NEXT_PUBLIC_BACKEND_API_URL`.
+If you are not using Docker Compose, make sure `NEXT_PUBLIC_BACKEND_API_URL` points to a running backend instance.
 
-### Full Stack with Docker Compose
+### Full Stack
 
-From repository root:
+From the repository root:
 
 ```bash
 docker-compose up -d --build
 ```
 
-Services:
-- Frontend: `http://localhost:3000`
-- Backend: `http://localhost:5000` (proxied) and `http://localhost:8080` (direct)
-- MongoDB and Redis for backend dependencies
+That gives you the frontend at `http://localhost:3000` and the backend at `http://localhost:5000`.
 
-## Development Workflow
+## Key Files
 
-### Hot Reload
-
-The dev server watches for changes automatically:
-
-```bash
-npm run dev
-```
-
-Changes to components, pages, and styles appear instantly.
-
-### Type Checking
-
-Ensure TypeScript has no errors:
-
-```bash
-npm run type-check
-```
-
-### Linting
-
-Check code quality:
-
-```bash
-npm run lint
-
-# Auto-fix fixable issues
-npm run lint -- --fix
-```
-
-### Build for Production
-
-```bash
-npm run build
-```
-
-This creates an optimized standalone build in `.next/`.
-
-## Building and Deploying
-
-### Docker Build
-
-The included `Dockerfile` creates a minimal Node.js runtime image:
-
-```bash
-# Build locally
-docker build -t portfolio-frontend .
-
-# Run
-docker run -p 3000:3000 portfolio-frontend
-```
-
-### Vercel / Netlify
-
-This Next.js app is optimized for Vercel:
-
-1. Push to GitHub
-2. Connect repository to Vercel
-3. Environment variables are automatically configured from `.env.local` or secrets
-4. Deploy on push
-
-## Troubleshooting
-
-### Port 3000 Already In Use
-
-```bash
-# Use a different port
-npm run dev -- -p 3001
-
-# Or kill the process
-lsof -ti:3000 | xargs kill -9  # macOS/Linux
-netstat -ano | findstr :3000   # Windows
-```
-
-### Backend API Not Reachable
-
-**Issue**: Assistant chat shows "Connection failed"
-
-**Solution**: Verify backend is running and accessible
-
-```bash
-# Check backend health
-curl http://localhost:8080/api/health
-
-# Check NEXT_PUBLIC_BACKEND_API_URL env var
-echo $NEXT_PUBLIC_BACKEND_API_URL
-```
-
-If needed, set it in `.env.local`:
-
-```bash
-NEXT_PUBLIC_BACKEND_API_URL=http://localhost:8080
-```
-
-### GitHub Projects Not Loading
-
-**Issue**: Projects section is empty
-
-**Possible causes**:
-1. `GITHUB_TOKEN` not set (optional but improves rate limits)
-2. GitHub API rate limited (public requests limited to 60/hour)
-
-**Solution**:
-```bash
-# Set your GitHub token in .env.local
-GITHUB_TOKEN=your-github-token-here
-
-# Restart dev server
-npm run dev
-```
-
-### Build Fails with Memory Issues
-
-**Solution**: Increase Node.js memory
-
-```bash
-# macOS/Linux
-NODE_OPTIONS=--max_old_space_size=4096 npm run build
-
-# Windows (PowerShell)
-$env:NODE_OPTIONS="--max_old_space_size=4096"; npm run build
-```
-
-## Folder Map (Key Areas)
-
-- `src/app/layout.tsx`: global layout + metadata + assistant
-- `src/app/page.tsx`: home page section composition
-- `src/app/api/github/projects/route.ts`: GitHub project data endpoint
-- `src/components/sections/Assistant.tsx`: assistant chat UI
-- `src/lib/assistants.ts`: ask/stream integration and fallback logic
-- `src/lib/contacts.ts`: contact API posting
+- `src/app/layout.tsx` - global layout, metadata, navigation, footer, assistant launcher.
+- `src/app/page.tsx` - landing page composition.
+- `src/app/resume/page.tsx` - resume page.
+- `src/app/api/assistant/route.ts` - assistant proxy.
+- `src/app/api/github/projects/route.ts` - GitHub project feed.
+- `src/lib/assistants.ts` - assistant streaming client.
+- `src/lib/session.ts` - persistent browser session id utility.
+- `src/lib/contacts.ts` - contact form client.
+- `src/lib/visitor-tracking.ts` - visitor analytics client.
 
 ## Notes
 
-- `next.config.js` is configured for standalone output and optimized image formats.
-- Production Docker image runs the standalone Next server (`server.js`) as non-root user.
+- The app uses the shared backend URL fallback of `http://localhost:5000`.
+- The backend route names in the docs should match the proxy route `POST /api/assistant` rather than older versioned assistant paths.
