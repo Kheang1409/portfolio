@@ -2,11 +2,7 @@
   "compilerOptions": {
     "target": "es2020",
     "useDefineForClassFields": true,
-    "lib": [
-      "es2020",
-      "dom",
-      "dom.iterable"
-    ],
+    "lib": ["es2020", "dom", "dom.iterable"],
     "module": "esnext",
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -28,11 +24,9 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": ".",
+    // "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     },
     "moduleResolution": "bundler",
     "allowJs": true,
@@ -50,7 +44,5 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }
