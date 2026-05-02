@@ -7,7 +7,7 @@ export const siteConfig = {
   name: "Hang Kheang Taing",
   fullTitle: "Hang Kheang Taing | Software Engineer",
   description:
-    "Software Engineer portfolio of Hang Kheang Taing: C#, .NET Core, ASP.NET Core, React, cloud-native architecture, and production-grade systems.",
+    "Software Engineer with 5+ years of experience designing, developing, and maintaining scalable web applications using C#, .NET Core, and modern JavaScript frameworks. Strong background in RESTful API development, database optimization (SQL Server, PostgreSQL), cloud deployments on Azure and AWS, microservices, and event-driven architectures. Available to work in the U.S. without sponsorship.",
   url: siteUrl,
   locale: "en_US",
   keywords: [
@@ -17,8 +17,16 @@ export const siteConfig = {
     ".NET Core",
     "ASP.NET Core",
     "React developer",
+    "Next.js",
+    "RESTful APIs",
+    "SQL Server",
+    "PostgreSQL",
+    "Azure",
+    "AWS",
+    "Microservices",
     "Portfolio",
-    "Phnom Penh software engineer",
+    "Resume",
+    "Work Authorization",
   ],
   social: {
     github: "https://github.com/Kheang1409",

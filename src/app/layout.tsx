@@ -4,8 +4,8 @@ import "./globals.css";
 import { Providers } from "./providers";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import Assistant from "@/components/sections/Assistant";
 import VisitorTracker from "@/components/VisitorTracker";
+import AssistantLauncher from "@/components/AssistantLauncher";
 import { buildPageMetadata, siteConfig } from "@/lib/seo";
 
 const inter = Inter({
@@ -54,7 +54,7 @@ export default function RootLayout({
           <Navigation />
           {children}
           <Footer />
-          <Assistant />
+          <AssistantLauncher />
         </Providers>
       </body>
     </html>

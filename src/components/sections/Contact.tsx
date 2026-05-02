@@ -8,6 +8,7 @@ import {
   Github,
   Phone,
   Globe,
+  Briefcase,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { postContact } from "@/lib/contacts";
@@ -132,22 +133,36 @@ export default function Contact() {
                 value: "kaitaing.netlify.app",
                 href: "https://kaitaing.netlify.app/",
               },
+              {
+                icon: Briefcase,
+                label: "Work Authorization",
+                value:
+                  "Authorized to work in the U.S. without current or future employer sponsorship",
+                href: undefined,
+              },
             ].map((item, idx) => {
-              const Icon = item.icon;
-              const isExternal = item.href.startsWith("http");
+              const Icon = item.icon as any;
+              const href = item.href ?? "";
+              const isExternal = href.startsWith("http");
+              const Element: any = href ? motion.a : motion.div;
+              const commonProps = {
+                key: idx,
+                "aria-label": `${item.label}: ${item.value}`,
+                initial: "hidden",
+                whileInView: "visible",
+                variants: fadeInVariants,
+                transition: { duration: 0.4, delay: 0.1 + idx * 0.05 },
+                viewport: { once: true, margin: "-100px" },
+                className:
+                  "flex items-start gap-md p-md rounded-lg bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-light-primary/50 dark:hover:border-dark-primary/50 transition-all group",
+              };
+
               return (
-                <motion.a
-                  key={idx}
-                  href={item.href}
+                <Element
+                  {...commonProps}
+                  href={href || undefined}
                   target={isExternal ? "_blank" : undefined}
                   rel={isExternal ? "noopener noreferrer" : undefined}
-                  aria-label={`${item.label}: ${item.value}`}
-                  initial="hidden"
-                  whileInView="visible"
-                  variants={fadeInVariants}
-                  transition={{ duration: 0.4, delay: 0.1 + idx * 0.05 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  className="flex items-start gap-md p-md rounded-lg bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-light-primary/50 dark:hover:border-dark-primary/50 transition-all group"
                 >
                   <div className="p-2xs rounded-md bg-light-primary/10 dark:bg-dark-primary/10 text-light-primary dark:text-dark-primary group-hover:bg-light-primary/20 dark:group-hover:bg-dark-primary/20 transition-colors flex-shrink-0">
                     <Icon className="w-5 h-5" />
@@ -160,7 +175,7 @@ export default function Contact() {
                       {item.value}
                     </p>
                   </div>
-                </motion.a>
+                </Element>
               );
             })}
           </motion.div>
@@ -225,7 +240,7 @@ export default function Contact() {
                 onChange={handleChange}
                 required
                 className="w-full px-md py-sm rounded-md bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-text-primary dark:text-dark-text-primary focus:outline-none focus:border-light-primary dark:focus:border-dark-primary focus:ring-2 focus:ring-light-primary/20 dark:focus:ring-dark-primary/20 transition-all"
-                placeholder="hangkheangtaing@gmail.com"
+                placeholder="example@gmail.com"
               />
             </motion.div>
 

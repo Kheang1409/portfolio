@@ -32,21 +32,21 @@ Example request body sent through the proxy:
 
 ```json
 {
-	"message": "What is my name?",
-	"history": [
-		{
-			"role": "user",
-			"content": "My name is Alice"
-		}
-	],
-	"context": {
-		"systemPersona": "Hang Kheang Taing portfolio assistant",
-		"metadata": {
-			"sessionId": "browser-session-123",
-			"uiSurface": "portfolio-assistant",
-			"locale": "en-US"
-		}
-	}
+  "message": "What is my name?",
+  "history": [
+    {
+      "role": "user",
+      "content": "My name is Alice"
+    }
+  ],
+  "context": {
+    "systemPersona": "Hang Kheang Taing portfolio assistant",
+    "metadata": {
+      "sessionId": "browser-session-123",
+      "uiSurface": "portfolio-assistant",
+      "locale": "en-US"
+    }
+  }
 }
 ```
 

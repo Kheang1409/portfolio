@@ -1,23 +1,184 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { MessageSquare, X, Send, Trash2, Sparkles } from "lucide-react";
+import {
+  MessageSquare,
+  X,
+  Send,
+  Trash2,
+  Sparkles,
+  RotateCcw,
+  Brain,
+  Database,
+  Timer,
+  Bot,
+} from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
 import type { Pluggable } from "unified";
+import { ApiError } from "@/lib/api/client";
 import { streamAssistant } from "@/lib/assistants";
-import type { AssistantContext, ConversationMessage } from "@/lib/types";
+import { getOrCreateSessionId } from "@/lib/session";
+import type {
+  AiMetadata,
+  AssistantContext,
+  ConversationMessage,
+} from "@/lib/api/types";
 
 const STORAGE_KEY = "kai_assistant_history_v2";
+const REQUEST_TIMEOUT_MS = 45_000;
 
 type ChatMessage = {
   id: string;
   sender: "user" | "bot";
   text: string;
   status: "streaming" | "final" | "error";
+  metadata?: AiMetadata;
 };
+
+type RetryPayload = {
+  text: string;
+};
+
+type MetadataPillProps = {
+  icon: React.ReactNode;
+  label: string;
+};
+
+const markdownRehypePlugins = [rehypeHighlight as Pluggable];
+
+const MetadataPill = memo(function MetadataPill({
+  icon,
+  label,
+}: MetadataPillProps) {
+  return (
+    <span className="inline-flex items-center gap-1 rounded-full border border-light-border/70 bg-light-background/80 px-2 py-0.5 text-[10px] font-medium text-light-text-secondary dark:border-dark-border/70 dark:bg-dark-background/80 dark:text-dark-text-secondary">
+      {icon}
+      {label}
+    </span>
+  );
+});
+
+type MessageBubbleProps = {
+  message: ChatMessage;
+};
+
+const MessageBubble = memo(function MessageBubble({
+  message,
+}: MessageBubbleProps) {
+  const metadataLabels = useMemo(() => {
+    if (message.sender !== "bot" || !message.metadata) {
+      return [] as Array<{ key: string; icon: React.ReactNode; label: string }>;
+    }
+
+    const labels: Array<{ key: string; icon: React.ReactNode; label: string }> =
+      [];
+
+    if (message.metadata.modelUsed) {
+      labels.push({
+        key: "model",
+        icon: <Bot className="h-3 w-3" />,
+        label: message.metadata.modelUsed,
+      });
+    }
+
+    if (typeof message.metadata.latencyMs === "number") {
+      labels.push({
+        key: "latency",
+        icon: <Timer className="h-3 w-3" />,
+        label: `${Math.round(message.metadata.latencyMs)}ms`,
+      });
+    }
+
+    if (message.metadata.fallbackUsed) {
+      labels.push({
+        key: "fallback",
+        icon: <RotateCcw className="h-3 w-3" />,
+        label: "Fallback",
+      });
+    }
+
+    if (message.metadata.contextEnhanced) {
+      labels.push({
+        key: "context",
+        icon: <Brain className="h-3 w-3" />,
+        label: "Context-enhanced",
+      });
+    }
+
+    if (message.metadata.cachedResponse) {
+      labels.push({
+        key: "cached",
+        icon: <Database className="h-3 w-3" />,
+        label: "Cached response",
+      });
+    }
+
+    return labels;
+  }, [message]);
+
+  return (
+    <div
+      className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}
+    >
+      <div
+        className={`relative max-w-[90%] rounded-2xl border px-md py-sm text-small shadow-sm ${
+          message.sender === "user"
+            ? "bg-gradient-to-br from-light-primary via-light-primary to-light-accent text-white border-light-primary/60 dark:from-dark-primary dark:via-dark-primary dark:to-dark-accent dark:border-dark-primary/60"
+            : "bg-light-background/80 text-light-text-primary border-light-border/80 dark:bg-dark-background/80 dark:text-dark-text-primary dark:border-dark-border/80"
+        }`}
+      >
+        <div className="mb-1 text-[10px] font-semibold uppercase tracking-wide opacity-80">
+          {message.sender === "user" ? "You" : "Assistant"}
+        </div>
+
+        {message.sender === "bot" ? (
+          <div className="space-y-2">
+            <ReactMarkdown
+              className="prose prose-sm dark:prose-invert max-w-none"
+              remarkPlugins={[remarkGfm]}
+              rehypePlugins={markdownRehypePlugins}
+            >
+              {message.text || "..."}
+            </ReactMarkdown>
+
+            {metadataLabels.length > 0 && (
+              <div className="flex flex-wrap gap-1">
+                {metadataLabels.map((item) => (
+                  <MetadataPill
+                    key={item.key}
+                    icon={item.icon}
+                    label={item.label}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        ) : (
+          <span className="whitespace-pre-wrap leading-relaxed">
+            {message.text}
+          </span>
+        )}
+      </div>
+    </div>
+  );
+});
+
+function useDebouncedValue(value: string, delayMs: number): string {
+  const [debounced, setDebounced] = useState(value);
+
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      setDebounced(value);
+    }, delayMs);
+
+    return () => clearTimeout(timerId);
+  }, [value, delayMs]);
+
+  return debounced;
+}
 
 function createId(): string {
   if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
@@ -27,24 +188,62 @@ function createId(): string {
   return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
 
+function toFriendlyErrorMessage(error: unknown): string {
+  if (error instanceof ApiError) {
+    if (
+      error.code === "TIMEOUT" ||
+      error.message.toLowerCase().includes("timeout")
+    ) {
+      return "Request timed out. Try again or shorten your prompt.";
+    }
+
+    if (error.status === 429 || error.code === "RATE_LIMITED") {
+      return "Rate limit reached. Please wait and try again.";
+    }
+
+    if (error.status >= 500) {
+      return "Assistant service is temporarily unavailable. Please retry.";
+    }
+
+    return error.message || "Request failed.";
+  }
+
+  if (error instanceof DOMException && error.name === "AbortError") {
+    return "Request cancelled.";
+  }
+
+  return "Network error. Please retry.";
+}
+
 export default function Assistant() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
+  const debouncedInput = useDebouncedValue(input, 150);
   const [loading, setLoading] = useState(false);
   const [lastModelUsed, setLastModelUsed] = useState<string | null>(null);
   const [lastLatencyMs, setLastLatencyMs] = useState<number | null>(null);
   const [lastTtftMs, setLastTtftMs] = useState<number | null>(null);
-  const [retryMessage, setRetryMessage] = useState<string | null>(null);
+  const [lastFallbackUsed, setLastFallbackUsed] = useState<boolean | null>(
+    null,
+  );
+  const [lastContextEnhanced, setLastContextEnhanced] = useState<
+    boolean | null
+  >(null);
+  const [lastCachedResponse, setLastCachedResponse] = useState<boolean | null>(
+    null,
+  );
+  const [retryPayload, setRetryPayload] = useState<RetryPayload | null>(null);
   const [lastErrorText, setLastErrorText] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const streamAbortRef = useRef<AbortController | null>(null);
-  const sessionIdRef = useRef<string>(
-    typeof crypto !== "undefined" && "randomUUID" in crypto
-      ? crypto.randomUUID()
-      : `${Date.now()}-${Math.random().toString(16).slice(2)}`,
-  );
+  const requestAbortRef = useRef<AbortController | null>(null);
+  const sessionIdRef = useRef<string>("");
+
+  // Initialize persistent session ID on mount
+  useEffect(() => {
+    sessionIdRef.current = getOrCreateSessionId();
+  }, []);
 
   useEffect(() => {
     try {
@@ -104,8 +303,8 @@ export default function Assistant() {
 
   useEffect(() => {
     return () => {
-      if (streamAbortRef.current) {
-        streamAbortRef.current.abort();
+      if (requestAbortRef.current) {
+        requestAbortRef.current.abort();
       }
     };
   }, []);
@@ -116,13 +315,13 @@ export default function Assistant() {
     }
   }, [open]);
 
-  async function send(overrideText?: string) {
+  async function send(override?: RetryPayload) {
     if (loading) return;
 
-    const text = (overrideText ?? input).trim();
+    const text = (override?.text ?? input).trim();
     if (!text) return;
 
-    setRetryMessage(null);
+    setRetryPayload(null);
     setLastErrorText(null);
 
     const userId = createId();
@@ -143,13 +342,13 @@ export default function Assistant() {
 
     const baseMessages = [...messages, userMsg];
     setMessages((m) => [...m, userMsg, botMsg]);
-    if (!overrideText) {
+    if (!override) {
       setInput("");
     }
     setLoading(true);
 
     const abortController = new AbortController();
-    streamAbortRef.current = abortController;
+    requestAbortRef.current = abortController;
 
     try {
       const history: ConversationMessage[] = baseMessages
@@ -165,18 +364,22 @@ export default function Assistant() {
         metadata: {
           sessionId: sessionIdRef.current,
           uiSurface: "portfolio-assistant",
+          conversationId: sessionIdRef.current,
           locale:
             typeof navigator !== "undefined" ? navigator.language : "en-US",
         },
       };
 
+      let completed = false;
+
       await streamAssistant(
-        text,
-        history,
-        context,
+        { message: text, history, context },
         {
           onDelta: (event) => {
             setLastModelUsed(event.modelUsed ?? null);
+            setLastFallbackUsed(event.fallbackUsed ?? null);
+            setLastContextEnhanced(event.contextEnhanced ?? null);
+            setLastCachedResponse(event.cachedResponse ?? null);
 
             setMessages((current) =>
               current.map((message) =>
@@ -184,6 +387,19 @@ export default function Assistant() {
                   ? {
                       ...message,
                       text: message.text + (event.text ?? ""),
+                      metadata: {
+                        ...message.metadata,
+                        modelUsed:
+                          event.modelUsed ?? message.metadata?.modelUsed,
+                        fallbackUsed:
+                          event.fallbackUsed ?? message.metadata?.fallbackUsed,
+                        contextEnhanced:
+                          event.contextEnhanced ??
+                          message.metadata?.contextEnhanced,
+                        cachedResponse:
+                          event.cachedResponse ??
+                          message.metadata?.cachedResponse,
+                      },
                       status: "streaming",
                     }
                   : message,
@@ -191,15 +407,35 @@ export default function Assistant() {
             );
           },
           onCompleted: (event) => {
+            completed = true;
             setLastModelUsed(event.modelUsed ?? null);
             setLastLatencyMs(event.latencyMs ?? null);
             setLastTtftMs(event.ttftMs ?? null);
+            setLastFallbackUsed(event.fallbackUsed ?? null);
+            setLastContextEnhanced(event.contextEnhanced ?? null);
+            setLastCachedResponse(event.cachedResponse ?? null);
 
             setMessages((current) =>
               current.map((message) =>
                 message.id === botId
                   ? {
                       ...message,
+                      metadata: {
+                        ...message.metadata,
+                        modelUsed:
+                          event.modelUsed ?? message.metadata?.modelUsed,
+                        fallbackUsed:
+                          event.fallbackUsed ?? message.metadata?.fallbackUsed,
+                        latencyMs:
+                          event.latencyMs ?? message.metadata?.latencyMs,
+                        ttftMs: event.ttftMs ?? message.metadata?.ttftMs,
+                        contextEnhanced:
+                          event.contextEnhanced ??
+                          message.metadata?.contextEnhanced,
+                        cachedResponse:
+                          event.cachedResponse ??
+                          message.metadata?.cachedResponse,
+                      },
                       text:
                         message.text.trim().length > 0
                           ? message.text
@@ -218,12 +454,19 @@ export default function Assistant() {
                   "Something went wrong. Please try again.");
 
             setLastErrorText(friendly);
-            setRetryMessage(text);
+            setRetryPayload({ text });
             setMessages((current) =>
               current.map((message) =>
                 message.id === botId
                   ? {
                       ...message,
+                      metadata: {
+                        ...message.metadata,
+                        modelUsed:
+                          event.modelUsed ?? message.metadata?.modelUsed,
+                        fallbackUsed:
+                          event.fallbackUsed ?? message.metadata?.fallbackUsed,
+                      },
                       text:
                         message.text.trim().length > 0
                           ? message.text
@@ -235,12 +478,33 @@ export default function Assistant() {
             );
           },
         },
-        abortController.signal,
+        {
+          signal: abortController.signal,
+          timeoutMs: REQUEST_TIMEOUT_MS,
+          retries: 1,
+        },
       );
+
+      if (!completed) {
+        setMessages((current) =>
+          current.map((message) =>
+            message.id === botId && message.status === "streaming"
+              ? {
+                  ...message,
+                  status: "final",
+                  text:
+                    message.text.trim().length > 0
+                      ? message.text
+                      : "No content returned.",
+                }
+              : message,
+          ),
+        );
+      }
     } catch (err: unknown) {
       if ((err as { name?: string })?.name !== "AbortError") {
-        setRetryMessage(text);
-        const friendly = "Network error. Please retry.";
+        setRetryPayload({ text });
+        const friendly = toFriendlyErrorMessage(err);
         setLastErrorText(friendly);
         setMessages((current) =>
           current.map((message) =>
@@ -257,15 +521,16 @@ export default function Assistant() {
       }
     } finally {
       setLoading(false);
-      streamAbortRef.current = null;
+      requestAbortRef.current = null;
     }
   }
 
-  function cancelStreaming() {
-    if (streamAbortRef.current) {
-      streamAbortRef.current.abort();
-      streamAbortRef.current = null;
+  function cancelRequest() {
+    if (requestAbortRef.current) {
+      requestAbortRef.current.abort();
+      requestAbortRef.current = null;
     }
+
     setLoading(false);
     setMessages((current) =>
       current.map((message) =>
@@ -338,8 +603,22 @@ export default function Assistant() {
                 <div className="leading-none">Hang Kheang's Assistant</div>
                 <div className="text-[11px] font-normal text-light-text-secondary dark:text-dark-text-secondary">
                   {lastModelUsed
-                    ? `Model: ${lastModelUsed}${lastTtftMs ? ` · TTFT ${Math.round(lastTtftMs)}ms` : ""}${lastLatencyMs ? ` · ${Math.round(lastLatencyMs)}ms` : ""}`
+                    ? `Model: ${lastModelUsed}${lastTtftMs ? ` · TTFT ${Math.round(lastTtftMs)}ms` : ""}${lastLatencyMs ? ` · ${Math.round(lastLatencyMs)}ms` : ""}${lastFallbackUsed ? " · fallback" : ""}`
                     : "Online · Quick replies"}
+                </div>
+                <div className="mt-1 flex flex-wrap items-center gap-1">
+                  {lastContextEnhanced ? (
+                    <MetadataPill
+                      icon={<Brain className="h-3 w-3" />}
+                      label="Context-enhanced"
+                    />
+                  ) : null}
+                  {lastCachedResponse ? (
+                    <MetadataPill
+                      icon={<Database className="h-3 w-3" />}
+                      label="Cached response"
+                    />
+                  ) : null}
                 </div>
               </div>
             </div>
@@ -374,38 +653,8 @@ export default function Assistant() {
               </div>
             )}
 
-            {messages.map((m) => (
-              <div
-                key={m.id}
-                className={`flex ${
-                  m.sender === "user" ? "justify-end" : "justify-start"
-                }`}
-              >
-                <div
-                  className={`relative max-w-[85%] rounded-2xl border px-md py-sm text-small shadow-sm ${
-                    m.sender === "user"
-                      ? "bg-gradient-to-br from-light-primary via-light-primary to-light-accent text-white border-light-primary/60 dark:from-dark-primary dark:via-dark-primary dark:to-dark-accent dark:border-dark-primary/60"
-                      : "bg-light-background/80 text-light-text-primary border-light-border/80 dark:bg-dark-background/80 dark:text-dark-text-primary dark:border-dark-border/80"
-                  }`}
-                >
-                  {m.sender === "bot" ? (
-                    <ReactMarkdown
-                      className="prose prose-sm dark:prose-invert max-w-none"
-                      remarkPlugins={[remarkGfm]}
-                      rehypePlugins={[rehypeHighlight as Pluggable]}
-                    >
-                      {m.text || "..."}
-                    </ReactMarkdown>
-                  ) : (
-                    <span className="whitespace-pre-wrap leading-relaxed">
-                      {m.text}
-                    </span>
-                  )}
-                  <span className="absolute -bottom-4 text-[10px] font-medium uppercase tracking-wide text-light-text-secondary dark:text-dark-text-secondary">
-                    {m.sender === "user" ? "You" : "Assistant"}
-                  </span>
-                </div>
-              </div>
+            {messages.map((message) => (
+              <MessageBubble key={message.id} message={message} />
             ))}
 
             {loading && (
@@ -421,13 +670,13 @@ export default function Assistant() {
               </div>
             )}
 
-            {!loading && retryMessage && (
+            {!loading && retryPayload && (
               <div className="flex items-center justify-between rounded-lg border border-light-border/80 bg-light-background/70 px-sm py-sm text-small dark:border-dark-border/80 dark:bg-dark-background/60">
                 <span className="text-light-text-secondary dark:text-dark-text-secondary">
                   Request failed. Retry?
                 </span>
                 <button
-                  onClick={() => send(retryMessage)}
+                  onClick={() => send(retryPayload)}
                   className="rounded-md bg-light-primary px-sm py-1 text-xs font-semibold text-white hover:opacity-90 dark:bg-dark-primary"
                 >
                   Retry
@@ -443,19 +692,20 @@ export default function Assistant() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKey}
-                placeholder="Ask me anything..."
+                placeholder="Ask me anything about the portfolio..."
                 aria-label="Ask Kai's assistant"
                 className="flex-1 bg-transparent px-sm py-sm text-small placeholder:text-light-text-secondary focus:outline-none dark:placeholder:text-dark-text-secondary"
               />
               <button
                 onClick={() => {
                   if (loading) {
-                    cancelStreaming();
+                    cancelRequest();
                   } else {
                     void send();
                   }
                 }}
                 aria-label="Send message"
+                disabled={!loading && debouncedInput.trim().length === 0}
                 className="flex items-center gap-2 sm:gap-1 flex-shrink-0 rounded-lg bg-gradient-to-br from-light-primary via-light-primary to-light-accent px-3 sm:px-md py-sm text-sm font-semibold text-white shadow-md transition hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60 dark:from-dark-primary dark:via-dark-primary dark:to-dark-accent"
               >
                 {loading ? (

@@ -44,14 +44,24 @@ export default function About() {
             className="space-y-md"
           >
             <p className="text-body text-light-text-secondary dark:text-dark-text-secondary leading-relaxed">
-              Software Engineer with hands-on experience delivering backend and
-              frontend systems across finance, ERP, and high-traffic products. I
-              focus on C#, .NET Core, ASP.NET Core, React/Angular,
-              microservices, event-driven architectures, and cloud-native
-              delivery on AWS and Azure. My work has reduced production crashes
-              by 40%, accelerated reporting pipelines from minutes to seconds,
-              and improved reliability, security, and developer velocity through
-              scalable architecture and strong engineering practices.
+              Software Engineer with 5+ years of experience designing,
+              developing, and maintaining scalable web applications using C#,
+              .NET Core, and modern JavaScript frameworks. Strong background in
+              building RESTful APIs, integrating third-party systems, and
+              optimizing SQL Server and PostgreSQL databases. Experienced in
+              writing clean, maintainable, and well-documented code while
+              collaborating with cross-functional teams in Agile environments.
+              Proven ability to debug, troubleshoot, and improve system
+              performance in cloud-based architectures (Azure, AWS), delivering
+              reliable and secure software solutions.
+            </p>
+
+            <p className="text-body text-light-text-secondary dark:text-dark-text-secondary leading-relaxed">
+              Core competencies include backend and API development, database
+              optimization, cloud deployments, microservices and event-driven
+              systems, and frontend frameworks such as React, Angular, and
+              Next.js. I follow SOLID principles, DI patterns, and automated
+              CI/CD workflows to ship reliable features quickly.
             </p>
 
             <div className="pt-md">

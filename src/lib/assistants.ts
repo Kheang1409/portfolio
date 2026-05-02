@@ -1,20 +1,18 @@
-import type {
-  AssistantContext,
-  AssistantProblem,
-  AssistantRequest,
-  AssistantResponseMeta,
-  AssistantStreamEvent,
-  ConversationMessage,
-} from "./types";
+import { ApiError, requestStream } from "@/lib/api/client";
+import type { AssistantRequest, StreamChunk } from "@/lib/api/types";
 
-export type AssistantMsg = { sender: "user" | "bot"; text: string };
+const DEBUG_AI = process.env.NEXT_PUBLIC_DEBUG_AI === "true";
 
 export type AssistantStreamHandlers = {
-  onDelta?: (event: Extract<AssistantStreamEvent, { type: "delta" }>) => void;
-  onCompleted?: (
-    event: Extract<AssistantStreamEvent, { type: "completed" }>,
-  ) => void;
-  onError?: (event: Extract<AssistantStreamEvent, { type: "error" }>) => void;
+  onDelta?: (event: Extract<StreamChunk, { type: "delta" }>) => void;
+  onCompleted?: (event: Extract<StreamChunk, { type: "completed" }>) => void;
+  onError?: (event: Extract<StreamChunk, { type: "error" }>) => void;
+};
+
+export type AssistantRequestOptions = {
+  signal?: AbortSignal;
+  timeoutMs?: number;
+  retries?: number;
 };
 
 function createMessageId(): string {
@@ -25,156 +23,64 @@ function createMessageId(): string {
   return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
 
-function resolveBackendUrl(path: string): string {
-  const envBackend = process.env.NEXT_PUBLIC_BACKEND_API_URL;
-  const fallbackDefault = "http://localhost:5000";
-  const backend =
-    envBackend && envBackend.trim() !== "" ? envBackend : fallbackDefault;
+function debugLog(scope: string, payload?: unknown) {
+  if (!DEBUG_AI) {
+    return;
+  }
 
-  return backend ? `${backend.replace(/\/$/, "")}${path}` : path;
+  if (payload === undefined) {
+    console.info(`[AI:${scope}]`);
+    return;
+  }
+
+  console.info(`[AI:${scope}]`, payload);
 }
 
-async function readProblem(res: Response): Promise<AssistantProblem> {
-  const contentType = res.headers.get("content-type") ?? "";
-  try {
-    if (contentType.includes("application/json")) {
-      const json = (await res.json()) as Record<string, unknown>;
-      const ext = (json.extensions ?? json) as Record<string, unknown>;
-      return {
-        title: typeof json.title === "string" ? json.title : undefined,
-        detail: typeof json.detail === "string" ? json.detail : undefined,
-        status: typeof json.status === "number" ? json.status : res.status,
-        errorCode:
-          typeof ext.errorCode === "string"
-            ? ext.errorCode
-            : typeof json.errorCode === "string"
-              ? json.errorCode
-              : undefined,
-        retryable:
-          typeof ext.retryable === "boolean"
-            ? ext.retryable
-            : typeof json.retryable === "boolean"
-              ? json.retryable
-              : undefined,
-      };
-    }
-
-    const text = await res.text();
+function createErrorChunk(
+  error: unknown,
+): Extract<StreamChunk, { type: "error" }> {
+  if (error instanceof ApiError) {
     return {
-      status: res.status,
-      detail: text,
+      type: "error",
+      messageId: createMessageId(),
+      errorCode:
+        error.code ?? (error.status ? `HTTP_${error.status}` : "API_ERROR"),
+      retryable: error.retryable,
+      errorMessage: error.message,
     };
-  } catch {
-    return { status: res.status };
-  }
-}
-
-export async function askAssistant(
-  message: string,
-  history: ConversationMessage[] = [],
-  context?: AssistantContext,
-): Promise<AssistantResponseMeta> {
-  const payload: AssistantRequest = { message, history, context };
-  const url = resolveBackendUrl("/api/assistants/ask");
-
-  const res = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-
-  if (!res.ok) {
-    const text = await res.text().catch(() => null);
-    throw new Error(text ?? `Request failed with status ${res.status}`);
   }
 
-  const text = await res.text();
-  const modelUsed = res.headers.get("X-AI-Model-Used") ?? undefined;
-  const latencyRaw = res.headers.get("X-AI-Latency-Ms");
-  const fallbackRaw = res.headers.get("X-AI-Fallback-Used");
-
-  const latencyMs = latencyRaw ? Number(latencyRaw) : undefined;
-  const fallbackUsed = fallbackRaw
-    ? fallbackRaw.toLowerCase() === "true"
-    : undefined;
+  if (error instanceof DOMException && error.name === "AbortError") {
+    return {
+      type: "error",
+      messageId: createMessageId(),
+      errorCode: "REQUEST_ABORTED",
+      retryable: false,
+      errorMessage: "Request cancelled.",
+    };
+  }
 
   return {
-    text,
-    modelUsed,
-    latencyMs: Number.isFinite(latencyMs) ? latencyMs : undefined,
-    fallbackUsed,
+    type: "error",
+    messageId: createMessageId(),
+    errorCode: "NETWORK_ERROR",
+    retryable: true,
+    errorMessage: "Network request failed.",
   };
 }
 
-export async function streamAssistant(
-  message: string,
-  history: ConversationMessage[] = [],
-  context: AssistantContext | undefined,
+async function parseNdjsonStream(
+  response: Response,
   handlers: AssistantStreamHandlers,
-  signal?: AbortSignal,
 ): Promise<void> {
-  const payload: AssistantRequest = { message, history, context };
-  const url = resolveBackendUrl("/api/assistants/stream");
-
-  const res = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-    signal,
-  });
-
-  if (!res.ok) {
-    const problem = await readProblem(res);
-    const shouldFallback =
-      res.status === 404 ||
-      res.status === 409 ||
-      problem.errorCode === "STREAMING_DISABLED";
-
-    if (shouldFallback) {
-      const buffered = await askAssistant(message, history, context);
-      const messageId = createMessageId();
-      handlers.onDelta?.({
-        type: "delta",
-        messageId,
-        text: buffered.text,
-        modelUsed: buffered.modelUsed,
-        fallbackUsed: buffered.fallbackUsed,
-      });
-      handlers.onCompleted?.({
-        type: "completed",
-        messageId,
-        modelUsed: buffered.modelUsed,
-        fallbackUsed: buffered.fallbackUsed,
-        latencyMs: buffered.latencyMs,
-      });
-      return;
-    }
-
-    handlers.onError?.({
-      type: "error",
-      messageId: createMessageId(),
-      errorCode: problem.errorCode ?? `HTTP_${res.status}`,
-      retryable: problem.retryable ?? (res.status === 429 || res.status >= 500),
-      errorMessage:
-        problem.detail ??
-        problem.title ??
-        `Request failed with status ${res.status}`,
-    });
-    return;
-  }
-
-  if (!res.body) {
-    handlers.onError?.({
-      type: "error",
-      messageId: createMessageId(),
-      errorCode: "STREAM_UNAVAILABLE",
+  if (!response.body) {
+    throw new ApiError("Streaming response body is unavailable.", {
+      code: "STREAM_UNAVAILABLE",
       retryable: true,
-      errorMessage: "Streaming response body is unavailable.",
     });
-    return;
   }
 
-  const reader = res.body.getReader();
+  const reader = response.body.getReader();
   const decoder = new TextDecoder();
   let buffer = "";
 
@@ -186,44 +92,91 @@ export async function streamAssistant(
       }
 
       buffer += decoder.decode(value, { stream: true });
-      let lineBreakIndex = buffer.indexOf("\n");
 
-      while (lineBreakIndex >= 0) {
-        const line = buffer.slice(0, lineBreakIndex).trim();
-        buffer = buffer.slice(lineBreakIndex + 1);
-        lineBreakIndex = buffer.indexOf("\n");
+      let lineEnd = buffer.indexOf("\n");
+      while (lineEnd >= 0) {
+        const rawLine = buffer.slice(0, lineEnd);
+        buffer = buffer.slice(lineEnd + 1);
+        lineEnd = buffer.indexOf("\n");
 
+        const line = rawLine.trim();
         if (!line) {
           continue;
         }
 
         try {
-          const event = JSON.parse(line) as AssistantStreamEvent;
-          if (event.type === "delta") {
-            handlers.onDelta?.(event);
-            continue;
-          }
+          const chunk = JSON.parse(line) as StreamChunk;
+          debugLog(`ndjson:${chunk.type}`, chunk);
 
-          if (event.type === "completed") {
-            handlers.onCompleted?.(event);
-            continue;
-          }
-
-          if (event.type === "error") {
-            handlers.onError?.(event);
+          if (chunk.type === "delta") {
+            handlers.onDelta?.(chunk);
+          } else if (chunk.type === "completed") {
+            handlers.onCompleted?.(chunk);
+          } else {
+            handlers.onError?.(chunk);
           }
         } catch {
           handlers.onError?.({
             type: "error",
             messageId: createMessageId(),
-            errorCode: "STREAM_PARSE_ERROR",
+            errorCode: "NDJSON_PARSE_ERROR",
             retryable: true,
-            errorMessage: "Failed to parse streaming payload.",
+            errorMessage: "Failed to parse assistant stream.",
           });
         }
       }
     }
+
+    const tail = buffer.trim();
+    if (tail) {
+      try {
+        const chunk = JSON.parse(tail) as StreamChunk;
+        debugLog(`ndjson:${chunk.type}`, chunk);
+        if (chunk.type === "delta") {
+          handlers.onDelta?.(chunk);
+        } else if (chunk.type === "completed") {
+          handlers.onCompleted?.(chunk);
+        } else {
+          handlers.onError?.(chunk);
+        }
+      } catch {
+        handlers.onError?.({
+          type: "error",
+          messageId: createMessageId(),
+          errorCode: "NDJSON_PARSE_ERROR",
+          retryable: true,
+          errorMessage: "Failed to parse assistant stream.",
+        });
+      }
+    }
   } finally {
     reader.releaseLock();
+  }
+}
+
+export async function streamAssistant(
+  payload: AssistantRequest,
+  handlers: AssistantStreamHandlers,
+  options: AssistantRequestOptions = {},
+): Promise<void> {
+  debugLog("assistant:request", payload);
+
+  try {
+    const response = await requestStream({
+      path: "/api/assistant",
+      body: payload,
+      signal: options.signal,
+      timeoutMs: options.timeoutMs,
+      retries: options.retries,
+      useAssistantProxy: true,
+    });
+
+    await parseNdjsonStream(response, handlers);
+  } catch (error) {
+    if (error instanceof DOMException && error.name === "AbortError") {
+      throw error;
+    }
+
+    handlers.onError?.(createErrorChunk(error));
   }
 }
