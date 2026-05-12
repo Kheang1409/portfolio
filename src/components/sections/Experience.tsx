@@ -35,7 +35,7 @@ const experiences = [
     ],
   },
   {
-    company: "Pathmazing Inc",
+    company: "Pathmazing Inc.",
     role: "Software Engineer",
     duration: "Mar 2021 - Sep 2021",
     location: "Phnom Penh, Cambodia",

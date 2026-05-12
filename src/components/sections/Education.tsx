@@ -31,7 +31,7 @@ const education = [
 const certifications = [
   {
     name: "Best Project & Team Effort of The Year",
-    issuer: "Khmer Care, Pathmazing Inc",
+    issuer: "Khmer Care, Pathmazing Inc.",
     year: "06/2021",
     credential: "Honor",
   },

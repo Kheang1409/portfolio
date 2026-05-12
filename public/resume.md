@@ -46,7 +46,7 @@ Tools & Practices: Git, Code Reviews, Unit & Integration Testing (xUnit, NUnit),
 - Designed and developed backend services for payroll and attendance systems, automating workflows and reducing processing time by 7 days.
 - Implemented secure authentication and authorization using OAuth2, JWT, and RBAC.
 
-### Pathmazing Inc — Software Engineer
+### Pathmazing Inc. — Software Engineer
 
 **Mar 2021 – Sep 2021 • Phnom Penh, Cambodia**
 
@@ -84,4 +84,4 @@ Collaborated with users to optimize SQL queries and reporting features, deliveri
 
 ## HONORS
 
-- Best Project & Team Effort of The Year – Khmer Care, Pathmazing Inc (06/2021)
+- Best Project & Team Effort of The Year – Khmer Care, Pathmazing Inc. (06/2021)

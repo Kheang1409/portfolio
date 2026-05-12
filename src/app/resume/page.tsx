@@ -145,7 +145,7 @@ export default function ResumePage() {
 
           <article>
             <h4 className="font-semibold">
-              Pathmazing Inc — Software Engineer
+              Pathmazing Inc. — Software Engineer
             </h4>
             <p className="text-small text-light-text-secondary dark:text-dark-text-secondary">
               Mar 2021 – Sep 2021 • Phnom Penh, Cambodia
