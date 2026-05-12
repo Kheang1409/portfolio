@@ -4,7 +4,7 @@ import ResumeActions from "./ResumeActions";
 export const metadata = buildPageMetadata({
   title: "Resume — Hang Kheang Taing",
   description:
-    "Resume of Hang Kheang Taing — Software Engineer. 5+ years in C#, .NET Core, RESTful APIs, database optimization, cloud deployments (Azure, AWS), microservices.",
+    "Resume of Hang Kheang Taing — Software Engineer with 5+ years in C#, .NET Core, ASP.NET Core, RESTful APIs, SQL optimization, cloud deployments, and microservices.",
   path: "/resume",
 });
 
@@ -63,10 +63,49 @@ export default function ResumePage() {
             Next.js, JavaScript, TypeScript, HTML5, CSS3, Responsive Design,
             SignalR. Databases: SQL Server, PostgreSQL, MongoDB, EF Core,
             Dapper. Cloud & DevOps: Azure, AWS, Docker, Kubernetes, CI/CD (Azure
-            DevOps, GitHub Actions).
+            DevOps, GitHub Actions). Integration & Messaging: REST API
+            Integrations, Kafka, Redis, SignalR. Security: OAuth2, JWT, RBAC.
+            Tools & Practices: Git, Code Reviews, Unit & Integration Testing
+            (xUnit, NUnit), Agile/Scrum, Debugging & Troubleshooting,
+            Performance Tuning.
           </p>
 
           <h3 className="text-h4 font-semibold">PROFESSIONAL EXPERIENCE</h3>
+
+          <article>
+            <h4 className="font-semibold">
+              Better & Best Inc. — Software Engineer
+            </h4>
+            <p className="text-small text-light-text-secondary dark:text-dark-text-secondary">
+              Apr 2026 – Present • Oregon, WI, USA
+            </p>
+            <ul className="list-disc ml-lg mt-xs space-y-1 text-body text-light-text-secondary dark:text-dark-text-secondary">
+              <li>
+                Design and develop backend services and internal applications
+                supporting POS, billing, and order management systems.
+              </li>
+              <li>
+                Build RESTful APIs enabling real-time data processing and system
+                integration across operational workflows.
+              </li>
+              <li>
+                Optimize database queries and schema design, improving response
+                time and system reliability under daily transaction loads.
+              </li>
+              <li>
+                Refactor legacy components into modular, scalable services to
+                improve maintainability and extensibility.
+              </li>
+              <li>
+                Troubleshoot and resolve production issues, ensuring high
+                availability and system stability.
+              </li>
+              <li>
+                Collaborate with stakeholders to translate business requirements
+                into scalable technical solutions.
+              </li>
+            </ul>
+          </article>
 
           <article>
             <h4 className="font-semibold">
@@ -99,13 +138,7 @@ export default function ResumePage() {
               </li>
               <li>
                 Implemented secure authentication and authorization using
-                OAuth2, JWT, and RBAC, ensuring compliance and zero unauthorized
-                access incidents.
-              </li>
-              <li>
-                Collaborated with architects, QA, and DevOps in Agile sprints,
-                using Jira for sprint planning and GitHub Actions for CI/CD
-                pipelines.
+                OAuth2, JWT, and RBAC.
               </li>
             </ul>
           </article>
@@ -205,6 +238,13 @@ export default function ResumePage() {
               </h4>
               <p className="text-small text-light-text-secondary dark:text-dark-text-secondary">
                 Nov 2016 – Nov 2020 • Phnom Penh, Cambodia
+              </p>
+            </div>
+            <div>
+              <h4 className="font-semibold">Work Authorization</h4>
+              <p className="text-body text-light-text-secondary dark:text-dark-text-secondary">
+                Authorized to work in the U.S. without current or future
+                employer sponsorship.
               </p>
             </div>
             <div>

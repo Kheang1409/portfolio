@@ -205,7 +205,7 @@ export default function Skills() {
                             ease: "easeOut",
                             delay: categoryIdx * 0.1 + skillIdx * 0.05,
                           }}
-                          viewport={{ once: false, amount: 0.3 }}
+                          viewport={{ once: true, amount: 0.3 }}
                         />
                       </div>
                     </motion.div>

@@ -5,19 +5,33 @@ import { motion } from "framer-motion";
 
 const experiences = [
   {
+    company: "Better & Best Inc.",
+    role: "Software Engineer",
+    duration: "Apr 2026 - Present",
+    location: "Oregon, WI, USA",
+    description:
+      "Designing and developing backend services and internal applications supporting POS, billing, and order management systems.",
+    achievements: [
+      "Build RESTful APIs enabling real-time data processing and system integration across operational workflows",
+      "Optimize database queries and schema design to improve response time and system reliability under daily transaction loads",
+      "Refactor legacy components into modular, scalable services to improve maintainability and extensibility",
+      "Troubleshoot and resolve production issues to ensure high availability and system stability",
+      "Collaborate with stakeholders to translate business requirements into scalable technical solutions",
+    ],
+  },
+  {
     company: "Sahakrinpheap Microfinance PLC",
     role: "Software Engineer",
     duration: "Sep 2021 - May 2024",
     location: "Phnom Penh, Cambodia",
     description:
-      "Re-architected legacy banking modules into full-stack microservices using C#/.NET Core backend services with React/Angular frontends for reliable financial operations.",
+      "Re-architected legacy banking systems into scalable microservices using C# and ASP.NET Core, developing RESTful APIs and improving maintainability.",
     achievements: [
-      "Cut system crashes by 40% and reduced maintenance by 20+ hours/month through microservice re-architecture",
-      "Built event-driven monitoring and alerting services on Azure, improving incident response by 50% and sustaining 99% uptime",
-      "Optimized SQL Server and PostgreSQL reporting pipelines from minutes to 2 seconds",
-      "Designed and automated payroll and attendance backend services, reducing processing time by 7 days",
-      "Implemented OAuth2, JWT, and RBAC with zero unauthorized access incidents",
-      "Mentored engineers and led code reviews, reducing onboarding time by 30% and lowering defect rates",
+      "Re-architected legacy banking systems into scalable microservices using C# and ASP.NET Core, developing RESTful APIs and reducing system crashes by 40% while improving maintainability",
+      "Built and maintained event-driven monitoring and alerting systems on Azure, improving incident response time by 50% and achieving 99% uptime",
+      "Optimized SQL Server and PostgreSQL databases by refining complex queries, stored procedures, and indexing strategies, reducing execution time from minutes to 2 seconds",
+      "Designed and developed backend services for payroll and attendance systems, automating workflows and reducing processing time by 7 days",
+      "Implemented secure authentication and authorization using OAuth2, JWT, and RBAC",
     ],
   },
   {
@@ -26,13 +40,11 @@ const experiences = [
     duration: "Mar 2021 - Sep 2021",
     location: "Phnom Penh, Cambodia",
     description:
-      "Designed secure payment APIs and ERP integrations with C# .NET backend and React frontend for higher reliability and performance.",
+      "Designed and integrated secure RESTful APIs with third-party payment systems, improving transaction reliability.",
     achievements: [
-      "Increased transaction reliability by 30% through secure payment API integration",
-      "Developed and scaled backend services and ERP integrations to reduce manual workflows",
-      "Optimized database queries and upgraded core components, improving performance by 20%",
-      "Improved reporting pipelines from 30 minutes to 5 minutes",
-      "Contributed backend support to fundraising platform enabling $70.8K raised across 30+ organizations",
+      "Designed and integrated secure RESTful APIs with third-party payment systems, improving transaction reliability by 30%",
+      "Developed and maintained backend services using C# and .NET, supporting ERP integrations and reducing manual operational workflows",
+      "Optimized SQL queries and database performance, improving system efficiency by 20%",
     ],
   },
   {
@@ -41,13 +53,10 @@ const experiences = [
     duration: "Oct 2020 - May 2021",
     location: "Phnom Penh, Cambodia",
     description:
-      "Built scalable backend systems for POS and management platforms with ERP integration and real-time communication features.",
+      "Developed scalable backend systems for POS and management platforms, reducing manual data entry errors.",
     achievements: [
-      "Eliminated 99% of manual data entry errors by delivering scalable backend systems",
-      "Delivered ERP-integrated backend services enabling real-time tracking and operational reporting",
-      "Designed booking and scheduling services that reduced processing time by 50%",
-      "Implemented SignalR real-time communication features, reducing user wait times by 45%",
-      "Applied modular architecture and design patterns to improve maintainability and scalability",
+      "Developed scalable backend systems for POS and management platforms, reducing manual data entry errors by 99%",
+      "Built and maintained RESTful APIs for ERP-integrated systems, enabling real-time data tracking and reporting",
     ],
   },
   {
@@ -56,10 +65,9 @@ const experiences = [
     duration: "Oct 2019 - Oct 2020",
     location: "Phnom Penh, Cambodia",
     description:
-      "Developed and deployed web applications with CI/CD pipelines, Docker containers, and Kubernetes to improve release reliability.",
+      "Developed and deployed web applications using CI/CD pipelines, Docker, and Kubernetes to improve release reliability.",
     achievements: [
-      "Improved deployment reliability and reduced manual release effort with automated CI/CD",
-      "Enhanced backend services and database performance, increasing overall system efficiency by about 30%",
+      "Developed and deployed web applications using CI/CD pipelines, Docker, and Kubernetes, improving deployment reliability and reducing manual release effort",
     ],
   },
 ];

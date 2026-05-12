@@ -146,7 +146,6 @@ export default function Contact() {
               const isExternal = href.startsWith("http");
               const Element: any = href ? motion.a : motion.div;
               const commonProps = {
-                key: idx,
                 "aria-label": `${item.label}: ${item.value}`,
                 initial: "hidden",
                 whileInView: "visible",
@@ -159,6 +158,7 @@ export default function Contact() {
 
               return (
                 <Element
+                  key={idx}
                   {...commonProps}
                   href={href || undefined}
                   target={isExternal ? "_blank" : undefined}
