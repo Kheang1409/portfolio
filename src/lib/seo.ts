@@ -7,7 +7,7 @@ export const siteConfig = {
   name: "Hang Kheang Taing",
   fullTitle: "Hang Kheang Taing | Software Engineer",
   description:
-    "Software Engineer with 5+ years of experience designing, developing, and maintaining scalable web applications using C#, .NET Core, and modern JavaScript frameworks. Strong background in RESTful API development, database optimization (SQL Server, PostgreSQL), cloud deployments on Azure and AWS, microservices, and event-driven architectures. Available to work in the U.S. without sponsorship.",
+    "Software Engineer with experience designing, developing, and maintaining scalable web applications using C#, .NET Core, and modern JavaScript frameworks. Strong background in RESTful API development, database optimization (SQL Server, PostgreSQL), cloud deployments on Azure and AWS, microservices, and event-driven architectures. Available to work in the U.S. without sponsorship.",
   url: siteUrl,
   locale: "en_US",
   keywords: [

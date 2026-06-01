@@ -4,7 +4,7 @@ import ResumeActions from "./ResumeActions";
 export const metadata = buildPageMetadata({
   title: "Resume — Hang Kheang Taing",
   description:
-    "Resume of Hang Kheang Taing — Software Engineer with 5+ years in C#, .NET Core, ASP.NET Core, RESTful APIs, SQL optimization, cloud deployments, and microservices.",
+    "Resume of Hang Kheang Taing — Software Engineer specializing in C#, .NET Core, ASP.NET Core, RESTful APIs, SQL optimization, cloud deployments, and microservices.",
   path: "/resume",
 });
 
@@ -34,8 +34,8 @@ export default function ResumePage() {
         <section className="mt-lg space-y-md">
           <h2 className="text-h4 font-semibold">SUMMARY</h2>
           <p className="text-body text-light-text-secondary dark:text-dark-text-secondary leading-relaxed">
-            Software Engineer with 5+ years of experience designing, developing,
-            and maintaining scalable web applications using C#, .NET Core, and
+            Software Engineer with experience designing, developing, and
+            maintaining scalable web applications using C#, .NET Core, and
             modern JavaScript frameworks. Strong background in building RESTful
             APIs, integrating third-party systems, and optimizing SQL Server and
             PostgreSQL databases. Experienced in writing clean, maintainable,
