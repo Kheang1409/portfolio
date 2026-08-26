@@ -1,8 +1,9 @@
 "use client";
 
-import { Github, ExternalLink, Code2, Star } from "lucide-react";
+import { Github, ExternalLink, Star } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export type Project = {
   title: string;
@@ -35,10 +36,11 @@ export function FeaturedProjectCard({
       variants={fadeInVariants}
       transition={{ duration: 0.5, delay: index * 0.1 }}
       viewport={{ once: true, margin: "-100px" }}
-      className="group rounded-lg overflow-hidden bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-light-primary/50 dark:hover:border-dark-primary/50 hover:shadow-lg transition-all duration-300"
+      className="project-featured-card group rounded-lg overflow-hidden bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-light-primary/50 dark:hover:border-dark-primary/50 hover:shadow-lg transition-all duration-300"
     >
-      <div className="h-48 bg-light-primary/10 dark:bg-dark-primary/10 flex items-center justify-center group-hover:bg-light-primary/20 dark:group-hover:bg-dark-primary/20 transition-colors">
-        <Code2 className="w-16 h-16 text-light-primary/30 dark:text-dark-primary/30" />
+      <div className="project-featured-card__visual h-48 bg-light-primary/10 dark:bg-dark-primary/10 flex items-center justify-center group-hover:bg-light-primary/20 dark:group-hover:bg-dark-primary/20 transition-colors">
+        <span>FEATURED BUILD · 0{index + 1}</span>
+        <Image src="/pixel-portal.gif" alt="" width={384} height={342} unoptimized />
       </div>
 
       <div className="p-lg space-y-sm">
@@ -112,7 +114,7 @@ export function OtherProjectCard({ project, index }: OtherProjectCardProps) {
       variants={fadeInVariants}
       transition={{ duration: 0.5, delay: index * 0.1 }}
       viewport={{ once: true, margin: "-100px" }}
-      className="group rounded-lg bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-light-primary/50 dark:hover:border-dark-primary/50 hover:shadow-lg transition-all duration-300 p-lg"
+      className="project-repository-card group rounded-lg bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-light-primary/50 dark:hover:border-dark-primary/50 hover:shadow-lg transition-all duration-300 p-lg"
     >
       <div className="flex items-start justify-between gap-sm mb-md">
         <h4 className="text-h4 font-semibold text-light-text-primary dark:text-dark-text-primary">

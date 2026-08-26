@@ -114,16 +114,21 @@ export default function Projects() {
           viewport={{ once: true, margin: "-100px" }}
           className="mb-3xl"
         >
+          <div className="section-title-lockup">
           <h2
             id="projects-heading"
             className="text-h2 font-bold text-light-text-primary dark:text-dark-text-primary mb-sm"
           >
-            Featured Projects
+            Projects
           </h2>
-          <div className="w-12 h-1 bg-light-primary dark:bg-dark-primary rounded-full" />
+          <div className="section-level-divider w-full h-2 bg-light-primary dark:bg-dark-primary" />
+          </div>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-lg mb-3xl">
+        <div className="projects-group-heading">
+          <span>01</span><div><h3>Selected case studies</h3><p>Products with measurable business and user impact.</p></div>
+        </div>
+        <div className="project-case-studies grid md:grid-cols-2 gap-lg mb-3xl">
           {resumeProjects.map((project, idx) => (
             <motion.article
               key={project.title}
@@ -132,7 +137,7 @@ export default function Projects() {
               variants={fadeInVariants}
               transition={{ duration: 0.45, delay: idx * 0.08 }}
               viewport={{ once: true, margin: "-100px" }}
-              className="p-lg rounded-lg bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border"
+              className="project-case-study p-lg rounded-lg bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border"
             >
               <div className="flex items-center justify-between gap-md mb-sm">
                 <h3 className="text-h3 font-semibold text-light-text-primary dark:text-dark-text-primary">
@@ -152,7 +157,10 @@ export default function Projects() {
           ))}
         </div>
 
-        <div className="grid md:grid-cols-2 gap-lg mb-3xl">
+        <div className="projects-group-heading">
+          <span>02</span><div><h3>Featured builds</h3><p>Highlighted repositories from my current engineering work.</p></div>
+        </div>
+        <div className="project-featured-grid grid lg:grid-cols-2 gap-lg mb-3xl">
           {featuredDisplay.map((project, idx) => (
             <FeaturedProjectCard key={idx} project={project} index={idx} />
           ))}
@@ -173,14 +181,12 @@ export default function Projects() {
           variants={fadeInVariants}
           transition={{ duration: 0.5, delay: 0.2 }}
           viewport={{ once: true, margin: "-100px" }}
-          className="mb-xl"
+          className="projects-group-heading mb-xl"
         >
-          <h3 className="text-h3 font-semibold text-light-text-primary dark:text-dark-text-primary mb-lg">
-            Other Projects
-          </h3>
+          <span>03</span><div><h3>More repositories</h3><p>Additional experiments, services, and open-source work.</p></div>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-lg">
+        <div className="project-repository-grid grid md:grid-cols-2 xl:grid-cols-3 gap-lg">
           {othersDisplay.map((project, idx) => (
             <OtherProjectCard key={idx} project={project} index={idx} />
           ))}

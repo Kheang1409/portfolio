@@ -14,7 +14,7 @@ export function Badge({ variants }: BadgeProps) {
     <motion.div variants={variants} className="mb-lg">
       <span className="inline-block px-md py-2xs rounded-full bg-light-primary/10 dark:bg-dark-primary/10 text-light-primary dark:text-dark-primary text-small font-medium">
         <span className="mr-2 inline-block h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,0.9)]" />
-        Available for new opportunities
+        PLAYER 1 · READY FOR A NEW QUEST
       </span>
     </motion.div>
   );
@@ -31,9 +31,9 @@ export function Heading({ variants }: HeadingProps) {
       variants={variants}
       className="text-[clamp(2.75rem,6vw,5.4rem)] font-bold tracking-[-0.055em] text-light-text-primary dark:text-dark-text-primary mb-md leading-[0.98]"
     >
-      I build systems
+      I build digital
       <br />
-      <span className="hero-gradient-text">that scale.</span>
+      <span className="hero-gradient-text">worlds that scale.</span>
     </motion.h1>
   );
 }
@@ -70,7 +70,7 @@ export function CTAButtons({ variants }: CTAButtonsProps) {
         aria-label="Jump to featured projects"
         className="px-xl py-sm rounded-md bg-light-primary dark:bg-dark-primary text-white font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300 flex items-center gap-2 min-h-[44px]"
       >
-        View Projects
+        Start Adventure
         <ArrowRight className="w-5 h-5" />
       </Link>
 
@@ -86,7 +86,7 @@ export function ScrollIndicator() {
       transition={{ duration: 2, repeat: Infinity }}
       className="mt-2xl hidden md:block text-light-text-secondary dark:text-dark-text-secondary"
     >
-      <p className="text-small font-medium mb-2">Scroll to explore</p>
+      <p className="text-small font-medium mb-2">PRESS ↓ TO EXPLORE</p>
       <svg
         className="w-6 h-6 mx-auto"
         fill="none"

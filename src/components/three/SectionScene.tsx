@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { useTheme } from "next-themes";
+import Image from "next/image";
 
 export type SceneVariant =
   | "about"
@@ -25,11 +26,11 @@ const variantIndex: Record<SceneVariant, number> = {
 
 function geometryFor(variant: SceneVariant, index: number) {
   const choice = (variantIndex[variant] + index) % 5;
-  if (choice === 0) return new THREE.IcosahedronGeometry(0.55, 1);
-  if (choice === 1) return new THREE.TorusKnotGeometry(0.42, 0.12, 72, 10);
-  if (choice === 2) return new THREE.OctahedronGeometry(0.58, 0);
-  if (choice === 3) return new THREE.BoxGeometry(0.75, 0.75, 0.75, 2, 2, 2);
-  return new THREE.TorusGeometry(0.48, 0.12, 12, 48);
+  if (choice === 0) return new THREE.BoxGeometry(0.72, 0.72, 0.72);
+  if (choice === 1) return new THREE.CylinderGeometry(0.38, 0.38, 0.12, 12);
+  if (choice === 2) return new THREE.BoxGeometry(1.25, 0.38, 0.7);
+  if (choice === 3) return new THREE.ConeGeometry(0.52, 0.85, 4);
+  return new THREE.BoxGeometry(0.52, 1.1, 0.52);
 }
 
 export default function SectionScene({ variant }: Props) {
@@ -68,8 +69,8 @@ export default function SectionScene({ variant }: Props) {
     const root = new THREE.Group();
     scene.add(root);
     const palette = isDark
-      ? [0x3b82f6, 0x22d3ee, 0x60a5fa, 0x2dd4bf]
-      : [0xcbd5e1, 0x94a3b8, 0xe2e8f0, 0x64748b];
+      ? [0xff6b57, 0xffca3a, 0x57b84b, 0x5fa8ff]
+      : [0xe94f37, 0xffca3a, 0x57b84b, 0x2878d0];
     const seed = variantIndex[variant];
     const objects: THREE.Mesh[] = [];
 
@@ -77,13 +78,14 @@ export default function SectionScene({ variant }: Props) {
     for (let i = 0; i < objectCount; i += 1) {
       const material = new THREE.MeshPhysicalMaterial({
         color: palette[(i + seed) % palette.length],
-        roughness: 0.28,
-        metalness: 0.58,
+        roughness: 0.82,
+        metalness: 0.04,
         transparent: true,
         opacity: isDark ? (i < 3 ? 0.44 : 0.24) : (i < 3 ? 0.22 : 0.11),
-        wireframe: i % 3 === 2,
+        wireframe: false,
         emissive: palette[(i + seed + 1) % palette.length],
-        emissiveIntensity: isDark ? 0.15 : 0.025,
+        emissiveIntensity: isDark ? 0.08 : 0,
+        flatShading: true,
       });
       const mesh = new THREE.Mesh(geometryFor(variant, i), material);
       const side = i % 2 === 0 ? -1 : 1;
@@ -221,5 +223,41 @@ export default function SectionScene({ variant }: Props) {
     };
   }, [active, resolvedTheme, variant]);
 
-  return <div ref={mountRef} className={`section-scene section-scene--${variant}`} aria-hidden="true" />;
+  const actors: Record<SceneVariant, Array<{ src: string; className: string }>> = {
+    about: [
+      { src: "/avatar-pixel-wave.gif", className: "pixel-actor pixel-actor--right pixel-actor--large" },
+      { src: "/pixel-cloud.png", className: "pixel-cloud pixel-cloud--left" },
+    ],
+    skills: [
+      { src: "/avatar-pixel-working.gif", className: "pixel-actor pixel-actor--left pixel-actor--large" },
+      { src: "/pixel-coin.gif", className: "pixel-pickup pixel-pickup--right" },
+    ],
+    experience: [
+      { src: "/pixel-enemy-walking.gif", className: "pixel-actor pixel-actor--right" },
+      { src: "/avatar-pixel-running.gif", className: "pixel-actor pixel-actor--left" },
+    ],
+    projects: [
+      { src: "/pixel-portal.gif", className: "pixel-portal pixel-portal--right" },
+      { src: "/pixel-slime-walking.gif", className: "pixel-actor pixel-actor--left pixel-actor--small" },
+    ],
+    education: [
+      { src: "/avatar-pixel-jump.gif", className: "pixel-actor pixel-actor--right pixel-actor--large" },
+      { src: "/pixel-mushroom.gif", className: "pixel-pickup pixel-pickup--left" },
+    ],
+    contact: [
+      { src: "/pixel-portal.gif", className: "pixel-portal pixel-portal--left" },
+      { src: "/kai-bot-pixel.gif", className: "pixel-actor pixel-actor--right pixel-actor--large" },
+    ],
+  };
+
+  return (
+    <>
+      <div ref={mountRef} className={`section-scene section-scene--${variant}`} aria-hidden="true" />
+      <div className={`pixel-level-actors pixel-level-actors--${variant}`} aria-hidden="true">
+        {actors[variant].map((actor) => (
+          <Image key={actor.src} src={actor.src} alt="" width={384} height={362} unoptimized className={actor.className} />
+        ))}
+      </div>
+    </>
+  );
 }

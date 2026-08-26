@@ -79,26 +79,28 @@ export default function Contact() {
           viewport={{ once: true, margin: "-100px" }}
           className="mb-3xl text-center"
         >
+          <div className="section-title-lockup mx-auto">
           <h2
             id="contact-heading"
             className="text-h2 font-bold text-light-text-primary dark:text-dark-text-primary mb-sm"
           >
             Contact
           </h2>
-          <div className="w-12 h-1 bg-light-primary dark:bg-dark-primary rounded-full mx-auto mb-md" />
+          <div className="section-level-divider w-full h-2 bg-light-primary dark:bg-dark-primary mb-md" />
+          </div>
           <p className="text-lg text-light-text-secondary dark:text-dark-text-secondary max-w-2xl mx-auto">
             Send a message to collaborate or say hello.
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-3xl max-w-4xl mx-auto">
+        <div className="contact-layout grid md:grid-cols-[0.82fr_1.18fr] gap-3xl max-w-5xl mx-auto">
           <motion.div
             initial="hidden"
             whileInView="visible"
             variants={fadeInVariants}
             transition={{ duration: 0.5, delay: 0.1 }}
             viewport={{ once: true, margin: "-100px" }}
-            className="space-y-lg"
+            className="contact-directory space-y-lg"
           >
             <h3 className="text-h3 font-semibold text-light-text-primary dark:text-dark-text-primary">
               Contact details
@@ -155,7 +157,7 @@ export default function Contact() {
                 transition: { duration: 0.4, delay: 0.1 + idx * 0.05 },
                 viewport: { once: true, margin: "-100px" },
                 className:
-                  "flex items-start gap-md p-md rounded-lg bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-light-primary/50 dark:hover:border-dark-primary/50 transition-all group",
+                  "contact-method flex items-start gap-md p-md rounded-lg bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-light-primary/50 dark:hover:border-dark-primary/50 transition-all group",
               };
 
               return (
@@ -190,11 +192,16 @@ export default function Contact() {
             variants={fadeInVariants}
             transition={{ duration: 0.5, delay: 0.15 }}
             viewport={{ once: true, margin: "-100px" }}
-            className="space-y-md"
+            className="contact-message-card space-y-md p-lg"
           >
-            <h3 className="text-h3 font-semibold text-light-text-primary dark:text-dark-text-primary">
-              Send a message
-            </h3>
+            <div className="contact-message-card__header">
+              <div>
+                <span>DIRECT MESSAGE</span>
+                <h3 className="text-h3 font-semibold text-light-text-primary dark:text-dark-text-primary">Send a message</h3>
+              </div>
+              <span className="contact-message-card__status"><i /> ONLINE</span>
+            </div>
+            <p className="contact-message-card__intro">Tell me what you&apos;re building, where you need help, and what success looks like.</p>
 
             <motion.div
               initial="hidden"
@@ -293,7 +300,7 @@ export default function Contact() {
                   Message Sent!
                 </>
               )}
-              {submitStatus === "idle" && "Send message"}
+              {submitStatus === "idle" && "Send quest message"}
             </motion.button>
 
             {submitStatus === "success" && (

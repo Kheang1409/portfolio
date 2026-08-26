@@ -3,11 +3,9 @@
 import { memo, useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import {
-  MessageSquare,
   X,
   Send,
   Trash2,
-  Sparkles,
   RotateCcw,
   Brain,
   Database,
@@ -17,6 +15,7 @@ import {
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
+import Image from "next/image";
 import type { Pluggable } from "unified";
 import { ApiError } from "@/lib/api/client";
 import { streamAssistant } from "@/lib/assistants";
@@ -54,7 +53,7 @@ const MetadataPill = memo(function MetadataPill({
   label,
 }: MetadataPillProps) {
   return (
-    <span className="inline-flex items-center gap-1 rounded-full border border-light-border/70 bg-light-background/80 px-2 py-0.5 text-[10px] font-medium text-light-text-secondary dark:border-dark-border/70 dark:bg-dark-background/80 dark:text-dark-text-secondary">
+    <span className="assistant-meta inline-flex items-center gap-1 rounded-full border border-light-border/70 bg-light-background/80 px-2 py-0.5 text-[10px] font-medium text-light-text-secondary dark:border-dark-border/70 dark:bg-dark-background/80 dark:text-dark-text-secondary">
       {icon}
       {label}
     </span>
@@ -124,7 +123,7 @@ const MessageBubble = memo(function MessageBubble({
       className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}
     >
       <div
-        className={`relative max-w-[90%] rounded-2xl border px-md py-sm text-small shadow-sm ${
+        className={`assistant-bubble relative max-w-[90%] rounded-2xl border px-md py-sm text-small shadow-sm ${
           message.sender === "user"
             ? "bg-gradient-to-br from-light-primary via-light-primary to-light-accent text-white border-light-primary/60 dark:from-dark-primary dark:via-dark-primary dark:to-dark-accent dark:border-dark-primary/60"
             : "bg-light-background/80 text-light-text-primary border-light-border/80 dark:bg-dark-background/80 dark:text-dark-text-primary dark:border-dark-border/80"
@@ -563,15 +562,14 @@ export default function Assistant() {
   }
 
   return (
-    <div className="fixed bottom-4 right-4 z-50 sm:bottom-6 sm:right-6">
+    <div className="pixel-assistant fixed bottom-4 right-4 z-50 sm:bottom-6 sm:right-6">
       {!open ? (
         <button
           onClick={() => setOpen(true)}
-          className="group relative flex h-12 w-12 items-center justify-center rounded-full border border-light-border/80 bg-light-surface/95 p-1 text-light-text shadow-lg transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl dark:border-dark-border/80 dark:bg-dark-surface/90 dark:text-dark-text sm:h-auto sm:w-auto sm:justify-start sm:gap-3 sm:px-lg sm:py-sm"
+          className="assistant-launcher group relative flex h-14 w-14 items-center justify-center border bg-light-surface/95 p-1 text-light-text transition-all duration-200 dark:bg-dark-surface/90 dark:text-dark-text sm:h-auto sm:w-auto sm:justify-start sm:gap-3 sm:px-md sm:py-2"
           aria-label="Open assistant"
         >
-          <span className="absolute inset-0 rounded-full bg-gradient-to-r from-light-primary/25 via-transparent to-light-primary/15 opacity-80 transition-opacity duration-200 group-hover:opacity-100 dark:from-dark-primary/25 dark:to-dark-primary/10" />
-          <span className="absolute inset-[2px] rounded-full bg-white/80 backdrop-blur dark:bg-dark-surface/90" />
+          <span className="assistant-ping" />
           <span className="relative z-10 flex items-center gap-2 text-sm font-semibold">
             <motion.span
               initial={{ scale: 1 }}
@@ -581,26 +579,26 @@ export default function Assistant() {
                 duration: 2.6,
                 ease: "easeInOut",
               }}
-              className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-light-primary via-light-primary to-light-primary/80 text-white shadow-md dark:from-dark-primary dark:via-dark-primary dark:to-dark-primary/80"
+              className="assistant-avatar flex h-10 w-10 items-center justify-center overflow-hidden"
             >
-              <MessageSquare className="h-4 w-4" />
+              <Image src="/kai-bot-pixel.gif" alt="" width={45} height={40} unoptimized />
             </motion.span>
-            <span className="hidden sm:inline">Ask Hang Kheang&apos;s Assistant</span>
+            <span className="hidden sm:inline">TALK TO KAI BOT</span>
           </span>
         </button>
       ) : (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex max-h-[calc(100dvh-2rem)] w-[calc(100vw-2rem)] max-w-[420px] flex-col overflow-hidden rounded-2xl border border-light-border/60 bg-light-surface/95 shadow-[0_20px_70px_-30px_rgba(0,0,0,0.45)] backdrop-blur dark:border-dark-border/60 dark:bg-dark-surface/90 sm:max-h-[min(720px,calc(100dvh-3rem))]"
+          className="assistant-panel flex max-h-[calc(100dvh-2rem)] w-[calc(100vw-2rem)] max-w-[420px] flex-col overflow-hidden bg-light-surface/95 dark:bg-dark-surface/95 sm:max-h-[min(720px,calc(100dvh-3rem))]"
         >
           <div className="relative flex flex-shrink-0 items-center justify-between px-sm py-sm sm:px-md">
             <div className="flex items-center gap-2 font-semibold">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-light-primary via-light-primary to-light-accent text-white shadow-md dark:from-dark-primary dark:via-dark-primary dark:to-dark-accent">
-                <Sparkles className="h-4 w-4" />
+              <span className="assistant-avatar flex h-10 w-10 items-center justify-center overflow-hidden">
+                <Image src="/kai-bot-pixel.gif" alt="" width={45} height={40} unoptimized />
               </span>
               <div className="min-w-0">
-                <div className="truncate text-sm leading-none sm:text-base">Hang Kheang&apos;s Assistant</div>
+                <div className="truncate text-sm font-black leading-none sm:text-base">KAI BOT · NPC GUIDE</div>
                 <div className="text-[11px] font-normal text-light-text-secondary dark:text-dark-text-secondary">
                   {lastModelUsed
                     ? `Model: ${lastModelUsed}${lastTtftMs ? ` · TTFT ${Math.round(lastTtftMs)}ms` : ""}${lastLatencyMs ? ` · ${Math.round(lastLatencyMs)}ms` : ""}${lastFallbackUsed ? " · fallback" : ""}`
@@ -644,12 +642,12 @@ export default function Assistant() {
 
           <div
             ref={scrollRef}
-            className="min-h-0 flex-1 space-y-sm overflow-y-auto px-sm py-sm sm:max-h-[55vh] sm:px-md"
+            className="assistant-log min-h-0 flex-1 space-y-sm overflow-y-auto px-sm py-sm sm:max-h-[55vh] sm:px-md"
           >
             {messages.length === 0 && !loading && (
-              <div className="rounded-lg border border-dashed border-light-border/80 bg-light-background/70 px-md py-lg text-center text-small text-light-text-secondary dark:border-dark-border/70 dark:bg-dark-background/60 dark:text-dark-text-secondary">
-                Start a chat to get tailored help about this portfolio or your
-                ideas.
+              <div className="assistant-empty rounded-lg border border-dashed border-light-border/80 bg-light-background/70 px-md py-lg text-center text-small text-light-text-secondary dark:border-dark-border/70 dark:bg-dark-background/60 dark:text-dark-text-secondary">
+                <strong className="mb-2 block">QUEST LOG EMPTY</strong>
+                Ask about skills, projects, experience, or begin a collaboration quest.
               </div>
             )}
 
@@ -692,7 +690,7 @@ export default function Assistant() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKey}
-                placeholder="Ask about the portfolio..."
+                placeholder="Type your quest..."
                 aria-label="Ask Kai's assistant"
                 className="flex-1 bg-transparent px-sm py-sm text-small placeholder:text-light-text-secondary focus:outline-none dark:placeholder:text-dark-text-secondary"
               />

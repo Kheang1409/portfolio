@@ -33,15 +33,23 @@ export default function Hero() {
 
   return (
     <section
+      id="home"
       aria-labelledby="hero-heading"
-      className="hero-shell min-h-screen flex items-center pt-20 overflow-hidden bg-light-background dark:bg-dark-background"
+      className="hero-shell campaign-hero min-h-screen overflow-hidden bg-light-background dark:bg-dark-background"
     >
-      <div className="max-w-container mx-auto px-sm md:px-lg w-full grid lg:grid-cols-[1.08fr_0.92fr] items-center gap-xl lg:gap-lg">
+      <div className="campaign-hero__scene">
+        <HeroScene />
+      </div>
+      <div className="campaign-hero__overlay" />
+      <div className="campaign-hero__topline">
+        <span>PORTFOLIO CAMPAIGN</span><span>IOWA · USA</span><span>2026 EDITION</span>
+      </div>
+      <div className="campaign-hero__layout">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="relative z-10 text-center md:text-left max-w-3xl py-xl lg:py-0"
+          className="campaign-hero__panel"
         >
           <Badge variants={itemVariants} />
           <Heading variants={itemVariants} />
@@ -49,14 +57,13 @@ export default function Hero() {
           <CTAButtons variants={itemVariants} />
           <ScrollIndicator />
         </motion.div>
-        <motion.div
-          initial={{ opacity: 0, scale: 0.88, y: 24 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-          className="relative h-[340px] sm:h-[430px] lg:h-[610px] -mt-xl lg:mt-0"
-        >
-          <HeroScene />
-        </motion.div>
+        <motion.aside initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: .7, delay: .5 }} className="campaign-stats">
+          <span className="campaign-stats__title">PLAYER PROFILE</span>
+          <div><strong>08+</strong><span>Years building</span></div>
+          <div><strong>24</strong><span>Core skills</span></div>
+          <div><strong>∞</strong><span>Ideas queued</span></div>
+          <p><i /> AVAILABLE FOR PARTY</p>
+        </motion.aside>
       </div>
     </section>
   );

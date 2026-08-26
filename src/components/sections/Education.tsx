@@ -60,13 +60,15 @@ export default function Education() {
           viewport={{ once: true, margin: "-100px" }}
           className="mb-3xl"
         >
+          <div className="section-title-lockup">
           <h2
             id="education-heading"
             className="text-h2 font-bold text-light-text-primary dark:text-dark-text-primary mb-sm"
           >
             Education & Honors
           </h2>
-          <div className="w-12 h-1 bg-light-primary dark:bg-dark-primary rounded-full" />
+          <div className="section-level-divider w-full h-2 bg-light-primary dark:bg-dark-primary" />
+          </div>
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-3xl">

@@ -22,7 +22,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-light-surface dark:bg-dark-surface border-t border-light-border dark:border-dark-border">
+    <footer className="campaign-footer bg-light-surface dark:bg-dark-surface border-t border-light-border dark:border-dark-border">
       <div className="max-w-container mx-auto px-sm md:px-lg py-3xl">
         <div className="flex flex-col md:flex-row items-center justify-between gap-lg">
           <div className="text-light-text-secondary dark:text-dark-text-secondary text-small text-center md:text-left">

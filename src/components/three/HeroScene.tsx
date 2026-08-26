@@ -1,110 +1,77 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 import * as THREE from "three";
-import { useTheme } from "next-themes";
+
+const palette = { grass: 0x57b84b, grassDark: 0x26863a, dirt: 0xb76532, brick: 0xd85632, brickDark: 0x8f2f29, gold: 0xffcc35, question: 0xffa928, cloud: 0xffffff };
 
 export default function HeroScene() {
   const mountRef = useRef<HTMLDivElement>(null);
-  const { resolvedTheme } = useTheme();
-
   useEffect(() => {
     const mount = mountRef.current;
     if (!mount) return;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const isMobile = window.matchMedia("(max-width: 767px)").matches;
-    const isDark = resolvedTheme === "dark";
-    const primary = isDark ? 0x3b82f6 : 0xd8dee8;
-    const accent = isDark ? 0x22d3ee : 0x94a3b8;
-    const lightColor = isDark ? accent : 0xffffff;
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
-    camera.position.set(0, 0.15, 7);
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    renderer.setPixelRatio(isMobile ? 1 : Math.min(window.devicePixelRatio, 1.6));
+    const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
+    camera.position.set(0, 2.2, 10.5);
+    camera.lookAt(0, 0.4, 0);
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: false });
+    renderer.setPixelRatio(isMobile ? 1 : Math.min(window.devicePixelRatio, 1.5));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = isDark ? 1.15 : 0.88;
+    renderer.shadowMap.enabled = !isMobile;
+    renderer.shadowMap.type = THREE.BasicShadowMap;
     renderer.setClearColor(0x000000, 0);
     mount.appendChild(renderer.domElement);
-
     const world = new THREE.Group();
+    world.rotation.x = -0.08;
     scene.add(world);
-    const core = new THREE.Mesh(
-      new THREE.IcosahedronGeometry(1.2, 2),
-      new THREE.MeshPhysicalMaterial({ color: primary, roughness: isDark ? 0.2 : 0.3, metalness: isDark ? 0.45 : 0.3, transmission: isDark ? 0.12 : 0.08, clearcoat: isDark ? 0.15 : 0.5, clearcoatRoughness: 0.25, emissive: isDark ? 0x071c4f : 0x000000, emissiveIntensity: isDark ? 0.9 : 0, flatShading: true }),
-    );
-    world.add(core);
-    const wire = new THREE.Mesh(
-      new THREE.IcosahedronGeometry(1.47, 2),
-      new THREE.MeshBasicMaterial({ color: accent, wireframe: true, transparent: true, opacity: isDark ? 0.22 : 0.13 }),
-    );
-    world.add(wire);
-
-    // Layered service modules turn the abstract core into a system architecture hub.
-    const serviceModules: THREE.Mesh[] = [];
-    for (let index = 0; index < 4; index += 1) {
-      const module = new THREE.Mesh(
-        new THREE.BoxGeometry(0.68, 0.18, 0.68),
-        new THREE.MeshPhysicalMaterial({
-          color: isDark ? (index % 2 === 0 ? primary : accent) : (index % 2 === 0 ? 0xe2e8f0 : 0xcbd5e1),
-          roughness: 0.26,
-          metalness: 0.55,
-          transparent: true,
-          opacity: isDark ? 0.72 : 0.66,
-          emissive: isDark ? accent : 0x000000,
-          emissiveIntensity: isDark ? 0.08 : 0,
-        }),
-      );
-      const angle = (index / 4) * Math.PI * 2 + Math.PI / 4;
-      module.position.set(Math.cos(angle) * 1.8, Math.sin(angle) * 1.8, 0);
-      module.rotation.z = angle;
-      world.add(module);
-      serviceModules.push(module);
+    const box = (color: number, size: [number, number, number], position: [number, number, number]) => {
+      const mesh = new THREE.Mesh(new THREE.BoxGeometry(...size), new THREE.MeshLambertMaterial({ color, flatShading: true }));
+      mesh.position.set(...position);
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      world.add(mesh);
+      return mesh;
+    };
+    for (let x = -4; x <= 4; x += 1) {
+      box(palette.grass, [0.98, 0.3, 1.8], [x, -1.2, 0]);
+      box(x % 2 ? palette.dirt : 0xc97838, [0.98, 0.72, 1.8], [x, -1.7, 0]);
     }
-
-    const rings = [
-      { radius: 2.05, tube: 0.018, x: 1.05, y: 0.18 },
-      { radius: 2.45, tube: 0.012, x: -0.55, y: 1.12 },
-      { radius: 2.8, tube: 0.009, x: 0.3, y: -0.72 },
-    ].map(({ radius, tube, x, y }) => {
-      const ring = new THREE.Mesh(new THREE.TorusGeometry(radius, tube, 8, 140), new THREE.MeshBasicMaterial({ color: accent, transparent: true, opacity: isDark ? 0.42 : 0.24 }));
-      ring.rotation.set(x, y, 0);
-      world.add(ring);
-      return ring;
+    box(palette.grassDark, [9.1, 0.1, 1.88], [0, -1.08, 0]);
+    [-2.2, -1.25, 1.45, 2.4].forEach((x, index) => {
+      const block = box(index === 2 ? palette.question : palette.brick, [0.84, 0.84, 0.84], [x, index === 2 ? 0.45 : -0.1, 0]);
+      block.add(new THREE.LineSegments(new THREE.EdgesGeometry(block.geometry), new THREE.LineBasicMaterial({ color: index === 2 ? 0xb56514 : palette.brickDark })));
     });
-
-    const particleCount = isMobile ? 64 : 150;
-    const positions = new Float32Array(particleCount * 3);
-    for (let i = 0; i < particleCount; i += 1) {
-      const radius = 2.1 + Math.random() * 2.35;
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(2 * Math.random() - 1);
-      positions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
-      positions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
-      positions[i * 3 + 2] = radius * Math.cos(phi);
-    }
-    const particleGeometry = new THREE.BufferGeometry();
-    particleGeometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-    const particles = new THREE.Points(particleGeometry, new THREE.PointsMaterial({ color: accent, size: 0.032, transparent: true, opacity: isDark ? 0.7 : 0.34, sizeAttenuation: true }));
-    world.add(particles);
-
-    scene.add(new THREE.HemisphereLight(isDark ? 0xbfe4ff : 0xffffff, isDark ? 0x071126 : 0xcbd5e1, isDark ? 2.4 : 1.85));
-    const keyLight = new THREE.PointLight(lightColor, isDark ? 22 : 10, 14);
-    keyLight.position.set(3, 3, 4);
-    scene.add(keyLight);
-    const rimLight = new THREE.PointLight(isDark ? primary : 0x94a3b8, isDark ? 18 : 5, 12);
-    rimLight.position.set(-4, -2, 2);
-    scene.add(rimLight);
-
+    const coins: THREE.Mesh[] = [];
+    [-3.25, -0.2, 0.72, 3.35].forEach((x, index) => {
+      const coin = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.28, 0.1, 12), new THREE.MeshLambertMaterial({ color: palette.gold, emissive: 0x8a4a00, emissiveIntensity: 0.18, flatShading: true }));
+      coin.rotation.x = Math.PI / 2;
+      coin.position.set(x, 0.75 + (index % 2) * 0.65, 0.1);
+      coin.castShadow = true;
+      world.add(coin);
+      coins.push(coin);
+    });
+    [[0, 0], [-0.22, 0], [0.22, 0], [0, 0.18]].forEach(([x, y]) => box(palette.brick, [0.28, 0.2, 0.35], [3.05 + x, -0.25 + y, 0.15]));
+    box(0xf7e7bc, [0.3, 0.35, 0.3], [3.05, -0.56, 0.15]);
+    [[-3.2, 2.35, -2], [2.8, 2.7, -2.8]].forEach(([x, y, z]) => {
+      box(palette.cloud, [1.35, 0.42, 0.45], [x, y, z]);
+      box(palette.cloud, [0.55, 0.48, 0.48], [x - 0.25, y + 0.34, z]);
+    });
+    scene.add(new THREE.HemisphereLight(0xffffff, 0x5c8b4b, 2.4));
+    const sun = new THREE.DirectionalLight(0xfff4cf, 3.2);
+    sun.position.set(-4, 7, 7);
+    sun.castShadow = true;
+    scene.add(sun);
     let pointerX = 0;
     let pointerY = 0;
-    const onPointerMove = (event: PointerEvent) => {
+    const onPointer = (event: PointerEvent) => {
       const bounds = mount.getBoundingClientRect();
-      pointerX = ((event.clientX - bounds.left) / bounds.width - 0.5) * 0.7;
-      pointerY = ((event.clientY - bounds.top) / bounds.height - 0.5) * 0.5;
+      pointerX = ((event.clientX - bounds.left) / Math.max(bounds.width, 1) - 0.5) * 0.22;
+      pointerY = ((event.clientY - bounds.top) / Math.max(bounds.height, 1) - 0.5) * 0.12;
     };
-    mount.addEventListener("pointermove", onPointerMove);
+    mount.addEventListener("pointermove", onPointer);
     const resize = () => {
       const { width, height } = mount.getBoundingClientRect();
       renderer.setSize(width, height, false);
@@ -114,80 +81,31 @@ export default function HeroScene() {
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(mount);
     resize();
-
     let frame = 0;
-    let visible = true;
-    const visibilityObserver = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; });
-    visibilityObserver.observe(mount);
     const clock = new THREE.Clock();
-    let lastRenderedAt = 0;
     const animate = () => {
       frame = requestAnimationFrame(animate);
-      if (!visible) return;
-      const t = clock.getElapsedTime();
-      if (isMobile && t - lastRenderedAt < 1 / 30) return;
-      lastRenderedAt = t;
+      const time = clock.getElapsedTime();
       if (!reduceMotion) {
-        world.rotation.y += (pointerX - world.rotation.y) * 0.025;
-        world.rotation.x += (-pointerY - world.rotation.x) * 0.025;
-        core.rotation.set(t * 0.08, t * 0.16, 0);
-        wire.rotation.set(0, -t * 0.11, t * 0.06);
-        particles.rotation.y = t * 0.025;
-        rings.forEach((ring, index) => { ring.rotation.z = t * (0.045 + index * 0.018); });
-        serviceModules.forEach((module, index) => {
-          module.rotation.x = t * 0.16 + index;
-          module.rotation.y = t * 0.12 + index * 0.4;
-        });
+        world.rotation.y += (pointerX - world.rotation.y) * 0.035;
+        world.rotation.x += (-0.08 - pointerY - world.rotation.x) * 0.035;
+        coins.forEach((coin, index) => { coin.rotation.y = time * 2.4 + index; coin.position.y += Math.sin(time * 3 + index) * 0.0015; });
       }
       renderer.render(scene, camera);
     };
     animate();
-
     return () => {
       cancelAnimationFrame(frame);
       resizeObserver.disconnect();
-      visibilityObserver.disconnect();
-      mount.removeEventListener("pointermove", onPointerMove);
-      scene.traverse((object) => {
-        if (!(object instanceof THREE.Mesh || object instanceof THREE.Points)) return;
-        object.geometry.dispose();
-        (Array.isArray(object.material) ? object.material : [object.material]).forEach((material) => material.dispose());
+      mount.removeEventListener("pointermove", onPointer);
+      scene.traverse((item) => {
+        if (!(item instanceof THREE.Mesh || item instanceof THREE.LineSegments)) return;
+        item.geometry.dispose();
+        (Array.isArray(item.material) ? item.material : [item.material]).forEach((material) => material.dispose());
       });
       renderer.dispose();
       renderer.domElement.remove();
     };
-  }, [resolvedTheme]);
-
-  return (
-    <div ref={mountRef} className="hero-scene" aria-hidden="true">
-      <div className="hero-scene__fallback" />
-      <div className="hero-tech-icon hero-tech-icon--dotnet" title="C# and .NET">
-        <svg viewBox="0 0 64 64" role="img">
-          <path d="M32 4 56 18v28L32 60 8 46V18Z" fill="currentColor" opacity=".18" />
-          <path d="M32 4 56 18v28L32 60 8 46V18Z" fill="none" stroke="currentColor" strokeWidth="3" />
-          <text x="32" y="31" textAnchor="middle" fill="currentColor" fontSize="17" fontWeight="800">C#</text>
-          <text x="32" y="44" textAnchor="middle" fill="currentColor" fontSize="9" fontWeight="700">.NET</text>
-        </svg>
-      </div>
-      <div className="hero-tech-icon hero-tech-icon--react" title="React">
-        <svg viewBox="0 0 64 64" role="img" fill="none" stroke="currentColor" strokeWidth="2.8">
-          <ellipse cx="32" cy="32" rx="27" ry="10" />
-          <ellipse cx="32" cy="32" rx="27" ry="10" transform="rotate(60 32 32)" />
-          <ellipse cx="32" cy="32" rx="27" ry="10" transform="rotate(120 32 32)" />
-          <circle cx="32" cy="32" r="4.5" fill="currentColor" stroke="none" />
-        </svg>
-      </div>
-      <div className="hero-tech-icon hero-tech-icon--cloud" title="Cloud architecture">
-        <svg viewBox="0 0 64 64" role="img" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M18 48h29a11 11 0 0 0 1-22 17 17 0 0 0-32-3A13 13 0 0 0 18 48Z" />
-          <path d="m25 36 7-7 7 7M32 29v14" />
-        </svg>
-      </div>
-      <div className="hero-tech-icon hero-tech-icon--api" title="API engineering">
-        <svg viewBox="0 0 64 64" role="img" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
-          <path d="m23 14-12 18 12 18M41 14l12 18-12 18M37 9 27 55" />
-        </svg>
-      </div>
-    </div>
-  );
+  }, []);
+  return <div ref={mountRef} className="hero-scene" aria-hidden="true"><div className="hero-game-hud"><span>WORLD</span><strong>1-1</strong><span>COINS</span><strong>× 24</strong></div><Image src="/pixel-cloud.png" alt="" width={384} height={341} className="hero-cloud hero-cloud--one" /><Image src="/pixel-cloud.png" alt="" width={384} height={341} className="hero-cloud hero-cloud--two" /><Image src="/pixel-coin.gif" alt="" width={362} height={362} unoptimized className="hero-pickup" /><Image src="/pixel-mushroom.gif" alt="" width={362} height={362} unoptimized className="hero-mushroom" /><Image src="/pixel-enemy-walking.gif" alt="" width={384} height={342} unoptimized className="hero-enemy" /><Image src="/avatar-pixel-running.gif" alt="" width={384} height={362} unoptimized className="hero-runner" /></div>;
 }

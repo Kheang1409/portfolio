@@ -95,17 +95,18 @@ export default function Experience() {
           viewport={{ once: true, margin: "-100px" }}
           className="mb-3xl"
         >
+          <div className="section-title-lockup">
           <h2
             id="experience-heading"
             className="text-h2 font-bold text-light-text-primary dark:text-dark-text-primary mb-sm"
           >
             Experience
           </h2>
-          <div className="w-12 h-1 bg-light-primary dark:bg-dark-primary rounded-full" />
+          <div className="section-level-divider w-full h-2 bg-light-primary dark:bg-dark-primary" />
+          </div>
         </motion.div>
 
-        <div className="relative">
-          <div className="absolute left-[6px] top-0 bottom-0 w-[2px] bg-light-primary/30 dark:bg-dark-primary/30 md:hidden" />
+        <div className="experience-timeline relative">
 
           <div className="space-y-lg">
             {experiences.map((exp, idx) => (
@@ -116,12 +117,12 @@ export default function Experience() {
                 variants={fadeInVariants}
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
                 viewport={{ once: true, margin: "-100px" }}
-                className="relative pl-[32px] md:pl-0 pb-lg md:pb-xl md:border-b-2 md:border-light-primary/30 md:dark:border-dark-primary/30 last:border-0"
+                className="experience-card relative"
               >
-                <div className="absolute left-0 top-0 w-3 h-3 rounded-full bg-light-primary dark:bg-dark-primary md:hidden" />
+                <span className="experience-card__index" aria-hidden="true">{String(idx + 1).padStart(2, "0")}</span>
 
-                <div className="grid md:grid-cols-3 gap-lg">
-                  <div className="md:col-span-1">
+                <div className="experience-card__grid grid md:grid-cols-3 gap-lg">
+                  <div className="experience-card__summary md:col-span-1">
                     <h3 className="text-h3 font-semibold text-light-text-primary dark:text-dark-text-primary mb-xs">
                       {exp.role}
                     </h3>
@@ -140,7 +141,7 @@ export default function Experience() {
                     </div>
                   </div>
 
-                  <div className="md:col-span-2">
+                  <div className="experience-card__details md:col-span-2">
                     <p className="text-body text-light-text-secondary dark:text-dark-text-secondary mb-md">
                       {exp.description}
                     </p>
@@ -148,11 +149,9 @@ export default function Experience() {
                       {exp.achievements.map((achievement, aIdx) => (
                         <div
                           key={aIdx}
-                          className="flex gap-xs text-small text-light-text-secondary dark:text-dark-text-secondary"
+                          className="experience-achievement flex gap-xs text-small text-light-text-secondary dark:text-dark-text-secondary"
                         >
-                          <span className="text-light-primary dark:text-dark-primary flex-shrink-0 mt-1">
-                            ✓
-                          </span>
+                          <span className="experience-achievement__marker" aria-hidden="true">›</span>
                           <span>{achievement}</span>
                         </div>
                       ))}

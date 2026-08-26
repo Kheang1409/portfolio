@@ -27,7 +27,7 @@ export default function Home() {
   const personJsonLd = buildPersonJsonLd();
 
   return (
-    <main id="main-content" aria-label="Hang Kheang Taing portfolio content">
+    <main id="main-content" className="campaign-main" aria-label="Hang Kheang Taing portfolio content">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
