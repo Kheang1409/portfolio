@@ -50,3 +50,97 @@ a:focus-visible {
 ::selection {
   @apply bg-light-primary dark:bg-dark-primary text-white;
 }
+
+body { overflow-x: hidden; }
+
+.hero-shell {
+  position: relative;
+  isolation: isolate;
+  background-image: radial-gradient(circle at 75% 48%, rgba(37, 99, 235, 0.13), transparent 31%), linear-gradient(rgba(37, 99, 235, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(37, 99, 235, 0.04) 1px, transparent 1px);
+  background-size: auto, 52px 52px, 52px 52px;
+}
+.dark .hero-shell { background-image: radial-gradient(circle at 75% 48%, rgba(37, 99, 235, 0.23), transparent 32%), linear-gradient(rgba(56, 189, 248, 0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(56, 189, 248, 0.045) 1px, transparent 1px); }
+.hero-shell::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: linear-gradient(90deg, rgba(248, 250, 252, 0.92) 0%, rgba(248, 250, 252, 0.5) 50%, transparent 75%); }
+.dark .hero-shell::before { background: linear-gradient(90deg, rgba(2, 6, 23, 0.94) 0%, rgba(2, 6, 23, 0.6) 50%, transparent 78%); }
+.hero-gradient-text { color: transparent; background: linear-gradient(115deg, #2563eb 8%, #38bdf8 56%, #7c3aed 100%); background-clip: text; -webkit-background-clip: text; filter: drop-shadow(0 10px 28px rgba(37, 99, 235, 0.2)); }
+.hero-scene { position: absolute; inset: -5%; cursor: grab; filter: drop-shadow(0 28px 50px rgba(37, 99, 235, 0.22)); }
+.hero-scene:active { cursor: grabbing; }
+.hero-scene canvas { position: relative; z-index: 1; width: 100%; height: 100%; }
+.hero-scene__fallback { position: absolute; width: 42%; aspect-ratio: 1; left: 29%; top: 29%; border-radius: 42% 58% 53% 47%; background: radial-gradient(circle at 35% 25%, #67e8f9, #2563eb 48%, #312e81 100%); box-shadow: 0 0 80px rgba(37, 99, 235, 0.35); }
+.hero-orbit-label { position: absolute; z-index: 3; padding: 0.45rem 0.75rem; border: 1px solid rgba(96, 165, 250, 0.3); border-radius: 999px; background: rgba(255, 255, 255, 0.6); box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08); backdrop-filter: blur(12px); color: #2563eb; font-size: 0.67rem; font-weight: 700; letter-spacing: 0.14em; }
+.dark .hero-orbit-label { background: rgba(15, 23, 42, 0.62); color: #7dd3fc; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.22); }
+.hero-orbit-label--top { top: 17%; left: 12%; }
+.hero-orbit-label--right { top: 45%; right: 3%; }
+.hero-orbit-label--bottom { bottom: 14%; left: 22%; }
+@media (max-width: 1023px) {
+  .hero-shell::before { background: linear-gradient(rgba(248, 250, 252, 0.94) 0%, rgba(248, 250, 252, 0.7) 48%, transparent 75%); }
+  .dark .hero-shell::before { background: linear-gradient(rgba(2, 6, 23, 0.96) 0%, rgba(2, 6, 23, 0.74) 48%, transparent 78%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
+
+.webgl-section {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.section-scene {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.78;
+  mask-image: linear-gradient(to bottom, transparent, black 12%, black 88%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 12%, black 88%, transparent);
+}
+
+.section-scene canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.dark .section-scene { opacity: 0.95; }
+
+.webgl-section article,
+.webgl-section form,
+.webgl-section a.group {
+  border-color: transparent !important;
+  box-shadow: 0 18px 60px -42px rgba(37, 99, 235, 0.5);
+  backdrop-filter: blur(8px);
+}
+
+.webgl-section [class*="border-light-border"] {
+  border-color: transparent !important;
+}
+
+.webgl-section [class*="bg-light-surface"] {
+  background-color: rgba(255, 255, 255, 0.76) !important;
+  backdrop-filter: blur(12px);
+}
+
+.dark .webgl-section [class*="bg-dark-surface"] {
+  background-color: rgba(15, 23, 42, 0.68) !important;
+}
+
+.webgl-section input,
+.webgl-section textarea {
+  border-color: transparent !important;
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.08), 0 12px 36px -28px rgba(37, 99, 235, 0.5);
+}
+
+.dark .webgl-section input,
+.dark .webgl-section textarea {
+  box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.1), 0 14px 42px -30px rgba(34, 211, 238, 0.38);
+}
+
+.dark .webgl-section article,
+.dark .webgl-section form,
+.dark .webgl-section a.group {
+  box-shadow: 0 22px 70px -44px rgba(56, 189, 248, 0.32);
+}
+
+@media (max-width: 640px) {
+  .section-scene { opacity: 0.42; }
+}

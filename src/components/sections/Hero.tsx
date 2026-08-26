@@ -8,6 +8,7 @@ import {
   CTAButtons,
   ScrollIndicator,
 } from "./Hero/HeroComponents";
+import HeroScene from "@/components/three/HeroScene";
 
 export default function Hero() {
   const containerVariants = {
@@ -33,20 +34,31 @@ export default function Hero() {
   return (
     <section
       aria-labelledby="hero-heading"
-      className="min-h-screen flex items-center pt-20 bg-light-background dark:bg-dark-background"
+      className="hero-shell min-h-screen flex items-center pt-20 overflow-hidden bg-light-background dark:bg-dark-background"
     >
-      <div className="max-w-container mx-auto px-sm md:px-lg w-full">
+      <div className="max-w-container mx-auto px-sm md:px-lg w-full grid lg:grid-cols-[1.08fr_0.92fr] items-center gap-xl lg:gap-lg">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="text-center md:text-left max-w-3xl"
+          className="relative z-10 text-center md:text-left max-w-3xl py-xl lg:py-0"
         >
           <Badge variants={itemVariants} />
           <Heading variants={itemVariants} />
           <Tagline variants={itemVariants} />
           <CTAButtons variants={itemVariants} />
           <ScrollIndicator />
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.88, y: 24 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+          className="relative h-[340px] sm:h-[430px] lg:h-[610px] -mt-xl lg:mt-0"
+        >
+          <div className="hero-orbit-label hero-orbit-label--top">C# / .NET</div>
+          <div className="hero-orbit-label hero-orbit-label--right">API GATEWAY</div>
+          <div className="hero-orbit-label hero-orbit-label--bottom">CLOUD NODE</div>
+          <HeroScene />
         </motion.div>
       </div>
     </section>

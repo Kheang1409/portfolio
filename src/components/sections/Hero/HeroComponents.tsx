@@ -13,7 +13,8 @@ export function Badge({ variants }: BadgeProps) {
   return (
     <motion.div variants={variants} className="mb-lg">
       <span className="inline-block px-md py-2xs rounded-full bg-light-primary/10 dark:bg-dark-primary/10 text-light-primary dark:text-dark-primary text-small font-medium">
-        👋 Welcome to my portfolio
+        <span className="mr-2 inline-block h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,0.9)]" />
+        Available for new opportunities
       </span>
     </motion.div>
   );
@@ -28,14 +29,11 @@ export function Heading({ variants }: HeadingProps) {
     <motion.h1
       id="hero-heading"
       variants={variants}
-      className="text-h1 font-bold text-light-text-primary dark:text-dark-text-primary mb-md leading-tight"
+      className="text-[clamp(2.75rem,6vw,5.4rem)] font-bold tracking-[-0.055em] text-light-text-primary dark:text-dark-text-primary mb-md leading-[0.98]"
     >
-      Hi, I&apos;m{" "}
-      <span className="text-light-primary dark:text-dark-primary">
-        Hang Kheang Taing
-      </span>
+      I build systems
       <br />
-      Software Engineer
+      <span className="hero-gradient-text">that scale.</span>
     </motion.h1>
   );
 }
@@ -50,10 +48,9 @@ export function Tagline({ variants }: TaglineProps) {
       variants={variants}
       className="text-lg md:text-xl text-light-text-secondary dark:text-dark-text-secondary mb-xl max-w-2xl"
     >
-      Software Engineer with experience designing, developing, and scaling
-      backend and frontend systems for finance, ERP, and high-traffic platforms.
-      I specialize in C#, .NET Core, ASP.NET Core, React/Angular, microservices,
-      and cloud-native architecture on AWS and Azure.
+      I&apos;m Hang Kheang Taing, a software engineer turning complex ideas into
+      resilient products with .NET, React, microservices, and cloud-native
+      architecture.
     </motion.p>
   );
 }
@@ -87,7 +84,7 @@ export function ScrollIndicator() {
     <motion.div
       animate={{ y: [0, 10, 0] }}
       transition={{ duration: 2, repeat: Infinity }}
-      className="mt-3xl text-light-text-secondary dark:text-dark-text-secondary"
+      className="mt-2xl hidden md:block text-light-text-secondary dark:text-dark-text-secondary"
     >
       <p className="text-small font-medium mb-2">Scroll to explore</p>
       <svg

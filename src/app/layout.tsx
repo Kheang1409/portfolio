@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import Navigation from "@/components/Navigation";
@@ -7,12 +6,6 @@ import Footer from "@/components/Footer";
 import VisitorTracker from "@/components/VisitorTracker";
 import AssistantLauncher from "@/components/AssistantLauncher";
 import { buildPageMetadata, siteConfig } from "@/lib/seo";
-
-const inter = Inter({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-sans",
-});
 
 export const metadata: Metadata = {
   ...buildPageMetadata({
@@ -41,7 +34,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         suppressHydrationWarning
-        className={`${inter.variable} font-sans transition-colors duration-300 bg-light-background dark:bg-dark-background text-light-text-primary dark:text-dark-text-primary`}
+        className="font-sans transition-colors duration-300 bg-light-background dark:bg-dark-background text-light-text-primary dark:text-dark-text-primary"
       >
         <Providers>
           <a

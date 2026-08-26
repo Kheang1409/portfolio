@@ -2,6 +2,7 @@
 
 import { Award } from "lucide-react";
 import { motion } from "framer-motion";
+import SectionScene from "@/components/three/SectionScene";
 
 const education = [
   {
@@ -47,9 +48,10 @@ export default function Education() {
     <section
       id="education"
       aria-labelledby="education-heading"
-      className="py-4xl md:py-[100px] bg-light-surface dark:bg-dark-surface"
+      className="webgl-section py-4xl md:py-[100px] bg-light-surface dark:bg-dark-surface"
     >
-      <div className="max-w-container mx-auto px-sm md:px-lg">
+      <SectionScene variant="education" />
+      <div className="relative z-10 max-w-container mx-auto px-sm md:px-lg">
         <motion.div
           initial="hidden"
           whileInView="visible"

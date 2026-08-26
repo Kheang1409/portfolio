@@ -11,6 +11,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@types/three": "^0.185.4",
     "clsx": "^2.0.0",
     "framer-motion": "^10.16.4",
     "lucide-react": "^0.292.0",
@@ -20,7 +21,8 @@
     "react-dom": "^18.2.0",
     "react-markdown": "^9.0.0",
     "rehype-highlight": "^7.0.0",
-    "remark-gfm": "^4.0.0"
+    "remark-gfm": "^4.0.0",
+    "three": "^0.185.1"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

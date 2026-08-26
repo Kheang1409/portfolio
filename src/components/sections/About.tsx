@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import ResumeModal from "@/components/ui/ResumeModal";
+import SectionScene from "@/components/three/SectionScene";
 
 export default function About() {
   const fadeInVariants = {
@@ -14,9 +15,10 @@ export default function About() {
     <section
       id="about"
       aria-labelledby="about-heading"
-      className="py-4xl md:py-[100px] bg-light-surface dark:bg-dark-surface"
+      className="webgl-section py-4xl md:py-[100px] bg-light-surface dark:bg-dark-surface"
     >
-      <div className="max-w-container mx-auto px-sm md:px-lg">
+      <SectionScene variant="about" />
+      <div className="relative z-10 max-w-container mx-auto px-sm md:px-lg">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -85,7 +87,7 @@ export default function About() {
             viewport={{ once: true, margin: "-100px" }}
             className="flex justify-center md:justify-end"
           >
-            <div className="relative w-56 h-56 md:w-64 md:h-64 rounded-full bg-light-primary/10 dark:bg-dark-primary/10 border-4 border-light-primary/20 dark:border-dark-primary/20 shadow-[0_8px_30px_rgba(11,92,255,0.08)] overflow-hidden">
+            <div className="relative w-56 h-56 md:w-64 md:h-64 rounded-full bg-light-primary/10 dark:bg-dark-primary/10 shadow-[0_18px_60px_rgba(37,99,235,0.2)] overflow-hidden">
               <Image
                 src="/avatar.png"
                 alt="Hang Kheang Taing profile"

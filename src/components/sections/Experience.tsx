@@ -2,6 +2,7 @@
 
 import { Calendar, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
+import SectionScene from "@/components/three/SectionScene";
 
 const experiences = [
   {
@@ -82,9 +83,10 @@ export default function Experience() {
     <section
       id="experience"
       aria-labelledby="experience-heading"
-      className="py-4xl md:py-[100px] bg-light-surface dark:bg-dark-surface"
+      className="webgl-section py-4xl md:py-[100px] bg-light-surface dark:bg-dark-surface"
     >
-      <div className="max-w-container mx-auto px-sm md:px-lg">
+      <SectionScene variant="experience" />
+      <div className="relative z-10 max-w-container mx-auto px-sm md:px-lg">
         <motion.div
           initial="hidden"
           whileInView="visible"

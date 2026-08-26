@@ -7,6 +7,7 @@ import {
   OtherProjectCard,
   type Project,
 } from "./Projects/ProjectCard";
+import SectionScene from "@/components/three/SectionScene";
 
 const resumeProjects = [
   {
@@ -101,9 +102,10 @@ export default function Projects() {
     <section
       id="projects"
       aria-labelledby="projects-heading"
-      className="py-4xl md:py-[100px] bg-light-background dark:bg-dark-background"
+      className="webgl-section py-4xl md:py-[100px] bg-light-background dark:bg-dark-background"
     >
-      <div className="max-w-container mx-auto px-sm md:px-lg">
+      <SectionScene variant="projects" />
+      <div className="relative z-10 max-w-container mx-auto px-sm md:px-lg">
         <motion.div
           initial="hidden"
           whileInView="visible"

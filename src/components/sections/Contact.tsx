@@ -14,6 +14,7 @@ import { motion } from "framer-motion";
 import { postContact } from "@/lib/contacts";
 import type { ContactRequest } from "@/lib/types";
 import { useState, FormEvent } from "react";
+import SectionScene from "@/components/three/SectionScene";
 
 export default function Contact() {
   const [formState, setFormState] = useState({
@@ -66,9 +67,10 @@ export default function Contact() {
     <section
       id="contact"
       aria-labelledby="contact-heading"
-      className="py-4xl md:py-[100px] bg-light-background dark:bg-dark-background"
+      className="webgl-section py-4xl md:py-[100px] bg-light-background dark:bg-dark-background"
     >
-      <div className="max-w-container mx-auto px-sm md:px-lg">
+      <SectionScene variant="contact" />
+      <div className="relative z-10 max-w-container mx-auto px-sm md:px-lg">
         <motion.div
           initial="hidden"
           whileInView="visible"

@@ -13,6 +13,7 @@ import {
   Terminal,
 } from "lucide-react";
 import { motion } from "framer-motion";
+import SectionScene from "@/components/three/SectionScene";
 
 const skillsData = [
   {
@@ -125,9 +126,10 @@ export default function Skills() {
     <section
       id="skills"
       aria-labelledby="skills-heading"
-      className="py-4xl md:py-[100px] bg-light-background dark:bg-dark-background"
+      className="webgl-section py-4xl md:py-[100px] bg-light-background dark:bg-dark-background"
     >
-      <div className="max-w-container mx-auto px-sm md:px-lg">
+      <SectionScene variant="skills" />
+      <div className="relative z-10 max-w-container mx-auto px-sm md:px-lg">
         <motion.div
           initial="hidden"
           whileInView="visible"
