@@ -9,13 +9,13 @@
 
 export const COLORS = {
   LIGHT: {
-    PRIMARY: "#2563EB", // Professional Blue
+    PRIMARY: "#334155", // Graphite
     SECONDARY: "#0F172A", // Deep Navy
     BACKGROUND: "#F8FAFC", // Light Gray
     SURFACE: "#FFFFFF", // White
     TEXT_PRIMARY: "#020617", // Almost Black
     TEXT_SECONDARY: "#475569", // Gray
-    ACCENT: "#38BDF8", // Soft Cyan
+    ACCENT: "#64748B", // Slate
     BORDER: "#E2E8F0", // Light Border
   },
   DARK: {

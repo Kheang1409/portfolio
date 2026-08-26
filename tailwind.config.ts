@@ -11,13 +11,13 @@ const config: Config = {
       colors: {
         // Light theme
         light: {
-          primary: "#2563EB",
+          primary: "#334155",
           secondary: "#0F172A",
           background: "#F8FAFC",
           surface: "#FFFFFF",
           "text-primary": "#020617",
           "text-secondary": "#475569",
-          accent: "#38BDF8",
+          accent: "#64748B",
           border: "#E2E8F0",
         },
         // Dark theme

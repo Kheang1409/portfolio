@@ -55,9 +55,6 @@ export default function Hero() {
           transition={{ duration: 0.9, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
           className="relative h-[340px] sm:h-[430px] lg:h-[610px] -mt-xl lg:mt-0"
         >
-          <div className="hero-orbit-label hero-orbit-label--top">C# / .NET</div>
-          <div className="hero-orbit-label hero-orbit-label--right">API GATEWAY</div>
-          <div className="hero-orbit-label hero-orbit-label--bottom">CLOUD NODE</div>
           <HeroScene />
         </motion.div>
       </div>

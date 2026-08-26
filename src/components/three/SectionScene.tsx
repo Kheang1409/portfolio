@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { useTheme } from "next-themes";
 
@@ -34,18 +34,31 @@ function geometryFor(variant: SceneVariant, index: number) {
 
 export default function SectionScene({ variant }: Props) {
   const mountRef = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(false);
   const { resolvedTheme } = useTheme();
 
   useEffect(() => {
     const mount = mountRef.current;
     if (!mount) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setActive(entry.isIntersecting),
+      { rootMargin: "400px 0px" },
+    );
+    observer.observe(mount);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const mount = mountRef.current;
+    if (!mount || !active) return;
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
     const isDark = resolvedTheme === "dark";
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(48, 1, 0.1, 50);
     camera.position.z = 8;
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.35));
+    renderer.setPixelRatio(isMobile ? 1 : Math.min(window.devicePixelRatio, 1.35));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = isDark ? 1.1 : 0.82;
@@ -55,12 +68,13 @@ export default function SectionScene({ variant }: Props) {
     const root = new THREE.Group();
     scene.add(root);
     const palette = isDark
-      ? [0x22d3ee, 0x3b82f6, 0x8b5cf6, 0x2dd4bf]
-      : [0x1d4ed8, 0x0369a1, 0x6d28d9, 0x0f766e];
+      ? [0x3b82f6, 0x22d3ee, 0x60a5fa, 0x2dd4bf]
+      : [0xcbd5e1, 0x94a3b8, 0xe2e8f0, 0x64748b];
     const seed = variantIndex[variant];
     const objects: THREE.Mesh[] = [];
 
-    for (let i = 0; i < 9; i += 1) {
+    const objectCount = isMobile ? 5 : 9;
+    for (let i = 0; i < objectCount; i += 1) {
       const material = new THREE.MeshPhysicalMaterial({
         color: palette[(i + seed) % palette.length],
         roughness: 0.28,
@@ -92,7 +106,7 @@ export default function SectionScene({ variant }: Props) {
     root.add(grid);
 
     // Floating code-window frames make the geometry read as an engineering workspace.
-    const panels = [-1, 1].map((side, index) => {
+    const panels = (isMobile ? [] : [-1, 1]).map((side, index) => {
       const panel = new THREE.Group();
       const frameGeometry = new THREE.PlaneGeometry(2.2, 1.35);
       const edgeGeometry = new THREE.EdgesGeometry(frameGeometry);
@@ -128,8 +142,9 @@ export default function SectionScene({ variant }: Props) {
     root.add(lines);
 
     const particlesGeometry = new THREE.BufferGeometry();
-    const particlesArray = new Float32Array(75 * 3);
-    for (let i = 0; i < 75; i += 1) {
+    const particleCount = isMobile ? 28 : 75;
+    const particlesArray = new Float32Array(particleCount * 3);
+    for (let i = 0; i < particleCount; i += 1) {
       particlesArray[i * 3] = (Math.random() - 0.5) * 12;
       particlesArray[i * 3 + 1] = (Math.random() - 0.5) * 7;
       particlesArray[i * 3 + 2] = -1 - Math.random() * 4;
@@ -138,7 +153,7 @@ export default function SectionScene({ variant }: Props) {
     const particles = new THREE.Points(particlesGeometry, new THREE.PointsMaterial({ color: palette[1], size: 0.025, transparent: true, opacity: isDark ? 0.5 : 0.24 }));
     root.add(particles);
 
-    scene.add(new THREE.HemisphereLight(isDark ? 0xbfe8ff : 0xffffff, isDark ? 0x020617 : 0xdbeafe, isDark ? 2.2 : 1.5));
+    scene.add(new THREE.HemisphereLight(isDark ? 0xbfe8ff : 0xffffff, isDark ? 0x020617 : 0xe2e8f0, isDark ? 2.2 : 1.65));
     const light = new THREE.PointLight(palette[1], isDark ? 12 : 5, 18);
     light.position.set(seed % 2 ? -3 : 3, 2, 4);
     scene.add(light);
@@ -166,10 +181,13 @@ export default function SectionScene({ variant }: Props) {
     const observer = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; }, { rootMargin: "150px" });
     observer.observe(mount);
     const clock = new THREE.Clock();
+    let lastRenderedAt = 0;
     const render = () => {
       frame = requestAnimationFrame(render);
       if (!visible) return;
       const time = clock.getElapsedTime();
+      if (isMobile && time - lastRenderedAt < 1 / 30) return;
+      lastRenderedAt = time;
       if (!reducedMotion) {
         root.rotation.y += (pointerX - root.rotation.y) * 0.012;
         root.rotation.x += (-pointerY - root.rotation.x) * 0.012;
@@ -201,7 +219,7 @@ export default function SectionScene({ variant }: Props) {
       renderer.dispose();
       renderer.domElement.remove();
     };
-  }, [resolvedTheme, variant]);
+  }, [active, resolvedTheme, variant]);
 
   return <div ref={mountRef} className={`section-scene section-scene--${variant}`} aria-hidden="true" />;
 }
