@@ -7,27 +7,15 @@
 // THEME COLORS - Edit here to change portfolio colors globally
 // ============================================================================
 
+// The canonical palette lives in src/app/globals.css. These semantic aliases
+// keep consumers aligned with the selected theme.
 export const COLORS = {
-  LIGHT: {
-    PRIMARY: "#334155", // Graphite
-    SECONDARY: "#0F172A", // Deep Navy
-    BACKGROUND: "#F8FAFC", // Light Gray
-    SURFACE: "#FFFFFF", // White
-    TEXT_PRIMARY: "#020617", // Almost Black
-    TEXT_SECONDARY: "#475569", // Gray
-    ACCENT: "#64748B", // Slate
-    BORDER: "#E2E8F0", // Light Border
-  },
-  DARK: {
-    PRIMARY: "#3B82F6", // Bright Blue
-    SECONDARY: "#E5E7EB", // Light Gray
-    BACKGROUND: "#020617", // Almost Black
-    SURFACE: "#0F172A", // Dark Navy
-    TEXT_PRIMARY: "#F8FAFC", // Almost White
-    TEXT_SECONDARY: "#94A3B8", // Light Gray
-    ACCENT: "#22D3EE", // Bright Cyan
-    BORDER: "#1E293B", // Dark Border
-  },
+  PRIMARY: "var(--gold)",
+  BACKGROUND: "var(--bg)",
+  SURFACE: "var(--surface)",
+  TEXT_PRIMARY: "var(--text)",
+  TEXT_SECONDARY: "var(--muted)",
+  BORDER: "var(--border)",
 };
 
 // ============================================================================
@@ -43,7 +31,7 @@ export const PERSONAL_INFO = {
     "Expert in C#, .NET Core, ASP.NET Core, React/Angular, microservices, and cloud-native solutions on AWS and Azure.",
   EMAIL: "hangkheangtaing@gmail.com",
   PHONE: "+1 (641) 233-0129",
-  LOCATION: "Lrving, TX, USA",
+  LOCATION: "Irving, TX, USA",
   GITHUB: "https://www.github.com/Kheang1409",
   LINKEDIN: "https://www.linkedin.com/in/hang-kheang-taing/",
   WEBSITE: "https://kaitaing.netlify.app/",

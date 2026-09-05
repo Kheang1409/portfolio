@@ -10,7 +10,7 @@ export const metadata = buildPageMetadata({
 
 export default function ResumePage() {
   return (
-    <main className="py-12 px-sm md:px-lg max-w-container mx-auto">
+    <main id="main-content" className="py-12 px-sm md:px-lg max-w-container mx-auto">
       <div className="bg-light-background dark:bg-dark-background p-lg rounded-lg border border-light-border dark:border-dark-border">
         <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-md">
           <div>

@@ -14,7 +14,7 @@ export default function TwitterImage() {
         display: "flex",
         width: "100%",
         height: "100%",
-        background: "linear-gradient(140deg, #020617 0%, #1d4ed8 100%)",
+        background: "linear-gradient(140deg, #111713 0%, #796443 100%)",
         color: "#f8fafc",
         padding: "64px",
         flexDirection: "column",
@@ -22,7 +22,7 @@ export default function TwitterImage() {
         fontFamily: "Inter, Arial, sans-serif",
       }}
     >
-      <div style={{ fontSize: "28px", color: "#bae6fd" }}>
+      <div style={{ fontSize: "28px", color: "#c3a471" }}>
         Hang Kheang Taing
       </div>
 

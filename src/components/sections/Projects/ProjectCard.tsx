@@ -3,7 +3,6 @@
 import { Github, ExternalLink, Star } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import Image from "next/image";
 
 export type Project = {
   title: string;
@@ -31,7 +30,7 @@ export function FeaturedProjectCard({
 
   return (
     <motion.div
-      initial="hidden"
+      initial={false}
       whileInView="visible"
       variants={fadeInVariants}
       transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -39,8 +38,13 @@ export function FeaturedProjectCard({
       className="project-featured-card group rounded-lg overflow-hidden bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-light-primary/50 dark:hover:border-dark-primary/50 hover:shadow-lg transition-all duration-300"
     >
       <div className="project-featured-card__visual h-48 bg-light-primary/10 dark:bg-dark-primary/10 flex items-center justify-center group-hover:bg-light-primary/20 dark:group-hover:bg-dark-primary/20 transition-colors">
-        <span>FEATURED BUILD · 0{index + 1}</span>
-        <Image src="/pixel-portal.gif" alt="" width={384} height={342} unoptimized />
+        <span>FEATURED BUILD / 0{index + 1}</span>
+        <div className="project-art" aria-hidden="true">
+          <span>&lt;/&gt;</span>
+          <i />
+          <i />
+          <i />
+        </div>
       </div>
 
       <div className="p-lg space-y-sm">
@@ -81,15 +85,19 @@ export function FeaturedProjectCard({
             <Github className="w-4 h-4" />
             Code
           </Link>
-          <Link
-            href={project.demo}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex-1 flex items-center justify-center gap-2xs px-md py-2xs rounded-md bg-light-primary dark:bg-dark-primary text-white hover:shadow-md transition-all font-medium text-small"
-          >
-            <ExternalLink className="w-4 h-4" />
-            Demo
-          </Link>
+          {project.demo &&
+            project.demo !== project.github &&
+            project.demo !== "#" && (
+              <Link
+                href={project.demo}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 flex items-center justify-center gap-2xs px-md py-2xs rounded-md bg-light-primary dark:bg-dark-primary text-white hover:shadow-md transition-all font-medium text-small"
+              >
+                <ExternalLink className="w-4 h-4" />
+                Demo
+              </Link>
+            )}
         </div>
       </div>
     </motion.div>
@@ -109,7 +117,7 @@ export function OtherProjectCard({ project, index }: OtherProjectCardProps) {
 
   return (
     <motion.div
-      initial="hidden"
+      initial={false}
       whileInView="visible"
       variants={fadeInVariants}
       transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -156,17 +164,21 @@ export function OtherProjectCard({ project, index }: OtherProjectCardProps) {
           className="flex-1 flex items-center justify-center gap-1 px-md py-2xs rounded-md bg-light-primary/10 dark:bg-dark-primary/10 text-light-primary dark:text-dark-primary hover:bg-light-primary/20 dark:hover:bg-dark-primary/20 transition-colors font-medium text-small"
         >
           <Github className="w-4 h-4" />
-          <span className="hidden sm:inline">Code</span>
+          <span>Code</span>
         </Link>
-        <Link
-          href={project.demo}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex-1 flex items-center justify-center gap-1 px-md py-2xs rounded-md bg-light-primary dark:bg-dark-primary text-white hover:shadow-md transition-all font-medium text-small"
-        >
-          <ExternalLink className="w-4 h-4" />
-          <span className="hidden sm:inline">Demo</span>
-        </Link>
+        {project.demo &&
+          project.demo !== project.github &&
+          project.demo !== "#" && (
+            <Link
+              href={project.demo}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 flex items-center justify-center gap-1 px-md py-2xs rounded-md bg-light-primary dark:bg-dark-primary text-white hover:shadow-md transition-all font-medium text-small"
+            >
+              <ExternalLink className="w-4 h-4" />
+              <span>Demo</span>
+            </Link>
+          )}
       </div>
     </motion.div>
   );

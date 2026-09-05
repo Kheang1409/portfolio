@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
   FeaturedProjectCard,
@@ -44,29 +44,21 @@ export default function Projects() {
     visible: { opacity: 1, y: 0 },
   };
 
+  const [filter, setFilter] = useState("All work");
+  const categoryMatchers: Record<string, RegExp> = {
+    "Web Applications": /^(javascript|typescript|html|css)$/i,
+    "Mobile Applications": /^(dart|kotlin|swift|objective-c)$/i,
+    "UI/UX": /^(figma|sketch|design)$/i,
+    "3D/Creative": /^(glsl|hlsl|shaderlab|three\.js)$/i,
+    "Backend/API": /^(c#|csharp|python|java|go|rust|php|\.net)$/i,
+  };
+  const matches = (p: Project) =>
+    filter === "All work" ||
+    filter === "Personal Projects" ||
+    p.tech.some((t) => categoryMatchers[filter]?.test(t));
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  const featuredSkeleton: Project[] = Array.from({ length: 2 }).map(() => ({
-    title: "Loading...",
-    description: "Fetching latest repositories...",
-    tech: ["..."],
-    github: "#",
-    demo: "#",
-    featured: true,
-    stars: 0,
-  }));
-
-  const othersSkeleton: Project[] = Array.from({ length: 6 }).map(() => ({
-    title: "Loading...",
-    description: "Fetching repository details...",
-    tech: ["..."],
-    github: "#",
-    demo: "#",
-    featured: false,
-    stars: 0,
-  }));
 
   useEffect(() => {
     let mounted = true;
@@ -90,13 +82,10 @@ export default function Projects() {
     };
   }, []);
 
-  const featured = useMemo(
-    () => projects.filter((p) => p.featured),
-    [projects],
-  );
-  const others = useMemo(() => projects.filter((p) => !p.featured), [projects]);
-  const featuredDisplay = loading ? featuredSkeleton : featured;
-  const othersDisplay = loading ? othersSkeleton : others;
+  const featured = projects.filter((p) => p.featured && matches(p));
+  const others = projects.filter((p) => !p.featured && matches(p));
+  const featuredDisplay = featured;
+  const othersDisplay = others;
 
   return (
     <section
@@ -107,7 +96,7 @@ export default function Projects() {
       <SectionScene variant="projects" />
       <div className="relative z-10 max-w-container mx-auto px-sm md:px-lg">
         <motion.div
-          initial="hidden"
+          initial={false}
           whileInView="visible"
           variants={fadeInVariants}
           transition={{ duration: 0.5 }}
@@ -115,24 +104,28 @@ export default function Projects() {
           className="mb-3xl"
         >
           <div className="section-title-lockup">
-          <h2
-            id="projects-heading"
-            className="text-h2 font-bold text-light-text-primary dark:text-dark-text-primary mb-sm"
-          >
-            Projects
-          </h2>
-          <div className="section-level-divider w-full h-2 bg-light-primary dark:bg-dark-primary" />
+            <h2
+              id="projects-heading"
+              className="text-h2 font-bold text-light-text-primary dark:text-dark-text-primary mb-sm"
+            >
+              Selected work
+            </h2>
+            <div className="section-level-divider w-full h-2 bg-light-primary dark:bg-dark-primary" />
           </div>
         </motion.div>
 
         <div className="projects-group-heading">
-          <span>01</span><div><h3>Selected case studies</h3><p>Products with measurable business and user impact.</p></div>
+          <span>01</span>
+          <div>
+            <h3>Selected case studies</h3>
+            <p>Products with measurable business and user impact.</p>
+          </div>
         </div>
         <div className="project-case-studies grid md:grid-cols-2 gap-lg mb-3xl">
           {resumeProjects.map((project, idx) => (
             <motion.article
               key={project.title}
-              initial="hidden"
+              initial={false}
               whileInView="visible"
               variants={fadeInVariants}
               transition={{ duration: 0.45, delay: idx * 0.08 }}
@@ -158,8 +151,34 @@ export default function Projects() {
         </div>
 
         <div className="projects-group-heading">
-          <span>02</span><div><h3>Featured builds</h3><p>Highlighted repositories from my current engineering work.</p></div>
+          <span>02</span>
+          <div>
+            <h3>Featured builds</h3>
+            <p>Highlighted repositories from my current engineering work.</p>
+          </div>
         </div>
+        <div
+          className="project-filters"
+          role="group"
+          aria-label="Filter repositories"
+        >
+          {[
+            "All work",
+            ...Object.keys(categoryMatchers),
+            "Personal Projects",
+          ].map((category) => (
+            <button
+              key={category}
+              aria-pressed={filter === category}
+              onClick={() => setFilter(category)}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+        {!loading && !error && !featured.length && !others.length && (
+          <p role="status">No repositories in this category yet.</p>
+        )}
         <div className="project-featured-grid grid lg:grid-cols-2 gap-lg mb-3xl">
           {featuredDisplay.map((project, idx) => (
             <FeaturedProjectCard key={idx} project={project} index={idx} />
@@ -171,19 +190,24 @@ export default function Projects() {
             aria-live="polite"
             className="mb-lg text-red-600 dark:text-red-400"
           >
-            {error}
+            {error}{" "}
+            <a href="https://github.com/Kheang1409">View projects on GitHub</a>
           </div>
         )}
 
         <motion.div
-          initial="hidden"
+          initial={false}
           whileInView="visible"
           variants={fadeInVariants}
           transition={{ duration: 0.5, delay: 0.2 }}
           viewport={{ once: true, margin: "-100px" }}
           className="projects-group-heading mb-xl"
         >
-          <span>03</span><div><h3>More repositories</h3><p>Additional experiments, services, and open-source work.</p></div>
+          <span>03</span>
+          <div>
+            <h3>More repositories</h3>
+            <p>Additional experiments, services, and open-source work.</p>
+          </div>
         </motion.div>
 
         <div className="project-repository-grid grid md:grid-cols-2 xl:grid-cols-3 gap-lg">

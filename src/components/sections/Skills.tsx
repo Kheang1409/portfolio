@@ -18,6 +18,8 @@ import SectionScene from "@/components/three/SectionScene";
 const skillsData = [
   {
     category: "Backend & Architecture",
+    description:
+      "Reliable services, clear boundaries, and maintainable business logic.",
     icon: Server,
     skills: [
       { name: "C#", level: 90 },
@@ -28,6 +30,8 @@ const skillsData = [
   },
   {
     category: "Frontend",
+    description:
+      "Responsive interfaces that make complex workflows easier to use.",
     icon: Code2,
     skills: [
       { name: "React", level: 84 },
@@ -38,6 +42,8 @@ const skillsData = [
   },
   {
     category: "Databases",
+    description:
+      "Thoughtful data models and queries built for dependable performance.",
     icon: Database,
     skills: [
       { name: "SQL Server", level: 88 },
@@ -48,6 +54,8 @@ const skillsData = [
   },
   {
     category: "Cloud & DevOps",
+    description:
+      "Repeatable deployments and infrastructure that supports the team.",
     icon: Cloud,
     skills: [
       { name: "Azure", level: 84 },
@@ -58,6 +66,8 @@ const skillsData = [
   },
   {
     category: "Messaging & Real-time",
+    description:
+      "Connecting systems through APIs and event-driven communication.",
     icon: Zap,
     skills: [
       { name: "REST APIs", level: 90 },
@@ -68,6 +78,8 @@ const skillsData = [
   },
   {
     category: "Testing & Security",
+    description:
+      "Protecting users and keeping changes safe with automated checks.",
     icon: Shield,
     skills: [
       { name: "OAuth2 / JWT / RBAC", level: 86 },
@@ -131,7 +143,7 @@ export default function Skills() {
       <SectionScene variant="skills" />
       <div className="relative z-10 max-w-container mx-auto px-sm md:px-lg">
         <motion.div
-          initial="hidden"
+          initial={false}
           whileInView="visible"
           variants={fadeInVariants}
           transition={{ duration: 0.5 }}
@@ -139,13 +151,13 @@ export default function Skills() {
           className="mb-3xl"
         >
           <div className="section-title-lockup">
-          <h2
-            id="skills-heading"
-            className="text-h2 font-bold text-light-text-primary dark:text-dark-text-primary mb-sm"
-          >
-            Skills & Expertise
-          </h2>
-          <div className="section-level-divider w-full h-2 bg-light-primary dark:bg-dark-primary" />
+            <h2
+              id="skills-heading"
+              className="text-h2 font-bold text-light-text-primary dark:text-dark-text-primary mb-sm"
+            >
+              Foundations of my craft
+            </h2>
+            <div className="section-level-divider w-full h-2 bg-light-primary dark:bg-dark-primary" />
           </div>
         </motion.div>
 
@@ -155,7 +167,7 @@ export default function Skills() {
             return (
               <motion.article
                 key={categoryIdx}
-                initial="hidden"
+                initial={false}
                 whileInView="visible"
                 variants={fadeInVariants}
                 transition={{ duration: 0.5, delay: categoryIdx * 0.1 }}
@@ -171,11 +183,12 @@ export default function Skills() {
                   </h3>
                 </div>
 
+                <p className="skill-description">{category.description}</p>
                 <div className="space-y-md">
                   {category.skills.map((skill, skillIdx) => (
                     <motion.div
                       key={skillIdx}
-                      initial="hidden"
+                      initial={false}
                       whileInView="visible"
                       variants={fadeInVariants}
                       transition={{

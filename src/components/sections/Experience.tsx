@@ -88,7 +88,7 @@ export default function Experience() {
       <SectionScene variant="experience" />
       <div className="relative z-10 max-w-container mx-auto px-sm md:px-lg">
         <motion.div
-          initial="hidden"
+          initial={false}
           whileInView="visible"
           variants={fadeInVariants}
           transition={{ duration: 0.5 }}
@@ -96,30 +96,31 @@ export default function Experience() {
           className="mb-3xl"
         >
           <div className="section-title-lockup">
-          <h2
-            id="experience-heading"
-            className="text-h2 font-bold text-light-text-primary dark:text-dark-text-primary mb-sm"
-          >
-            Experience
-          </h2>
-          <div className="section-level-divider w-full h-2 bg-light-primary dark:bg-dark-primary" />
+            <h2
+              id="experience-heading"
+              className="text-h2 font-bold text-light-text-primary dark:text-dark-text-primary mb-sm"
+            >
+              Experience
+            </h2>
+            <div className="section-level-divider w-full h-2 bg-light-primary dark:bg-dark-primary" />
           </div>
         </motion.div>
 
         <div className="experience-timeline relative">
-
           <div className="space-y-lg">
             {experiences.map((exp, idx) => (
               <motion.article
                 key={`${exp.company}-${exp.role}`}
-                initial="hidden"
+                initial={false}
                 whileInView="visible"
                 variants={fadeInVariants}
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
                 viewport={{ once: true, margin: "-100px" }}
                 className="experience-card relative"
               >
-                <span className="experience-card__index" aria-hidden="true">{String(idx + 1).padStart(2, "0")}</span>
+                <span className="experience-card__index" aria-hidden="true">
+                  {String(idx + 1).padStart(2, "0")}
+                </span>
 
                 <div className="experience-card__grid grid md:grid-cols-3 gap-lg">
                   <div className="experience-card__summary md:col-span-1">
@@ -151,7 +152,12 @@ export default function Experience() {
                           key={aIdx}
                           className="experience-achievement flex gap-xs text-small text-light-text-secondary dark:text-dark-text-secondary"
                         >
-                          <span className="experience-achievement__marker" aria-hidden="true">›</span>
+                          <span
+                            className="experience-achievement__marker"
+                            aria-hidden="true"
+                          >
+                            ›
+                          </span>
                           <span>{achievement}</span>
                         </div>
                       ))}

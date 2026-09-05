@@ -36,6 +36,17 @@ Tools & Practices: Git, Code Reviews, Unit & Integration Testing (xUnit, NUnit),
 
 ## PROFESSIONAL EXPERIENCE
 
+### Better & Best Inc. — Software Engineer
+
+**Apr 2026 – Present • Oregon, WI, USA**
+
+- Design and develop backend services for POS, billing, and order management systems using C#, ASP.NET Core, and AWS, improving transaction efficiency and deployment speed.
+- Build RESTful APIs and serverless functions using AWS Lambda, C#, and Dapper to support real-time data processing and workflow integration.
+- Optimize database queries and schema design to improve response times and system reliability under high transaction loads.
+- Refactor legacy components into modular microservices, improving scalability, maintainability, and service isolation.
+- Troubleshoot production issues and improve availability and reliability across distributed backend systems.
+- Collaborate with stakeholders to design and deliver scalable cloud-based solutions using AWS, Docker, and Kubernetes.
+
 ### Sahakrinpheap Microfinance PLC — Software Engineer
 
 **Sep 2021 – May 2024 • Phnom Penh, Cambodia**

@@ -36,3 +36,8 @@ coverage/
 # Misc
 *.pem
 .cache/
+
+# Browser verification artifacts
+test-results/
+playwright-report/
+tests/*.png

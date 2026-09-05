@@ -6,10 +6,12 @@ import Link from "next/link";
 export default function Footer() {
   const currentYear = new Date().getFullYear();
   const quickLinks = [
-    { label: "About", href: "#about" },
-    { label: "Projects", href: "#projects" },
-    { label: "Experience", href: "#experience" },
-    { label: "Contact", href: "#contact" },
+    { label: "Journey", href: "/#journey" },
+    { label: "Education", href: "/#education" },
+    { label: "About", href: "/#about" },
+    { label: "Projects", href: "/#projects" },
+    { label: "Experience", href: "/#experience" },
+    { label: "Contact", href: "/#contact" },
   ];
   const socialLinks = [
     { icon: Github, href: "https://github.com/Kheang1409", label: "GitHub" },
@@ -26,7 +28,7 @@ export default function Footer() {
       <div className="max-w-container mx-auto px-sm md:px-lg py-3xl">
         <div className="flex flex-col md:flex-row items-center justify-between gap-lg">
           <div className="text-light-text-secondary dark:text-dark-text-secondary text-small text-center md:text-left">
-            <p>&copy; {currentYear} All rights reserved.</p>
+            <p>&copy; {currentYear} Hang Kheang Taing. All rights reserved.</p>
           </div>
 
           <nav
@@ -45,7 +47,7 @@ export default function Footer() {
           </nav>
 
           <div className="text-light-text-secondary dark:text-dark-text-secondary text-small font-medium text-center md:text-left">
-            Designed & Built by Hang Kheang Taing
+            Built with Cambodian spirit and modern technology
           </div>
 
           <div className="flex items-center gap-md">

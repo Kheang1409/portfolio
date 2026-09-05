@@ -8,30 +8,21 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      colors: {
-        // Light theme
-        light: {
-          primary: "#334155",
-          secondary: "#0F172A",
-          background: "#F8FAFC",
-          surface: "#FFFFFF",
-          "text-primary": "#020617",
-          "text-secondary": "#475569",
-          accent: "#64748B",
-          border: "#E2E8F0",
-        },
-        // Dark theme
-        dark: {
-          primary: "#3B82F6",
-          secondary: "#E5E7EB",
-          background: "#020617",
-          surface: "#0F172A",
-          "text-primary": "#F8FAFC",
-          "text-secondary": "#94A3B8",
-          accent: "#22D3EE",
-          border: "#1E293B",
-        },
-      },
+      colors: Object.fromEntries(
+        ["light", "dark"].map((mode) => [
+          mode,
+          {
+            primary: "rgb(var(--primary-rgb) / <alpha-value>)",
+            secondary: "var(--text)",
+            background: "var(--bg)",
+            surface: "var(--surface)",
+            "text-primary": "var(--text)",
+            "text-secondary": "var(--muted)",
+            accent: "var(--gold)",
+            border: "var(--border)",
+          },
+        ]),
+      ),
       fontFamily: {
         sans: ["Inter", "SF Pro", "Roboto", "sans-serif"],
         mono: ["JetBrains Mono", "monospace"],

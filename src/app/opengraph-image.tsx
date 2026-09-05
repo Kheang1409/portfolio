@@ -15,7 +15,7 @@ export default function OpengraphImage() {
         width: "100%",
         height: "100%",
         background:
-          "linear-gradient(135deg, #0f172a 0%, #1e293b 45%, #2563eb 100%)",
+          "linear-gradient(135deg, #111713 0%, #253226 45%, #796443 100%)",
         color: "#f8fafc",
         padding: "64px",
         flexDirection: "column",
@@ -30,7 +30,7 @@ export default function OpengraphImage() {
           gap: "14px",
           fontSize: "30px",
           fontWeight: 600,
-          color: "#bfdbfe",
+          color: "#c3a471",
         }}
       >
         <span
@@ -38,7 +38,7 @@ export default function OpengraphImage() {
             width: "18px",
             height: "18px",
             borderRadius: "999px",
-            background: "#38bdf8",
+            background: "#c3a471",
           }}
         />
         Portfolio
@@ -60,7 +60,7 @@ export default function OpengraphImage() {
         </p>
       </div>
 
-      <div style={{ fontSize: "28px", color: "#bae6fd" }}>
+      <div style={{ fontSize: "28px", color: "#c3a471" }}>
         kaitaing.netlify.app
       </div>
     </div>,

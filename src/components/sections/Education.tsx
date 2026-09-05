@@ -53,7 +53,7 @@ export default function Education() {
       <SectionScene variant="education" />
       <div className="relative z-10 max-w-container mx-auto px-sm md:px-lg">
         <motion.div
-          initial="hidden"
+          initial={false}
           whileInView="visible"
           variants={fadeInVariants}
           transition={{ duration: 0.5 }}
@@ -61,19 +61,19 @@ export default function Education() {
           className="mb-3xl"
         >
           <div className="section-title-lockup">
-          <h2
-            id="education-heading"
-            className="text-h2 font-bold text-light-text-primary dark:text-dark-text-primary mb-sm"
-          >
-            Education & Honors
-          </h2>
-          <div className="section-level-divider w-full h-2 bg-light-primary dark:bg-dark-primary" />
+            <h2
+              id="education-heading"
+              className="text-h2 font-bold text-light-text-primary dark:text-dark-text-primary mb-sm"
+            >
+              Education & Honors
+            </h2>
+            <div className="section-level-divider w-full h-2 bg-light-primary dark:bg-dark-primary" />
           </div>
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-3xl">
           <motion.div
-            initial="hidden"
+            initial={false}
             whileInView="visible"
             variants={fadeInVariants}
             transition={{ duration: 0.5, delay: 0.1 }}
@@ -123,7 +123,7 @@ export default function Education() {
           </motion.div>
 
           <motion.div
-            initial="hidden"
+            initial={false}
             whileInView="visible"
             variants={fadeInVariants}
             transition={{ duration: 0.5, delay: 0.15 }}
@@ -137,7 +137,7 @@ export default function Education() {
               {certifications.map((cert, idx) => (
                 <motion.div
                   key={idx}
-                  initial="hidden"
+                  initial={false}
                   whileInView="visible"
                   variants={fadeInVariants}
                   transition={{

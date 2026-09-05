@@ -1,5 +1,12 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
+import {
+  Journey,
+  Culture,
+  Farming,
+  Values,
+  Showcase,
+} from "@/components/sections/Story";
 import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
 import { buildPageMetadata, buildPersonJsonLd, siteConfig } from "@/lib/seo";
@@ -27,16 +34,25 @@ export default function Home() {
   const personJsonLd = buildPersonJsonLd();
 
   return (
-    <main id="main-content" className="campaign-main" aria-label="Hang Kheang Taing portfolio content">
+    <main
+      id="main-content"
+      className="campaign-main"
+      aria-label="Hang Kheang Taing portfolio content"
+    >
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
       />
       <Hero />
+      <Journey />
       <About />
       <Skills />
-      <Experience />
       <Projects />
+      <Showcase />
+      <Culture />
+      <Farming />
+      <Values />
+      <Experience />
       <Education />
       <Contact />
     </main>

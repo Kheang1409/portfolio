@@ -72,6 +72,7 @@ function createErrorChunk(
 async function parseNdjsonStream(
   response: Response,
   handlers: AssistantStreamHandlers,
+  signal?: AbortSignal,
 ): Promise<void> {
   if (!response.body) {
     throw new ApiError("Streaming response body is unavailable.", {
@@ -81,12 +82,21 @@ async function parseNdjsonStream(
   }
 
   const reader = response.body.getReader();
+  const cancel = () => {
+    void reader.cancel().catch(() => undefined);
+  };
+  signal?.addEventListener("abort", cancel, { once: true });
+  if (signal?.aborted) cancel();
   const decoder = new TextDecoder();
   let buffer = "";
 
   try {
     while (true) {
+      if (signal?.aborted)
+        throw new DOMException("Request cancelled.", "AbortError");
       const { value, done } = await reader.read();
+      if (signal?.aborted)
+        throw new DOMException("Request cancelled.", "AbortError");
       if (done) {
         break;
       }
@@ -150,6 +160,7 @@ async function parseNdjsonStream(
       }
     }
   } finally {
+    signal?.removeEventListener("abort", cancel);
     reader.releaseLock();
   }
 }
@@ -160,23 +171,40 @@ export async function streamAssistant(
   options: AssistantRequestOptions = {},
 ): Promise<void> {
   debugLog("assistant:request", payload);
-
+  const controller = new AbortController();
+  let timedOut = false;
+  const cancel = () => controller.abort();
+  options.signal?.addEventListener("abort", cancel, { once: true });
+  if (options.signal?.aborted) cancel();
+  const timer = setTimeout(() => {
+    timedOut = true;
+    controller.abort();
+  }, options.timeoutMs ?? 45000);
   try {
     const response = await requestStream({
       path: "/api/assistant",
       body: payload,
-      signal: options.signal,
+      signal: controller.signal,
       timeoutMs: options.timeoutMs,
       retries: options.retries,
       useAssistantProxy: true,
     });
-
-    await parseNdjsonStream(response, handlers);
+    await parseNdjsonStream(response, handlers, controller.signal);
   } catch (error) {
-    if (error instanceof DOMException && error.name === "AbortError") {
-      throw error;
-    }
-
-    handlers.onError?.(createErrorChunk(error));
+    if (options.signal?.aborted)
+      throw new DOMException("Request cancelled.", "AbortError");
+    handlers.onError?.(
+      createErrorChunk(
+        timedOut
+          ? new ApiError("Request timed out.", {
+              code: "TIMEOUT",
+              retryable: true,
+            })
+          : error,
+      ),
+    );
+  } finally {
+    clearTimeout(timer);
+    options.signal?.removeEventListener("abort", cancel);
   }
 }

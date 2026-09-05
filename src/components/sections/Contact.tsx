@@ -41,6 +41,7 @@ export default function Contact() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (isSubmitting) return;
     setIsSubmitting(true);
     setSubmitStatus("loading");
 
@@ -50,14 +51,17 @@ export default function Contact() {
       message: formState.message.trim(),
     };
 
+    if (!payload.name || !payload.message) {
+      setSubmitStatus("error");
+      setIsSubmitting(false);
+      return;
+    }
     try {
       await postContact(payload);
       setSubmitStatus("success");
       setFormState({ name: "", email: "", message: "" });
-      setTimeout(() => setSubmitStatus("idle"), 3000);
     } catch (error) {
       setSubmitStatus("error");
-      setTimeout(() => setSubmitStatus("idle"), 3000);
     } finally {
       setIsSubmitting(false);
     }
@@ -72,7 +76,7 @@ export default function Contact() {
       <SectionScene variant="contact" />
       <div className="relative z-10 max-w-container mx-auto px-sm md:px-lg">
         <motion.div
-          initial="hidden"
+          initial={false}
           whileInView="visible"
           variants={fadeInVariants}
           transition={{ duration: 0.5 }}
@@ -80,22 +84,26 @@ export default function Contact() {
           className="mb-3xl text-center"
         >
           <div className="section-title-lockup mx-auto">
-          <h2
-            id="contact-heading"
-            className="text-h2 font-bold text-light-text-primary dark:text-dark-text-primary mb-sm"
-          >
-            Contact
-          </h2>
-          <div className="section-level-divider w-full h-2 bg-light-primary dark:bg-dark-primary mb-md" />
+            <h2
+              id="contact-heading"
+              className="text-h2 font-bold text-light-text-primary dark:text-dark-text-primary mb-sm"
+            >
+              Good things begin with a conversation.
+            </h2>
+            <div className="section-level-divider w-full h-2 bg-light-primary dark:bg-dark-primary mb-md" />
           </div>
           <p className="text-lg text-light-text-secondary dark:text-dark-text-secondary max-w-2xl mx-auto">
             Send a message to collaborate or say hello.
+          </p>
+          <p className="contact-availability">
+            Based in the United States <span aria-hidden="true"> / </span> Open
+            to opportunities
           </p>
         </motion.div>
 
         <div className="contact-layout grid md:grid-cols-[0.82fr_1.18fr] gap-3xl max-w-5xl mx-auto">
           <motion.div
-            initial="hidden"
+            initial={false}
             whileInView="visible"
             variants={fadeInVariants}
             transition={{ duration: 0.5, delay: 0.1 }}
@@ -187,7 +195,7 @@ export default function Contact() {
           <motion.form
             onSubmit={handleSubmit}
             aria-label="Contact form"
-            initial="hidden"
+            initial={false}
             whileInView="visible"
             variants={fadeInVariants}
             transition={{ duration: 0.5, delay: 0.15 }}
@@ -197,14 +205,21 @@ export default function Contact() {
             <div className="contact-message-card__header">
               <div>
                 <span>DIRECT MESSAGE</span>
-                <h3 className="text-h3 font-semibold text-light-text-primary dark:text-dark-text-primary">Send a message</h3>
+                <h3 className="text-h3 font-semibold text-light-text-primary dark:text-dark-text-primary">
+                  Send a message
+                </h3>
               </div>
-              <span className="contact-message-card__status"><i /> ONLINE</span>
+              <span className="contact-message-card__status">
+                <i /> LET?S CONNECT
+              </span>
             </div>
-            <p className="contact-message-card__intro">Tell me what you&apos;re building, where you need help, and what success looks like.</p>
+            <p className="contact-message-card__intro">
+              Tell me what you&apos;re building, where you need help, and what
+              success looks like.
+            </p>
 
             <motion.div
-              initial="hidden"
+              initial={false}
               whileInView="visible"
               variants={fadeInVariants}
               transition={{ duration: 0.4, delay: 0.2 }}
@@ -220,6 +235,7 @@ export default function Contact() {
                 id="contact-name"
                 type="text"
                 name="name"
+                autoComplete="name"
                 value={formState.name}
                 onChange={handleChange}
                 required
@@ -229,7 +245,7 @@ export default function Contact() {
             </motion.div>
 
             <motion.div
-              initial="hidden"
+              initial={false}
               whileInView="visible"
               variants={fadeInVariants}
               transition={{ duration: 0.4, delay: 0.25 }}
@@ -245,6 +261,7 @@ export default function Contact() {
                 id="contact-email"
                 type="email"
                 name="email"
+                autoComplete="email"
                 value={formState.email}
                 onChange={handleChange}
                 required
@@ -254,7 +271,7 @@ export default function Contact() {
             </motion.div>
 
             <motion.div
-              initial="hidden"
+              initial={false}
               whileInView="visible"
               variants={fadeInVariants}
               transition={{ duration: 0.4, delay: 0.3 }}
@@ -279,7 +296,7 @@ export default function Contact() {
             </motion.div>
 
             <motion.button
-              initial="hidden"
+              initial={false}
               whileInView="visible"
               variants={fadeInVariants}
               transition={{ duration: 0.4, delay: 0.35 }}
@@ -300,7 +317,8 @@ export default function Contact() {
                   Message Sent!
                 </>
               )}
-              {submitStatus === "idle" && "Send quest message"}
+              {(submitStatus === "idle" || submitStatus === "error") &&
+                "Send message"}
             </motion.button>
 
             {submitStatus === "success" && (
@@ -310,6 +328,15 @@ export default function Contact() {
               >
                 Thanks for your message! I&apos;ll get back to you soon.
               </p>
+            )}
+            {submitStatus === "success" && (
+              <button
+                type="button"
+                className="button-line"
+                onClick={() => setSubmitStatus("idle")}
+              >
+                Send another message
+              </button>
             )}
             {submitStatus === "error" && (
               <p
