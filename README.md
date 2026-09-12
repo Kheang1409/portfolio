@@ -1,161 +1,100 @@
-# Portfolio Frontend
+# KAI // Engineering Portfolio
 
-Next.js 16 software-engineering portfolio with theme-aware Three.js environments, a live assistant widget, and GitHub-backed project cards.
+A Next.js portfolio for Hang Kheang Taing, built as a professional engineering command interface. The visual system draws from advanced aerospace, powered-exoskeleton, nanotechnology, and HUD design without using copyrighted characters, marks, or artwork.
 
-## Stack
+## Experience
 
-- Next.js 16 App Router
-- React 18 + TypeScript
-- Tailwind CSS
-- Framer Motion
-- Three.js
-- React Markdown with GitHub-flavored markdown support
+The home page presents identity, system metrics, engineering profile, capability matrix, career mission log, GitHub-backed projects, education, an AI assistant showcase, and contact terminal. `/resume` provides a recruiter-friendly engineering dossier with dedicated print styling.
 
-## What The Frontend Actually Does
+Six persisted suit configurations change the full material system—not only the accent color:
 
-- Renders the home page sections in `src/app/page.tsx`: Hero, About, Skills, Experience, Projects, Education, Contact.
-- Renders an interactive Three.js software-system core in the hero.
-- Gives every content section its own software-architecture WebGL environment.
-- Synchronizes Three.js materials, lighting, particles, and surfaces with light and dark themes.
-- Renders a dedicated resume page at `/resume`.
-- Shows a responsive floating assistant from the root layout. The launcher is icon-only on mobile and the open panel is constrained to the dynamic viewport.
-- Tracks visits with a best-effort POST to the backend.
-- Loads GitHub project data from a Next.js server route.
+- MK II: prototype titanium and cool-white energy
+- MK III: restrained red, gold, and white alloy
+- MK 45: dark crimson systems and electric-blue seams
+- MK 46: segmented tactical surfaces and distributed light nodes
+- MK 50: energetic nanotech red, gold, and cyan
+- MK 85: polished advanced nanotech, the default
 
-## Three.js Design
+The selected configuration is stored as `kai-armor-theme` in `localStorage` and applied through semantic CSS tokens by `Providers` and `useArmorTheme`.
 
-The WebGL presentation is split into two reusable components:
+## Architecture
 
-- `src/components/three/HeroScene.tsx` renders the primary service-system core, orbiting modules, particles, rings, lights, and technology badges.
-- `src/components/three/SectionScene.tsx` renders reusable section environments for About, Skills, Experience, Projects, Education, and Contact.
-
-The visual themes are deliberately different:
-
-- Light mode uses pearl white, smoke gray, silver, slate, and graphite for strong contrast on white surfaces.
-- Dark mode uses blue, cyan, and teal illumination against the dark navy background.
-
-The normal interface follows the same system. Light-mode buttons and icons use graphite/slate, while dark-mode actions use blue/cyan.
-
-### Rendering and Accessibility
-
-- Section renderers are created only when their canvas is near the viewport and disposed when it moves far away.
-- Animation pauses when a scene is outside its visible section.
-- Mobile rendering uses device pixel ratio `1`, fewer meshes and particles, no floating code panels, and a 30 FPS cap.
-- Desktop pixel ratio is capped to prevent unnecessary GPU load on high-density displays.
-- `prefers-reduced-motion` disables continuous scene motion while preserving the visual composition.
-- Every canvas and technology badge is decorative and excluded from the accessibility tree.
-
-## API Integration
-
-### Assistant Chat
-
-The browser talks to the Next.js proxy route at `/api/assistant`.
-
-That route forwards requests to the backend assistant endpoint at `POST /api/assistant` and keeps the streaming NDJSON response intact.
-
-The UI attaches a stable browser session id in metadata so the backend can persist conversation context across messages and refreshes.
-
-Example request body sent through the proxy:
-
-```json
-{
-  "message": "What is my name?",
-  "history": [
-    {
-      "role": "user",
-      "content": "My name is Alice"
-    }
-  ],
-  "context": {
-    "systemPersona": "Hang Kheang Taing portfolio assistant",
-    "metadata": {
-      "sessionId": "browser-session-123",
-      "uiSurface": "portfolio-assistant",
-      "locale": "en-US"
-    }
-  }
-}
+```text
+src/
+  app/                 routes, metadata, API proxies, global design system
+  components/
+    hud/               section shell and theme selector
+    sections/          accessible home-page content
+    visuals/           optional WebGL reactor
+  config/              armor theme definitions
+  hooks/               armor theme context API
+  lib/                 assistant, contact, session, SEO, and tracking clients
+public/images/
+  kai/ armor/ projects/ backgrounds/ textures/
 ```
 
-### Contact Form
+Static professional facts remain in HTML. Three.js is decorative and is not required to understand or navigate the portfolio.
 
-The contact form posts directly to the backend at `POST /api/contacts`.
+## Three.js and performance
 
-### Visitor Tracking
+`ArcReactorScene` renders one hero-only WebGL context with concentric reactor rings and a restrained nanotech particle field. It caps device pixel ratio, lowers mobile complexity, pauses rendering outside the viewport, honors reduced-motion, resizes through `ResizeObserver`, and disposes geometries, materials, and the renderer on unmount. Other visual effects use CSS rather than additional WebGL contexts.
 
-The visitor tracker posts directly to the backend at `POST /api/visits`.
+The site uses dynamic imports for the scene and lower-page sections, system fonts, semantic HTML fallbacks, dynamic viewport sizing for the assistant, and mobile-specific simplification.
 
-### GitHub Projects
+## Accessibility
 
-The projects section calls the Next.js route at `GET /api/github/projects`, which fetches repositories from GitHub and filters them for the portfolio display.
+- Semantic landmarks and ordered headings
+- Keyboard-operable navigation, controls, forms, and assistant
+- Visible focus behavior and high-contrast text
+- Decorative canvas excluded from the accessibility tree
+- `prefers-reduced-motion` respected by Framer Motion and CSS
+- Forms retain labels, validation, and status announcements
+- Print styles remove navigation, effects, and unnecessary controls
 
-## Environment Variables
+## Integrations
 
-### Public / Client Visible
+- `POST /api/assistant`: Next.js proxy preserving streaming NDJSON, session metadata, history, retry, cancellation, and errors
+- `POST /api/contacts`: contact submission through the configured backend
+- `POST /api/visits`: best-effort visitor tracking that never blocks rendering
+- `GET /api/github/projects`: server-side GitHub repository feed with loading, empty, and failure states
 
-- `NEXT_PUBLIC_BACKEND_API_URL` - backend base URL. Defaults to `http://localhost:5000`.
-- `NEXT_PUBLIC_SITE_URL` - used for metadata and canonical URLs.
+## Environment variables
 
-### Server Side
-
-- `GITHUB_TOKEN` - optional GitHub API token.
-- `GITHUB_USER_AGENT` - optional custom user agent for GitHub requests.
-- `GOOGLE_SITE_VERIFICATION` - optional Google Search Console verification token.
-- `NEXT_PUBLIC_DEBUG_AI` - optional debug flag for assistant request logging.
-
-## Scripts
-
-```bash
-npm run dev
-npm run build
-npm run start
-npm run lint
-npm run type-check
+```text
+NEXT_PUBLIC_BACKEND_API_URL  Backend base URL; localhost fallback in development
+NEXT_PUBLIC_SITE_URL         Canonical and social metadata origin
+GITHUB_TOKEN                 Optional server-side GitHub authentication
+GITHUB_USER_AGENT            Optional GitHub request user agent
+GOOGLE_SITE_VERIFICATION     Optional search-console verification
+NEXT_PUBLIC_DEBUG_AI         Optional assistant debug logging
 ```
 
-## Run Locally
-
-### Frontend Only
+## Local development
 
 ```bash
-cd frontend
 npm install
 npm run dev
 ```
 
-Open `http://localhost:3000`.
-
-If you are not using Docker Compose, make sure `NEXT_PUBLIC_BACKEND_API_URL` points to a running backend instance.
-
-### Full Stack
-
-From the repository root:
+Quality checks:
 
 ```bash
-docker-compose up -d --build
+npm run lint
+npm run type-check
+npm run build
 ```
 
-That gives you the frontend at `http://localhost:3000` and the backend at `http://localhost:5000`.
+## Future image assets
 
-## Key Files
+The current avatar and generated CSS visuals are safe fallbacks. These optional replacement files are already routed into the image structure:
 
-- `src/app/layout.tsx` - global layout, metadata, navigation, footer, assistant launcher.
-- `src/app/page.tsx` - landing page composition.
-- `src/app/globals.css` - theme surfaces, Three.js canvas layout, responsive behavior, and shared UI styling.
-- `src/components/three/HeroScene.tsx` - interactive hero WebGL scene.
-- `src/components/three/SectionScene.tsx` - theme-aware reusable section scenes.
-- `src/components/sections/Assistant.tsx` - streaming assistant interface and responsive mobile panel.
-- `src/app/resume/page.tsx` - resume page.
-- `src/app/api/assistant/route.ts` - assistant proxy.
-- `src/app/api/github/projects/route.ts` - GitHub project feed.
-- `src/lib/assistants.ts` - assistant streaming client.
-- `src/lib/session.ts` - persistent browser session id utility.
-- `src/lib/contacts.ts` - contact form client.
-- `src/lib/visitor-tracking.ts` - visitor analytics client.
+```text
+public/images/kai/kai-og.webp
+public/images/kai-classic-stance.webp
+public/images/armor/nanotech-system.webp
+public/images/backgrounds/reactor-core.webp
+public/images/backgrounds/mark2-blueprint.webp
+public/images/backgrounds/software-core.webp
+```
 
-## Notes
-
-- The app uses the shared backend URL fallback of `http://localhost:5000`.
-- The backend route names in the docs should match the proxy route `POST /api/assistant` rather than older versioned assistant paths.
-- The site uses the local system font stack and does not require a Google Fonts download during production builds.
-- Three.js scenes require WebGL. Content remains readable and usable if a scene cannot render.
+Keep all meaningful names, labels, and technical content in HTML rather than baking text into artwork.

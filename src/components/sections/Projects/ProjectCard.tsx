@@ -2,6 +2,7 @@
 
 import { Github, ExternalLink, Star } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 
 export type Project = {
@@ -38,6 +39,13 @@ export function FeaturedProjectCard({
       className="project-featured-card group rounded-lg overflow-hidden bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-light-primary/50 dark:hover:border-dark-primary/50 hover:shadow-lg transition-all duration-300"
     >
       <div className="project-featured-card__visual h-48 bg-light-primary/10 dark:bg-dark-primary/10 flex items-center justify-center group-hover:bg-light-primary/20 dark:group-hover:bg-dark-primary/20 transition-colors">
+        <Image
+          src="/images/armor/nanotech-system.webp"
+          alt=""
+          fill
+          sizes="(max-width: 1024px) 100vw, 50vw"
+          className="project-featured-card__image"
+        />
         <span>FEATURED BUILD / 0{index + 1}</span>
         <div className="project-art" aria-hidden="true">
           <span>&lt;/&gt;</span>

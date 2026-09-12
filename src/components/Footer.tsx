@@ -1,71 +1,33 @@
-"use client";
-
-import { Github, Linkedin, Mail } from "lucide-react";
 import Link from "next/link";
-
+import { Github, Linkedin, Mail } from "lucide-react";
+import { PERSONAL_INFO } from "@/lib/constants";
 export default function Footer() {
-  const currentYear = new Date().getFullYear();
-  const quickLinks = [
-    { label: "Journey", href: "/#journey" },
-    { label: "Education", href: "/#education" },
-    { label: "About", href: "/#about" },
-    { label: "Projects", href: "/#projects" },
-    { label: "Experience", href: "/#experience" },
-    { label: "Contact", href: "/#contact" },
-  ];
-  const socialLinks = [
-    { icon: Github, href: "https://github.com/Kheang1409", label: "GitHub" },
-    {
-      icon: Linkedin,
-      href: "https://www.linkedin.com/in/hang-kheang-taing/",
-      label: "LinkedIn",
-    },
-    { icon: Mail, href: "mailto:hangkheangtaing@gmail.com", label: "Email" },
-  ];
-
   return (
-    <footer className="campaign-footer bg-light-surface dark:bg-dark-surface border-t border-light-border dark:border-dark-border">
+    <footer className="campaign-footer">
       <div className="max-w-container mx-auto px-sm md:px-lg py-3xl">
         <div className="flex flex-col md:flex-row items-center justify-between gap-lg">
-          <div className="text-light-text-secondary dark:text-dark-text-secondary text-small text-center md:text-left">
-            <p>&copy; {currentYear} Hang Kheang Taing. All rights reserved.</p>
+          <div>
+            <p className="system-label">
+              <span>KAI // SYSTEM</span> · INTERFACE STANDBY
+            </p>
+            <small>© {new Date().getFullYear()} Hang Kheang Taing</small>
           </div>
-
-          <nav
-            aria-label="Footer quick links"
-            className="flex items-center gap-md"
-          >
-            {quickLinks.map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                className="text-small font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-light-primary dark:hover:text-dark-primary transition-colors"
-              >
-                {link.label}
-              </Link>
-            ))}
+          <nav aria-label="Footer navigation" className="flex gap-md">
+            <Link href="/#about">About</Link>
+            <Link href="/#projects">Projects</Link>
+            <Link href="/resume">Resume</Link>
+            <Link href="/#contact">Contact</Link>
           </nav>
-
-          <div className="text-light-text-secondary dark:text-dark-text-secondary text-small font-medium text-center md:text-left">
-            Built with Cambodian spirit and modern technology
-          </div>
-
-          <div className="flex items-center gap-md">
-            {socialLinks.map((link) => {
-              const Icon = link.icon;
-              return (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2 rounded-md bg-light-background dark:bg-dark-background hover:bg-light-primary hover:text-white dark:hover:bg-dark-primary text-light-text-secondary dark:text-dark-text-secondary transition-colors"
-                  aria-label={link.label}
-                >
-                  <Icon className="w-5 h-5" />
-                </Link>
-              );
-            })}
+          <div className="flex gap-md">
+            <a href={PERSONAL_INFO.GITHUB} aria-label="GitHub">
+              <Github />
+            </a>
+            <a href={PERSONAL_INFO.LINKEDIN} aria-label="LinkedIn">
+              <Linkedin />
+            </a>
+            <a href={`mailto:${PERSONAL_INFO.EMAIL}`} aria-label="Email">
+              <Mail />
+            </a>
           </div>
         </div>
       </div>

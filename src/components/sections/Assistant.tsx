@@ -5,13 +5,18 @@ import {
   ArrowUpRight,
   Check,
   Copy,
-  MessageSquare,
   Plus,
   Send,
-  Sparkles,
   Square,
   X,
   RotateCcw,
+  Minus,
+  Maximize2,
+  Minimize2,
+  Activity,
+  Cpu,
+  Radio,
+  ShieldCheck,
 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -23,24 +28,6 @@ import type { AiMetadata, ConversationMessage } from "@/lib/api/types";
 
 const STORAGE_KEY = "kai_assistant_history_v2";
 const plugins = [rehypeHighlight as Pluggable];
-const prompts = [
-  {
-    label: "Skills & strengths",
-    question: "What are Kheang's strongest technical skills?",
-  },
-  {
-    label: "Explore the work",
-    question: "Which of Kheang's projects should I explore first?",
-  },
-  {
-    label: "Career journey",
-    question: "Tell me about Kheang's professional experience.",
-  },
-  {
-    label: "Work together",
-    question: "How can I contact Kheang about an opportunity?",
-  },
-];
 type Message = {
   id: string;
   sender: "user" | "bot";
@@ -66,7 +53,7 @@ function Reply({ message }: { message: Message }) {
       aria-label={message.sender === "user" ? "Your message" : "Kai's reply"}
     >
       <span className="kai-message-author">
-        {message.sender === "user" ? "You" : "Kai"}
+        {message.sender === "user" ? "You" : "AI Core"}
         {message.status === "stopped" && " / Stopped"}
       </span>
       {message.sender === "bot" ? (
@@ -135,6 +122,9 @@ export default function Assistant() {
   const [retry, setRetry] = useState<Retry | null>(null);
   const [announcement, setAnnouncement] = useState("");
   const [confirmClear, setConfirmClear] = useState(false);
+  const [panelMode, setPanelMode] = useState<
+    "standard" | "minimized" | "maximized"
+  >("standard");
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const launcherRef = useRef<HTMLButtonElement>(null);
   const logRef = useRef<HTMLDivElement>(null);
@@ -187,16 +177,27 @@ export default function Assistant() {
   }, [messages, ready]);
   useEffect(() => {
     if (!open) return;
-    inputRef.current?.focus();
+    if (panelMode !== "minimized") inputRef.current?.focus();
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        setOpen(false);
-        requestAnimationFrame(() => launcherRef.current?.focus());
+        if (panelMode === "maximized") setPanelMode("standard");
+        else {
+          setOpen(false);
+          requestAnimationFrame(() => launcherRef.current?.focus());
+        }
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [open]);
+  }, [open, panelMode]);
+  useEffect(() => {
+    if (!open || panelMode !== "maximized") return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [open, panelMode]);
   useEffect(() => {
     if (open && stickToBottom.current && logRef.current)
       logRef.current.scrollTop = logRef.current.scrollHeight;
@@ -367,29 +368,46 @@ export default function Assistant() {
           aria-label="Open assistant"
           aria-haspopup="dialog"
         >
-          <span className="kai-launcher-icon">
-            <Sparkles size={19} />
+          <span className="kai-launcher-reactor" aria-hidden="true">
+            <i />
+            <i />
+            <span className="kai-launcher-icon">
+              <Cpu size={17} />
+            </span>
           </span>
-          <span>
-            Ask Kai<small>Portfolio assistant</small>
+        </button>
+      ) : panelMode === "minimized" ? (
+        <button
+          type="button"
+          className="assistant-minimized-core"
+          onClick={() => setPanelMode("standard")}
+          aria-label="Restore assistant"
+        >
+          <span className="kai-launcher-reactor" aria-hidden="true">
+            <i />
+            <i />
+            <span className="kai-launcher-icon">
+              <Cpu size={17} />
+            </span>
           </span>
         </button>
       ) : (
         <section
-          className="assistant-panel"
+          className={`assistant-panel assistant-panel--${panelMode}`}
           role="dialog"
           aria-label="Portfolio assistant"
           aria-describedby="kai-description"
         >
           <header className="kai-header">
-            <span className="kai-avatar">
-              <Sparkles size={21} />
+            <span className="kai-avatar" aria-hidden="true">
+              <span className="kai-avatar-rings" />
+              <Cpu size={19} />
             </span>
             <div>
               <h2>
-                Kai<span>AI</span>
+                KAI <span>// INTELLIGENCE CORE</span>
               </h2>
-              <p id="kai-description">Your guide to Kheang’s work</p>
+              <p id="kai-description">ENGINEERING KNOWLEDGE INTERFACE</p>
             </div>
             <div className="kai-header-actions">
               <button
@@ -403,6 +421,34 @@ export default function Assistant() {
               </button>
               <button
                 type="button"
+                aria-label="Minimize assistant"
+                title="Minimize"
+                onClick={() => setPanelMode("minimized")}
+              >
+                <Minus size={18} />
+              </button>
+              <button
+                type="button"
+                aria-label={
+                  panelMode === "maximized"
+                    ? "Restore assistant size"
+                    : "Maximize assistant"
+                }
+                title={panelMode === "maximized" ? "Restore size" : "Maximize"}
+                onClick={() =>
+                  setPanelMode(
+                    panelMode === "maximized" ? "standard" : "maximized",
+                  )
+                }
+              >
+                {panelMode === "maximized" ? (
+                  <Minimize2 size={17} />
+                ) : (
+                  <Maximize2 size={17} />
+                )}
+              </button>
+              <button
+                type="button"
                 aria-label="Close assistant"
                 onClick={close}
               >
@@ -410,6 +456,17 @@ export default function Assistant() {
               </button>
             </div>
           </header>
+          <div className="kai-telemetry" aria-label="Assistant system status">
+            <span>
+              <i /> CORE ONLINE
+            </span>
+            <span>
+              <ShieldCheck /> CONTEXT LOCKED
+            </span>
+            <span>
+              <Radio /> STREAM READY
+            </span>
+          </div>
           {confirmClear && (
             <div className="kai-clear">
               <p>
@@ -433,31 +490,27 @@ export default function Assistant() {
           >
             {!messages.length && (
               <div className="kai-welcome">
+                <div className="kai-core-display" aria-hidden="true">
+                  <span>
+                    <Cpu />
+                  </span>
+                  <i />
+                  <i />
+                  <i />
+                </div>
                 <span className="eyebrow">
-                  A LITTLE CONVERSATION. A CLEARER PICTURE.
+                  INTERFACE READY // AWAITING QUERY
                 </span>
                 <h3>
-                  What would you
+                  Access the
                   <br />
-                  like to <em>explore?</em>
+                  engineering <em>archive.</em>
                 </h3>
                 <p>
-                  I’m Kai, Kheang’s AI portfolio assistant. Ask about his work,
-                  technical strengths, or the journey behind it.
+                  Ask KAI about Kheang’s systems, technical strengths,
+                  experience, or current work. Responses are grounded in this
+                  portfolio’s knowledge base.
                 </p>
-                <div className="kai-prompts">
-                  {prompts.map((p) => (
-                    <button
-                      key={p.label}
-                      type="button"
-                      onClick={() => void send(p.question)}
-                      disabled={loading}
-                    >
-                      {p.label}
-                      <ArrowUpRight size={15} />
-                    </button>
-                  ))}
-                </div>
               </div>
             )}
             {messages.map((message) => (
@@ -465,6 +518,7 @@ export default function Assistant() {
             ))}
             {loading && (
               <div className="kai-thinking">
+                <Activity size={13} />
                 <span />
                 <span />
                 <span />
@@ -530,7 +584,8 @@ export default function Assistant() {
                 aria-label={loading ? "Stop response" : "Send message"}
                 disabled={!loading && !input.trim()}
               >
-                {loading ? <Square size={16} /> : <Send size={17} />}
+                {loading ? <Square size={15} /> : <Send size={16} />}
+                <span>{loading ? "Stop" : "Send"}</span>
               </button>
             </div>
             <div className="kai-composer-note">
@@ -539,7 +594,6 @@ export default function Assistant() {
                   ? `${input.length}/2000 characters`
                   : "Enter to send · Shift + Enter for a new line"}
               </span>
-              <MessageSquare size={12} />
             </div>
             <p className="kai-disclaimer">
               AI can make mistakes. <a href="/resume">View the resume</a> for

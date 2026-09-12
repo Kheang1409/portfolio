@@ -6,13 +6,14 @@ type ResumeActionsProps = {
 
 export default function ResumeActions({ markdownHref }: ResumeActionsProps) {
   return (
-    <div className="flex gap-2 mt-sm md:mt-0">
+    <div className="resume-actions">
+      <a href="/">Back to portfolio</a>
       <a
         href={markdownHref}
         download
         className="px-md py-sm rounded-md bg-light-primary dark:bg-dark-primary text-white font-semibold"
       >
-        Download Markdown
+        Download PDF
       </a>
       <button
         type="button"

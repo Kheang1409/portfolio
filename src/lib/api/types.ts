@@ -65,9 +65,7 @@ export type StreamErrorChunk = {
 };
 
 export type StreamChunk =
-  | StreamDeltaChunk
-  | StreamCompletedChunk
-  | StreamErrorChunk;
+  StreamDeltaChunk | StreamCompletedChunk | StreamErrorChunk;
 
 export type ContactRequest = {
   name: string;

@@ -43,7 +43,7 @@ async function fetchProjects(): Promise<Project[]> {
       headers: baseHeaders,
       // Cache at the edge to ease rate limits, still refreshed hourly.
       next: { revalidate: 3600 },
-    }
+    },
   );
 
   if (!res.ok) {
@@ -58,7 +58,7 @@ async function fetchProjects(): Promise<Project[]> {
     .sort((a, b) =>
       b.stargazers_count === a.stargazers_count
         ? new Date(b.pushed_at).getTime() - new Date(a.pushed_at).getTime()
-        : b.stargazers_count - a.stargazers_count
+        : b.stargazers_count - a.stargazers_count,
     );
 
   const languageLists = await Promise.all(
@@ -73,7 +73,7 @@ async function fetchProjects(): Promise<Project[]> {
       } catch {
         return repo.language ? [repo.language] : [];
       }
-    })
+    }),
   );
 
   const dotnetFiltered = filtered
@@ -90,7 +90,7 @@ async function fetchProjects(): Promise<Project[]> {
           l.includes("javascript") ||
           l.includes("typescript") ||
           l.includes("js") ||
-          l.includes("ts")
+          l.includes("ts"),
       );
     })
     .slice(0, 8);
@@ -103,8 +103,8 @@ async function fetchProjects(): Promise<Project[]> {
     tech: langs.length
       ? langs.slice(0, 6)
       : repo.language
-      ? [repo.language]
-      : [],
+        ? [repo.language]
+        : [],
     github: repo.html_url,
     demo:
       repo.homepage && repo.homepage.trim() !== ""
@@ -125,7 +125,7 @@ export async function GET() {
         headers: {
           "Cache-Control": "s-maxage=3600, stale-while-revalidate=1800",
         },
-      }
+      },
     );
   } catch (error) {
     const message =
@@ -135,7 +135,7 @@ export async function GET() {
       {
         status: 503,
         headers: { "Cache-Control": "no-store" },
-      }
+      },
     );
   }
 }

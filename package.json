@@ -12,12 +12,15 @@
     "test": "playwright test"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^7.3.1",
+    "@fortawesome/free-brands-svg-icons": "^7.3.1",
+    "@fortawesome/free-solid-svg-icons": "^7.3.1",
+    "@fortawesome/react-fontawesome": "^3.5.0",
     "@types/three": "^0.185.4",
     "clsx": "^2.0.0",
     "framer-motion": "^10.16.4",
     "lucide-react": "^0.292.0",
     "next": "^16.2.1",
-    "next-themes": "^0.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-markdown": "^9.0.0",

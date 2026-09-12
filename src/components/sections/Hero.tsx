@@ -1,85 +1,99 @@
 "use client";
+import dynamic from "next/dynamic";
 import Image from "next/image";
-import { ArrowDown, ArrowUpRight, Github, Linkedin } from "lucide-react";
-import { PERSONAL_INFO } from "@/lib/constants";
+import { ArrowDown, ArrowUpRight, Cpu, Database, Network } from "lucide-react";
+const ArcReactorScene = dynamic(
+  () => import("@/components/visuals/ArcReactorScene"),
+  { ssr: false },
+);
+const tech = [".NET", "C#", "AWS", "MICROSERVICES", "REACT", "SQL"];
 export default function Hero() {
   return (
-    <section id="home" className="khmer-hero" aria-labelledby="hero-heading">
-      <Image
-        src="/images/angkor-dawn.webp"
-        alt="Angkor-inspired temple towers reflected in still water at dawn"
-        fill
-        priority
-        sizes="100vw"
-        className="hero-landscape"
-      />
-      <div className="hero-shade" />
-      <div className="hero-particles" aria-hidden="true">
-        {Array.from({ length: 8 }, (_, i) => (
-          <i
-            key={i}
-            style={{
-              left: `${18 + i * 10}%`,
-              bottom: `${12 + (i % 3) * 12}%`,
-              animationDelay: `${i * -1.7}s`,
-            }}
-          />
-        ))}
+    <section id="home" className="armor-hero" aria-labelledby="hero-heading">
+      <div className="hero-reactor">
+        <ArcReactorScene />
       </div>
-      <div className="hero-mist" aria-hidden="true" />
-      <div className="hero-topline">
-        <span>CAMBODIAN ROOTS. GLOBAL PERSPECTIVE.</span>
-        <span>PERSONAL PORTFOLIO / 2026</span>
-      </div>
-      <div className="hero-copy">
-        <p className="eyebrow">
-          <span className="status-dot" /> SOFTWARE ENGINEER & CREATIVE THINKER
-        </p>
-        <h1 id="hero-heading">
-          Rooted in heritage.
-          <br /> <em>Building the future.</em>
-        </h1>
-        <div className="hero-intro">
-          <span className="gold-rule" />
-          <div>
-            <p className="hero-name">I’m Hang Kheang Taing.</p>
-            <p>
-              Building meaningful digital experiences from Cambodian roots to
-              the modern world.
-            </p>
+      <div className="hero-scan" aria-hidden="true" />
+      <div className="hero-content">
+        <div className="hero-copy">
+          <p className="system-label">
+            <span>SYS.00</span> // IDENTITY CORE <i className="online-dot" />{" "}
+            ONLINE
+          </p>
+          <h1 id="hero-heading">
+            <span>HANG KHEANG</span> TAING
+          </h1>
+          <p className="hero-role">SOFTWARE ENGINEER</p>
+          <p className="hero-specialty">
+            BACKEND <b>•</b> CLOUD <b>•</b> DISTRIBUTED SYSTEMS
+          </p>
+          <p className="hero-statement">
+            I design and modernize reliable software systems, high-performance
+            APIs, and cloud-native architectures.
+          </p>
+          <div className="hero-actions">
+            <a className="energy-button" href="#projects">
+              EXPLORE SYSTEMS <ArrowUpRight />
+            </a>
+            <a className="ghost-button" href="/resume">
+              VIEW RESUME
+            </a>
+            <button
+              className="text-control"
+              onClick={() =>
+                document
+                  .querySelector<HTMLButtonElement>(".assistant-launcher")
+                  ?.click()
+              }
+            >
+              <Cpu /> INITIALIZE AI
+            </button>
           </div>
+          <ul className="tech-rail" aria-label="Core technologies">
+            {tech.map((t) => (
+              <li key={t}>{t}</li>
+            ))}
+          </ul>
         </div>
-        <div className="hero-actions">
-          <a className="button-gold" href="#projects">
-            View my work <ArrowUpRight size={17} />
-          </a>
-          <a className="button-line" href="#journey">
-            Explore my journey <ArrowUpRight size={17} />
-          </a>
+        <div className="hero-portrait" aria-label="Portrait system">
+          <div className="portrait-frame">
+            <Image
+              src="/images/kai-classic-stance.webp"
+              alt="Hang Kheang Taing"
+              fill
+              priority
+              sizes="(max-width: 768px) 80vw, 42vw"
+              className="portrait-image"
+            />
+            <span className="portrait-scan" />
+          </div>
+          <span className="hud-tag tag-a">BIOMETRIC // VERIFIED</span>
+          <span className="hud-tag tag-b">NANOSHELL // STANDBY</span>
+          <span className="hud-tag tag-c">CORE // STABLE</span>
         </div>
       </div>
-      <div className="hero-bottom">
-        <a href="#journey" className="scroll-gateway">
+      <div className="quick-metrics">
+        <div>
+          <Cpu />
           <span>
-            <ArrowDown size={16} />
-          </span>{" "}
-          A JOURNEY WORTH BUILDING
-        </a>
-        <div className="hero-socials">
-          <a href="#contact">
-            Let’s connect <ArrowUpRight size={14} />
-          </a>
-          <a href={PERSONAL_INFO.GITHUB} aria-label="GitHub">
-            <Github size={17} />
-          </a>
-          <a href={PERSONAL_INFO.LINKEDIN} aria-label="LinkedIn">
-            <Linkedin size={17} />
-          </a>
+            PRIMARY STACK<strong>.NET / TYPESCRIPT</strong>
+          </span>
         </div>
-      </div>
-      <div className="landscape-caption">
-        01 / ANGKOR AT FIRST LIGHT
-        <span>HERITAGE IS WHERE THE STORY BEGINS.</span>
+        <div>
+          <Network />
+          <span>
+            ARCHITECTURE<strong>DISTRIBUTED SYSTEMS</strong>
+          </span>
+        </div>
+        <div>
+          <Database />
+          <span>
+            DATA SYSTEMS<strong>SQL / MONGO / REDIS</strong>
+          </span>
+        </div>
+        <a href="#about">
+          SYSTEM OVERVIEW <ArrowDown />
+        </a>
       </div>
     </section>
   );

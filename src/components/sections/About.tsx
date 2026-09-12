@@ -1,107 +1,92 @@
-"use client";
-
-import { motion } from "framer-motion";
+import SectionShell from "@/components/hud/SectionShell";
 import Image from "next/image";
-import ResumeModal from "@/components/ui/ResumeModal";
-import SectionScene from "@/components/three/SectionScene";
-
+const disciplines = [
+  {
+    n: "01",
+    t: "SYSTEMS ENGINEERING",
+    d: "Reliable services with clear boundaries, observability, and operational resilience.",
+  },
+  {
+    n: "02",
+    t: "BACKEND ARCHITECTURE",
+    d: "High-performance APIs, data models, integrations, and event-driven workflows.",
+  },
+  {
+    n: "03",
+    t: "MODERNIZATION",
+    d: "Practical migration from legacy systems toward scalable, maintainable platforms.",
+  },
+  {
+    n: "04",
+    t: "TECHNICAL LEADERSHIP",
+    d: "Clear decisions, collaborative delivery, and ownership from design through production.",
+  },
+];
 export default function About() {
-  const fadeInVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
-  };
-
   return (
-    <section
+    <SectionShell
       id="about"
-      aria-labelledby="about-heading"
-      className="webgl-section py-4xl md:py-[100px] bg-light-surface dark:bg-dark-surface"
+      index="01"
+      label="ENGINEERING PROFILE"
+      title="Built to solve the hard parts."
+      theme="theme-mark2"
+      intro="I turn complex operational requirements into dependable software that teams can understand, evolve, and trust."
     >
-      <SectionScene variant="about" />
-      <div className="relative z-10 max-w-container mx-auto px-sm md:px-lg">
-        <motion.div
-          initial={false}
-          whileInView="visible"
-          variants={fadeInVariants}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true, margin: "-100px" }}
-          className="mb-3xl"
-        >
-          <div className="section-title-lockup">
-            <h2
-              id="about-heading"
-              className="text-h2 font-bold text-light-text-primary dark:text-dark-text-primary mb-sm"
-            >
-              A little about me
-            </h2>
-            <div className="section-level-divider w-full h-2 bg-light-primary dark:bg-dark-primary" />
-          </div>
-        </motion.div>
-
-        <div className="grid md:grid-cols-2 gap-3xl items-center">
-          <motion.div
-            initial={false}
-            whileInView="visible"
-            variants={fadeInVariants}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            viewport={{ once: true, margin: "-100px" }}
-            className="space-y-md"
-          >
-            <p className="text-body text-light-text-secondary dark:text-dark-text-secondary leading-relaxed">
-              Software Engineer with experience designing, developing, and
-              maintaining scalable web applications using C#, .NET Core, and
-              modern JavaScript frameworks. Strong background in building
-              RESTful APIs, integrating third-party systems, and optimizing SQL
-              Server and PostgreSQL databases. Experienced in writing clean,
-              maintainable, and well-documented code while collaborating with
-              cross-functional teams in Agile environments. Proven ability to
-              debug, troubleshoot, and improve system performance in cloud-based
-              architectures (Azure, AWS), delivering reliable and secure
-              software solutions.
-            </p>
-
-            <p className="text-body text-light-text-secondary dark:text-dark-text-secondary leading-relaxed">
-              Core competencies include backend and API development, database
-              optimization, cloud deployments, microservices and event-driven
-              systems, and frontend frameworks such as React, Angular, and
-              Next.js. I follow SOLID principles, DI patterns, and automated
-              CI/CD workflows to ship reliable features quickly.
-            </p>
-
-            <div className="pt-md">
-              <div className="flex flex-wrap gap-sm">
-                <a
-                  href="#contact"
-                  className="px-xl py-sm rounded-md bg-light-primary dark:bg-dark-primary text-white font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300"
-                >
-                  Contact
-                </a>
-                <ResumeModal triggerClassName="px-xl py-sm rounded-md border-2 border-light-primary dark:border-dark-primary text-light-primary dark:text-dark-primary font-semibold hover:bg-light-primary/10 dark:hover:bg-dark-primary/10 transition-colors flex items-center gap-2 min-h-[44px]" />
-              </div>
+      <div className="about-layout">
+        <div className="profile-copy">
+          <figure className="section-portrait section-portrait--prototype">
+            <Image
+              src="/images/kai-classic-stance.webp"
+              alt="Hang Kheang Taing in professional attire"
+              fill
+              sizes="(max-width: 760px) 100vw, 40vw"
+              className="section-portrait__image"
+            />
+            <figcaption>
+              <span>PROFILE // VERIFIED</span>
+              ENGINEERING PROFILE
+            </figcaption>
+          </figure>
+          <p>
+            Software Engineer experienced in scalable web applications using C#,
+            .NET Core, and modern JavaScript frameworks. I build RESTful APIs,
+            integrate third-party systems, optimize SQL Server and PostgreSQL,
+            and improve performance across AWS and Azure environments.
+          </p>
+          <p>
+            My work spans backend architecture and full-stack delivery, with an
+            emphasis on clean code, secure systems, measurable outcomes, and
+            calm execution in production.
+          </p>
+          <dl className="data-register">
+            <div>
+              <dt>ROLE</dt>
+              <dd>SOFTWARE ENGINEER</dd>
             </div>
-          </motion.div>
-
-          <motion.div
-            initial={false}
-            whileInView="visible"
-            variants={fadeInVariants}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            viewport={{ once: true, margin: "-100px" }}
-            className="flex justify-center md:justify-end"
-          >
-            <div className="relative w-56 h-56 md:w-64 md:h-64 rounded-full bg-light-primary/10 dark:bg-dark-primary/10 shadow-[0_18px_60px_rgba(37,99,235,0.2)] overflow-hidden">
-              <Image
-                src="/avatar.png"
-                alt="Hang Kheang Taing profile"
-                fill
-                sizes="(max-width: 768px) 224px, 256px"
-                className="object-cover object-top"
-                loading="lazy"
-              />
+            <div>
+              <dt>FOCUS</dt>
+              <dd>BACKEND SYSTEMS</dd>
             </div>
-          </motion.div>
+            <div>
+              <dt>MODE</dt>
+              <dd>BUILD / OPTIMIZE / SCALE</dd>
+            </div>
+            <div>
+              <dt>BASE</dt>
+              <dd>IRVING, TEXAS</dd>
+            </div>
+          </dl>
+        </div>
+        <div className="discipline-grid">
+          {disciplines.map((x) => (
+            <article className="metal-panel" key={x.n}>
+              <span>{x.n}</span>
+              <h3>{x.t}</h3>
+              <p>{x.d}</p>
+            </article>
+          ))}
         </div>
       </div>
-    </section>
+    </SectionShell>
   );
 }

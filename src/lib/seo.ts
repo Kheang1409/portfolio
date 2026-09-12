@@ -47,7 +47,7 @@ export function buildPageMetadata({
   description,
   path = "/",
   keywords = [],
-  image = "/opengraph-image",
+  image = "/images/kai/kai-og.webp",
 }: PageMetadataInput): Metadata {
   const mergedKeywords = Array.from(
     new Set([...siteConfig.keywords, ...keywords]),
@@ -109,7 +109,7 @@ export function buildPersonJsonLd() {
     url: siteConfig.url,
     jobTitle: "Software Engineer",
     description: siteConfig.description,
-    image: `${siteConfig.url}/avatar.png`,
+    image: `${siteConfig.url}/images/kai/kai-og.webp`,
     sameAs: [siteConfig.social.github, siteConfig.social.linkedin],
     knowsAbout: [
       "C#",

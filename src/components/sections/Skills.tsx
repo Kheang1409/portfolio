@@ -1,238 +1,162 @@
-"use client";
-
-import {
-  Code2,
-  Server,
-  Cloud,
-  Database,
-  Zap,
-  GitBranch,
-  Box,
-  Boxes,
-  Shield,
-  Terminal,
-} from "lucide-react";
-import { motion } from "framer-motion";
-import SectionScene from "@/components/three/SectionScene";
-
-const skillsData = [
+import SectionShell from "@/components/hud/SectionShell";
+import Image from "next/image";
+const groups = [
   {
-    category: "Backend & Architecture",
-    description:
-      "Reliable services, clear boundaries, and maintainable business logic.",
-    icon: Server,
-    skills: [
-      { name: "C#", level: 90 },
-      { name: ".NET Core", level: 90 },
-      { name: "ASP.NET Core", level: 88 },
-      { name: "Microservices", level: 86 },
-    ],
+    id: "CORE",
+    title: "CORE LANGUAGES",
+    items: ["C#", "TypeScript", "JavaScript", "Python", "SQL"],
   },
   {
-    category: "Frontend",
-    description:
-      "Responsive interfaces that make complex workflows easier to use.",
-    icon: Code2,
-    skills: [
-      { name: "React", level: 84 },
-      { name: "Angular", level: 84 },
-      { name: "Next.js", level: 82 },
-      { name: "JavaScript/TypeScript", level: 85 },
-    ],
+    id: "API",
+    title: "BACKEND",
+    items: [".NET", "ASP.NET Core", "REST APIs", "Microservices", "CQRS"],
   },
   {
-    category: "Databases",
-    description:
-      "Thoughtful data models and queries built for dependable performance.",
-    icon: Database,
-    skills: [
-      { name: "SQL Server", level: 88 },
-      { name: "PostgreSQL", level: 85 },
-      { name: "MongoDB", level: 82 },
-      { name: "EF Core / Dapper", level: 86 },
-    ],
+    id: "UI",
+    title: "FRONTEND",
+    items: ["React", "Next.js", "Angular", "Responsive UI"],
   },
   {
-    category: "Cloud & DevOps",
-    description:
-      "Repeatable deployments and infrastructure that supports the team.",
-    icon: Cloud,
-    skills: [
-      { name: "Azure", level: 84 },
-      { name: "AWS", level: 84 },
-      { name: "Docker", level: 86 },
-      { name: "Kubernetes", level: 82 },
-    ],
+    id: "DATA",
+    title: "DATA",
+    items: ["SQL Server", "PostgreSQL", "MongoDB", "Redis"],
   },
   {
-    category: "Messaging & Real-time",
-    description:
-      "Connecting systems through APIs and event-driven communication.",
-    icon: Zap,
-    skills: [
-      { name: "REST APIs", level: 90 },
-      { name: "Kafka", level: 82 },
-      { name: "Redis", level: 78 },
-      { name: "SignalR", level: 80 },
-    ],
+    id: "OPS",
+    title: "CLOUD / PLATFORM",
+    items: ["AWS", "Azure", "Docker", "Kubernetes", "CI/CD"],
   },
   {
-    category: "Testing & Security",
-    description:
-      "Protecting users and keeping changes safe with automated checks.",
-    icon: Shield,
-    skills: [
-      { name: "OAuth2 / JWT / RBAC", level: 86 },
-      { name: "xUnit / NUnit", level: 82 },
-      { name: "Clean Architecture / CQRS", level: 86 },
-      { name: "Design Patterns / SOLID", level: 86 },
+    id: "ARCH",
+    title: "ARCHITECTURE",
+    items: [
+      "Distributed Systems",
+      "Event-Driven",
+      "Caching",
+      "API Design",
+      "Performance",
     ],
   },
 ];
 
-const skillIcons: { [key: string]: React.ReactNode } = {
-  // Frontend
-  Angular: <Boxes className="w-4 h-4" />,
-  React: <Code2 className="w-4 h-4" />,
-  "Next.js": <Code2 className="w-4 h-4" />,
-  "JavaScript/TypeScript": <Terminal className="w-4 h-4" />,
+const CENTER = 500;
+const INNER_RADIUS = 170;
+const OUTER_RADIUS = 455;
 
-  // Backend & Architecture
-  "C#": <Code2 className="w-4 h-4" />,
-  ".NET Core": <Server className="w-4 h-4" />,
-  "ASP.NET Core": <Server className="w-4 h-4" />,
-  Microservices: <Server className="w-4 h-4" />,
-
-  // Messaging & APIs
-  "REST APIs": <Shield className="w-4 h-4" />,
-  Kafka: <Zap className="w-4 h-4" />,
-  SignalR: <Zap className="w-4 h-4" />,
-
-  // Databases
-  "SQL Server": <Database className="w-4 h-4" />,
-  PostgreSQL: <Database className="w-4 h-4" />,
-  MongoDB: <Database className="w-4 h-4" />,
-  "EF Core / Dapper": <Database className="w-4 h-4" />,
-
-  // Cloud & DevOps
-  Docker: <Box className="w-4 h-4" />,
-  Kubernetes: <Boxes className="w-4 h-4" />,
-  Azure: <Cloud className="w-4 h-4" />,
-  AWS: <Cloud className="w-4 h-4" />,
-  "OAuth2 / JWT / RBAC": <Shield className="w-4 h-4" />,
-  "xUnit / NUnit": <Shield className="w-4 h-4" />,
-  "Clean Architecture / CQRS": <GitBranch className="w-4 h-4" />,
-  "Design Patterns / SOLID": <Shield className="w-4 h-4" />,
-
-  // Testing & Security
-  Redis: <Database className="w-4 h-4" />,
-};
-
-export default function Skills() {
-  const fadeInVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
+function polar(radius: number, angle: number) {
+  const radians = (angle * Math.PI) / 180;
+  return {
+    x: CENTER + radius * Math.cos(radians),
+    y: CENTER + radius * Math.sin(radians),
   };
+}
 
+function sectorPath(index: number) {
+  const startAngle = -119 + index * 60;
+  const endAngle = startAngle + 58;
+  const outerStart = polar(OUTER_RADIUS, startAngle);
+  const outerEnd = polar(OUTER_RADIUS, endAngle);
+  const innerEnd = polar(INNER_RADIUS, endAngle);
+  const innerStart = polar(INNER_RADIUS, startAngle);
+  return [
+    `M ${outerStart.x} ${outerStart.y}`,
+    `A ${OUTER_RADIUS} ${OUTER_RADIUS} 0 0 1 ${outerEnd.x} ${outerEnd.y}`,
+    `L ${innerEnd.x} ${innerEnd.y}`,
+    `A ${INNER_RADIUS} ${INNER_RADIUS} 0 0 0 ${innerStart.x} ${innerStart.y}`,
+    "Z",
+  ].join(" ");
+}
+
+function labelPosition(index: number) {
+  const angle = -90 + index * 60;
+  const point = polar(325, angle);
+  return { x: point.x - 125, y: point.y - 82 };
+}
+export default function Skills() {
   return (
-    <section
+    <SectionShell
       id="skills"
-      aria-labelledby="skills-heading"
-      className="webgl-section py-4xl md:py-[100px] bg-light-background dark:bg-dark-background"
+      index="02"
+      label="CAPABILITY MATRIX"
+      title="A systems-first technology stack."
+      theme="theme-mark45"
+      intro="Capabilities organized by how they work together—not by arbitrary proficiency scores."
     >
-      <SectionScene variant="skills" />
-      <div className="relative z-10 max-w-container mx-auto px-sm md:px-lg">
-        <motion.div
-          initial={false}
-          whileInView="visible"
-          variants={fadeInVariants}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true, margin: "-100px" }}
-          className="mb-3xl"
-        >
-          <div className="section-title-lockup">
-            <h2
-              id="skills-heading"
-              className="text-h2 font-bold text-light-text-primary dark:text-dark-text-primary mb-sm"
-            >
-              Foundations of my craft
-            </h2>
-            <div className="section-level-divider w-full h-2 bg-light-primary dark:bg-dark-primary" />
-          </div>
-        </motion.div>
-
-        <div className="grid md:grid-cols-2 gap-2xl">
-          {skillsData.map((category, categoryIdx) => {
-            const CategoryIcon = category.icon;
-            return (
-              <motion.article
-                key={categoryIdx}
-                initial={false}
-                whileInView="visible"
-                variants={fadeInVariants}
-                transition={{ duration: 0.5, delay: categoryIdx * 0.1 }}
-                viewport={{ once: true, margin: "-100px" }}
-                className="p-lg rounded-lg bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-light-primary/50 dark:hover:border-dark-primary/50 transition-all"
-              >
-                <div className="flex items-center gap-sm mb-lg">
-                  <div className="p-2xs rounded-md bg-light-primary/10 dark:bg-dark-primary/10 text-light-primary dark:text-dark-primary">
-                    <CategoryIcon className="w-5 h-5" />
-                  </div>
-                  <h3 className="text-h3 font-semibold text-light-text-primary dark:text-dark-text-primary">
-                    {category.category}
-                  </h3>
-                </div>
-
-                <p className="skill-description">{category.description}</p>
-                <div className="space-y-md">
-                  {category.skills.map((skill, skillIdx) => (
-                    <motion.div
-                      key={skillIdx}
-                      initial={false}
-                      whileInView="visible"
-                      variants={fadeInVariants}
-                      transition={{
-                        duration: 0.4,
-                        delay: categoryIdx * 0.1 + skillIdx * 0.05,
-                      }}
-                      viewport={{ once: true, margin: "-100px" }}
-                    >
-                      <div className="flex items-center justify-between mb-xs">
-                        <div className="flex items-center gap-2xs">
-                          <span className="text-light-accent dark:text-dark-accent">
-                            {skillIcons[skill.name] || (
-                              <Code2 className="w-4 h-4" />
-                            )}
-                          </span>
-                          <span className="text-small font-medium text-light-text-primary dark:text-dark-text-primary">
-                            {skill.name}
-                          </span>
-                        </div>
-                        <span className="text-small text-light-text-secondary dark:text-dark-text-secondary">
-                          {skill.level}%
-                        </span>
-                      </div>
-                      <div className="w-full h-2 bg-light-border dark:bg-dark-border rounded-full overflow-hidden">
-                        <motion.div
-                          className="h-full bg-gradient-to-r from-light-primary to-light-accent dark:from-dark-primary dark:to-dark-accent rounded-full"
-                          initial={{ width: "0%" }}
-                          whileInView={{ width: `${skill.level}%` }}
-                          transition={{
-                            duration: 0.8,
-                            ease: "easeOut",
-                            delay: categoryIdx * 0.1 + skillIdx * 0.05,
-                          }}
-                          viewport={{ once: true, amount: 0.3 }}
-                        />
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.article>
-            );
-          })}
+      <div className="system-visual system-visual--skills">
+        <Image
+          src="/images/kai/kai-og.webp"
+          alt="Hang Kheang Taing in an engineering command center"
+          fill
+          sizes="(max-width: 760px) 100vw, 42vw"
+          className="system-visual__portrait"
+        />
+        <div className="system-visual__diagram" aria-hidden="true" />
+        <div className="system-visual__readout">
+          <span>ARCHITECTURE CORE // ACTIVE</span>
+          <strong>CAPABILITY TELEMETRY</strong>
         </div>
       </div>
-    </section>
+      <div
+        className="skill-matrix"
+        aria-label="Connected engineering capability groups"
+      >
+        <div className="matrix-core" aria-hidden="true">
+          <span>KT</span>
+          <small>
+            ENGINEERING
+            <br />
+            CORE
+          </small>
+          <i>06 SYSTEMS</i>
+        </div>
+        <svg
+          className="skill-donut"
+          viewBox="0 0 1000 1000"
+          role="img"
+          aria-label="Six connected engineering capability sectors"
+        >
+          {groups.map((group, index) => {
+            const label = labelPosition(index);
+            return (
+              <g
+                className={`skill-donut__sector skill-donut__sector--${index + 1}`}
+                key={group.id}
+              >
+                <path d={sectorPath(index)}>
+                  <title>{group.title}</title>
+                </path>
+                <foreignObject x={label.x} y={label.y} width="250" height="164">
+                  <article className="skill-donut__content">
+                    <span>
+                      {group.id} // 0{index + 1}
+                    </span>
+                    <h3>{group.title}</h3>
+                    <ul>
+                      {group.items.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </article>
+                </foreignObject>
+              </g>
+            );
+          })}
+        </svg>
+        {groups.map((g, i) => (
+          <article
+            key={g.id}
+            className={`skill-cluster skill-cluster--fallback cluster-${i + 1}`}
+          >
+            <span className="cluster-id">{g.id}</span>
+            <h3>{g.title}</h3>
+            <ul>
+              {g.items.map((x) => (
+                <li key={x}>{x}</li>
+              ))}
+            </ul>
+          </article>
+        ))}
+      </div>
+    </SectionShell>
   );
 }

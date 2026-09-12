@@ -1,1 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="10" fill="#111713"/><text x="9" y="46" font-family="Georgia,serif" font-style="italic" font-size="45" fill="#c3a471">kt.</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="KAI engineering core">
+  <defs>
+    <radialGradient id="core" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#efffff"/>
+      <stop offset=".28" stop-color="#7cecff"/>
+      <stop offset=".62" stop-color="#16789d"/>
+      <stop offset="1" stop-color="#071017"/>
+    </radialGradient>
+    <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#d0a258"/>
+      <stop offset=".48" stop-color="#8f1820"/>
+      <stop offset="1" stop-color="#43090e"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="13" fill="#05070a"/>
+  <path d="M8 23 18 8h28l10 15v18L46 56H18L8 41Z" fill="none" stroke="url(#metal)" stroke-width="3"/>
+  <circle cx="32" cy="32" r="19" fill="none" stroke="#27333c" stroke-width="2"/>
+  <circle cx="32" cy="32" r="15" fill="none" stroke="#7cecff" stroke-width="1.5" stroke-dasharray="5 3"/>
+  <circle cx="32" cy="32" r="9" fill="url(#core)"/>
+  <path d="M25 21v22M25 32l11-11M25 32l12 11" fill="none" stroke="#efffff" stroke-width="3.5" stroke-linecap="square" stroke-linejoin="miter"/>
+  <path d="M32 7v5M32 52v5M7 32h5M52 32h5" stroke="#bd8b3d" stroke-width="2"/>
+</svg>

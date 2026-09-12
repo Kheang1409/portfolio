@@ -1,12 +1,5 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
-import {
-  Journey,
-  Culture,
-  Farming,
-  Values,
-  Showcase,
-} from "@/components/sections/Story";
 import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
 import { buildPageMetadata, buildPersonJsonLd, siteConfig } from "@/lib/seo";
@@ -15,6 +8,7 @@ const Skills = dynamic(() => import("@/components/sections/Skills"));
 const Experience = dynamic(() => import("@/components/sections/Experience"));
 const Projects = dynamic(() => import("@/components/sections/Projects"));
 const Education = dynamic(() => import("@/components/sections/Education"));
+const AICore = dynamic(() => import("@/components/sections/AICore"));
 const Contact = dynamic(() => import("@/components/sections/Contact"));
 
 export const metadata: Metadata = buildPageMetadata({
@@ -44,16 +38,12 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
       />
       <Hero />
-      <Journey />
       <About />
       <Skills />
-      <Projects />
-      <Showcase />
-      <Culture />
-      <Farming />
-      <Values />
       <Experience />
+      <Projects />
       <Education />
+      <AICore />
       <Contact />
     </main>
   );

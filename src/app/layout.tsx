@@ -32,10 +32,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        suppressHydrationWarning
-        className="font-sans transition-colors duration-300 bg-light-background dark:bg-dark-background text-light-text-primary dark:text-dark-text-primary"
-      >
+      <body suppressHydrationWarning className="font-sans">
         <Providers>
           <a
             href="#main-content"

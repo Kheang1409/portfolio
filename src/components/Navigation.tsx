@@ -1,111 +1,63 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useTheme } from "next-themes";
-import { Menu, X, Sun, Moon, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Menu, X, Cpu } from "lucide-react";
+import ThemeSelector from "@/components/hud/ThemeSelector";
+
 const links = [
-  ["Journey", "journey"],
-  ["About", "about"],
-  ["Skills", "skills"],
-  ["Work", "projects"],
-  ["Culture", "culture"],
-  ["Experience", "experience"],
-  ["Education", "education"],
+  ["01", "ABOUT", "about"],
+  ["02", "STACK", "skills"],
+  ["03", "EXPERIENCE", "experience"],
+  ["04", "PROJECTS", "projects"],
+  ["05", "EDUCATION", "education"],
+  ["06", "CONTACT", "contact"],
 ];
 export default function Navigation() {
   const [open, setOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const [active, setActive] = useState("");
-  const { resolvedTheme, setTheme } = useTheme();
-  const path = usePathname();
-  useEffect(() => setMounted(true), []);
+  const [compact, setCompact] = useState(false);
   useEffect(() => {
-    if (!open) return;
-    const escape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setOpen(false);
-        document.getElementById("menu-toggle")?.focus();
-      }
-    };
-    window.addEventListener("keydown", escape);
-    return () => window.removeEventListener("keydown", escape);
-  }, [open]);
-  useEffect(() => {
-    let frame = 0;
-    const update = () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        const ids = ["home", ...links.map(([, id]) => id), "contact"];
-        let current = "home";
-        for (const id of ids) {
-          const section = document.getElementById(id);
-          if (section && section.getBoundingClientRect().top <= 160)
-            current = id;
-        }
-        setActive(current);
-      });
-    };
+    const update = () => setCompact(scrollY > 36);
     update();
-    window.addEventListener("scroll", update, { passive: true });
-    return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", update);
-    };
-  }, [path]);
+    addEventListener("scroll", update, { passive: true });
+    return () => removeEventListener("scroll", update);
+  }, []);
   return (
-    <header className="site-header">
-      <Link
-        href="/#home"
-        className="wordmark"
-        aria-label="Hang Kheang Taing home"
-      >
-        <span className="monogram">kt.</span>
+    <header className={`command-nav${compact ? " is-compact" : ""}`}>
+      <Link href="/#home" className="system-wordmark">
+        <span className="reactor-mark">
+          <i />
+        </span>
         <span>
-          KHEANG TAING<small>SOFTWARE ENGINEER</small>
+          KAI // SYSTEM<small>ENGINEERING INTERFACE</small>
         </span>
       </Link>
       <nav
-        className={open ? "primary-links is-open" : "primary-links"}
-        id="primary-links"
-        aria-label="Primary"
+        className={`command-links${open ? " is-open" : ""}`}
+        aria-label="Primary navigation"
       >
-        {links.map(([label, id]) => (
-          <Link
-            key={id}
-            href={`/#${id}`}
-            onClick={() => setOpen(false)}
-            aria-current={active === id ? "location" : undefined}
-          >
+        {links.map(([n, label, id]) => (
+          <Link key={id} href={`/#${id}`} onClick={() => setOpen(false)}>
+            <small>{n}</small>
             {label}
           </Link>
         ))}
-        <Link
-          href="/#contact"
-          className="nav-contact"
-          aria-current={active === "contact" ? "location" : undefined}
-          onClick={() => setOpen(false)}
-        >
-          Let’s talk <ArrowUpRight size={14} />
-        </Link>
       </nav>
-      <div className="nav-controls">
-        {mounted && (
-          <button
-            aria-label="Toggle theme"
-            onClick={() =>
-              setTheme(resolvedTheme === "dark" ? "light" : "dark")
-            }
-          >
-            {resolvedTheme === "dark" ? <Sun size={17} /> : <Moon size={17} />}
-          </button>
-        )}
+      <div className="command-controls">
         <button
-          id="menu-toggle"
+          className="ai-nav"
+          onClick={() =>
+            document
+              .querySelector<HTMLButtonElement>(".assistant-launcher")
+              ?.click()
+          }
+        >
+          <Cpu size={15} /> AI CORE
+        </button>
+        <ThemeSelector />
+        <button
           className="menu-toggle"
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
-          aria-controls="primary-links"
           onClick={() => setOpen(!open)}
         >
           {open ? <X /> : <Menu />}
