@@ -1,61 +1,20 @@
 import { Award, GraduationCap } from "lucide-react";
 import SectionShell from "@/components/hud/SectionShell";
-const education = [
-  {
-    school: "Maharishi International University",
-    degree: "Master of Science in Computer Science",
-    year: "May 2024 – Dec 2026",
-    location: "Fairfield, IA, USA",
-    focus:
-      "Advanced computer science, scalable systems, and applied software engineering.",
-  },
-  {
-    school: "Royal University of Phnom Penh",
-    degree: "Bachelor of Science in Computer Science & Engineering",
-    year: "Nov 2016 – Nov 2020",
-    location: "Phnom Penh, Cambodia",
-    focus:
-      "Software engineering, databases, web systems, and computer engineering foundations.",
-  },
-];
-export default function Education() {
+import type { Resume } from "@/lib/resume";
+import { formatDateRange } from "@/lib/resume";
+
+export default function Education({ resume }: { resume: Resume | null }) {
+  const education = resume?.educations ?? [];
   return (
-    <SectionShell
-      id="education"
-      index="05"
-      label="EDUCATION DATABASE"
-      title="Engineering foundations."
-      theme="theme-mark3"
-      intro="Formal computer science study reinforced by years of production engineering."
-    >
-      <div className="archive-grid">
-        <div>
-          {education.map((e, i) => (
-            <article className="archive-card" key={e.school}>
-              <span className="archive-code">EDU // 0{i + 1}</span>
-              <GraduationCap />
-              <div>
-                <h3>{e.degree}</h3>
-                <p>{e.school}</p>
-                <dl>
-                  <dt>PERIOD</dt>
-                  <dd>{e.year}</dd>
-                  <dt>LOCATION</dt>
-                  <dd>{e.location}</dd>
-                  <dt>FOCUS</dt>
-                  <dd>{e.focus}</dd>
-                </dl>
-              </div>
-            </article>
-          ))}
-        </div>
-        <aside className="honor-card">
-          <Award />
-          <span>HONOR // 2021</span>
-          <h3>Best Project & Team Effort of the Year</h3>
-          <p>Khmer Care, Pathmazing Inc.</p>
-          <small>Recognition awarded 06/2021</small>
-        </aside>
+    <SectionShell id="education" index="05" label="EDUCATION DATABASE" title="Engineering foundations." theme="theme-mark3" intro="Education and recognition.">
+      <div className="archive-grid"><div>
+        {education.map((item, index) => <article className="archive-card" key={`${item.institution}-${index}`}>
+          <span className="archive-code">EDU // 0{index + 1}</span><GraduationCap /><div>
+            <h3>{item.degree}</h3><p>{item.institution}</p><dl><dt>PERIOD</dt><dd>{formatDateRange(item.startDates, item.endDate)}</dd>{item.location && <><dt>LOCATION</dt><dd>{item.location}</dd></>}</dl>
+          </div>
+        </article>)}
+      </div>
+      {resume?.certifications?.length ? <aside className="honor-card">{resume.certifications.map((item) => <article key={`${item.title}-${item.issuer}`}><Award /><span>{item.date && new Date(item.date).getUTCFullYear()}</span><h3>{item.title}</h3><p>{item.issuer}</p></article>)}</aside> : null}
       </div>
     </SectionShell>
   );

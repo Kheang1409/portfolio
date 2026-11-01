@@ -2,12 +2,15 @@
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { ArrowDown, ArrowUpRight, Cpu, Database, Network } from "lucide-react";
+import type { Resume } from "@/lib/resume";
 const ArcReactorScene = dynamic(
   () => import("@/components/visuals/ArcReactorScene"),
   { ssr: false },
 );
-const tech = [".NET", "C#", "AWS", "MICROSERVICES", "REACT", "SQL"];
-export default function Hero() {
+export default function Hero({ resume }: { resume: Resume | null }) {
+  const name = resume?.personals?.preferredName || resume?.personals?.legalName || "";
+  const role = resume?.experiences?.[0]?.role || "";
+  const tech = resume?.skills?.slice(0, 6) ?? [];
   return (
     <section id="home" className="armor-hero" aria-labelledby="hero-heading">
       <div className="hero-reactor">
@@ -21,15 +24,11 @@ export default function Hero() {
             ONLINE
           </p>
           <h1 id="hero-heading">
-            <span>HANG KHEANG</span> TAING
+            {name}
           </h1>
-          <p className="hero-role">SOFTWARE ENGINEER</p>
-          <p className="hero-specialty">
-            BACKEND <b>•</b> CLOUD <b>•</b> DISTRIBUTED SYSTEMS
-          </p>
+          <p className="hero-role">{role}</p>
           <p className="hero-statement">
-            I design and modernize reliable software systems, high-performance
-            APIs, and cloud-native architectures.
+            {resume?.summary}
           </p>
           <div className="hero-actions">
             <a className="energy-button" href="#projects">
@@ -59,7 +58,7 @@ export default function Hero() {
           <div className="portrait-frame">
             <Image
               src="/images/kai-classic-stance.webp"
-              alt="Hang Kheang Taing"
+              alt="Professional profile portrait"
               fill
               priority
               sizes="(max-width: 768px) 80vw, 42vw"
@@ -73,24 +72,10 @@ export default function Hero() {
         </div>
       </div>
       <div className="quick-metrics">
-        <div>
-          <Cpu />
-          <span>
-            PRIMARY STACK<strong>.NET / TYPESCRIPT</strong>
-          </span>
-        </div>
-        <div>
-          <Network />
-          <span>
-            ARCHITECTURE<strong>DISTRIBUTED SYSTEMS</strong>
-          </span>
-        </div>
-        <div>
-          <Database />
-          <span>
-            DATA SYSTEMS<strong>SQL / MONGO / REDIS</strong>
-          </span>
-        </div>
+        {tech.slice(0, 3).map((technology, index) => {
+          const Icon = [Cpu, Network, Database][index];
+          return <div key={technology}><Icon /><span>SKILL<strong>{technology}</strong></span></div>;
+        })}
         <a href="#about">
           SYSTEM OVERVIEW <ArrowDown />
         </a>

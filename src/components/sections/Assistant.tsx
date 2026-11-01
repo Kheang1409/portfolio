@@ -266,8 +266,6 @@ export default function Assistant() {
           message: text,
           history,
           context: {
-            systemPersona:
-              "You are Kai, Hang Kheang Taing's portfolio assistant. Answer concisely using the supplied portfolio facts. Never invent projects, credentials, or contact details. Link visitors to relevant portfolio sections.",
             metadata: {
               sessionId: sessionRef.current,
               conversationId: sessionRef.current,
@@ -507,9 +505,8 @@ export default function Assistant() {
                   engineering <em>archive.</em>
                 </h3>
                 <p>
-                  Ask KAI about Kheang’s systems, technical strengths,
-                  experience, or current work. Responses are grounded in this
-                  portfolio’s knowledge base.
+                  Ask about the experience, skills, and projects in this
+                  portfolio. Responses are grounded in the latest resume data.
                 </p>
               </div>
             )}
@@ -542,7 +539,7 @@ export default function Assistant() {
                   Explore projects <ArrowUpRight size={14} />
                 </a>
                 <a href="/#contact" onClick={close}>
-                  Contact Kheang <ArrowUpRight size={14} />
+                  Contact <ArrowUpRight size={14} />
                 </a>
               </div>
             )}

@@ -7,23 +7,7 @@ import {
   OtherProjectCard,
   type Project,
 } from "./Projects/ProjectCard";
-
-const resumeProjects = [
-  {
-    title: "AI-Powered Portfolio",
-    timeframe: "Feb 2025",
-    context: "Personal",
-    summary:
-      "Built and integrated AI-powered features using LLM APIs for dynamic content and richer user interaction, improving session duration by 35% for 150+ weekly users.",
-  },
-  {
-    title: "Angkor Milk Meal App",
-    timeframe: "Sep 2023",
-    context: "AngkorMilk (Freelance)",
-    summary:
-      "Collaborated with 500+ users to optimize reporting queries and deliver faster operational insights.",
-  },
-];
+import type { Resume } from "@/lib/resume";
 
 async function fetchRepos(): Promise<Project[]> {
   const res = await fetch("/api/github/projects", { cache: "no-store" });
@@ -37,7 +21,7 @@ async function fetchRepos(): Promise<Project[]> {
   return payload.projects ?? [];
 }
 
-export default function Projects() {
+export default function Projects({ resume }: { resume: Resume | null }) {
   const fadeInVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 },
@@ -112,7 +96,7 @@ export default function Projects() {
           </div>
         </motion.div>
 
-        <div className="projects-group-heading">
+        {!!resume?.projects?.length && <><div className="projects-group-heading">
           <span>01</span>
           <div>
             <h3>Selected case studies</h3>
@@ -120,9 +104,9 @@ export default function Projects() {
           </div>
         </div>
         <div className="project-case-studies grid md:grid-cols-2 gap-lg mb-3xl">
-          {resumeProjects.map((project, idx) => (
+          {resume.projects.map((project, idx) => (
             <motion.article
-              key={project.title}
+              key={project.name}
               initial={false}
               whileInView="visible"
               variants={fadeInVariants}
@@ -132,21 +116,15 @@ export default function Projects() {
             >
               <div className="flex items-center justify-between gap-md mb-sm">
                 <h3 className="text-h3 font-semibold text-light-text-primary dark:text-dark-text-primary">
-                  {project.title}
+                  {project.name}
                 </h3>
-                <span className="text-small font-medium text-light-accent dark:text-dark-accent whitespace-nowrap">
-                  {project.timeframe}
-                </span>
               </div>
-              <p className="text-small font-medium text-light-text-secondary dark:text-dark-text-secondary mb-sm">
-                {project.context}
-              </p>
               <p className="text-body text-light-text-secondary dark:text-dark-text-secondary leading-relaxed">
-                {project.summary}
+                {project.description}
               </p>
             </motion.article>
           ))}
-        </div>
+        </div></>}
 
         <div className="projects-group-heading">
           <span>02</span>
@@ -189,7 +167,7 @@ export default function Projects() {
             className="mb-lg text-red-600 dark:text-red-400"
           >
             {error}{" "}
-            <a href="https://github.com/Kheang1409">View projects on GitHub</a>
+            <a href="/api/github/projects">View project feed</a>
           </div>
         )}
 

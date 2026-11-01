@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   }),
   title: {
     default: siteConfig.fullTitle,
-    template: "%s | Hang Kheang Taing",
+    template: "%s",
   },
   verification: {
     google: process.env.GOOGLE_SITE_VERIFICATION,

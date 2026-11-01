@@ -3,6 +3,14 @@
 .vscode
 node_modules
 frontend/node_modules
+**/.next
+**/out
+**/build
+**/dist
+**/coverage
+**/.turbo
+**/playwright-report
+**/test-results
 backend/bin
 backend/obj
 **/bin

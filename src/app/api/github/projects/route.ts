@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 
-const GITHUB_USER = "Kheang1409";
 const API_VERSION = "2022-11-28";
 
 interface Repo {
@@ -37,8 +36,10 @@ if (process.env.GITHUB_TOKEN) {
 }
 
 async function fetchProjects(): Promise<Project[]> {
+  const githubUser = process.env.GITHUB_USER;
+  if (!githubUser) return [];
   const res = await fetch(
-    `https://api.github.com/users/${GITHUB_USER}/repos?per_page=20&sort=updated`,
+    `https://api.github.com/users/${encodeURIComponent(githubUser)}/repos?per_page=20&sort=updated`,
     {
       headers: baseHeaders,
       // Cache at the edge to ease rate limits, still refreshed hourly.

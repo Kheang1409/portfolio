@@ -1,6 +1,6 @@
-# KAI // Engineering Portfolio
+# Portfolio Frontend
 
-A Next.js portfolio for Hang Kheang Taing, built as a professional engineering command interface. The visual system draws from advanced aerospace, powered-exoskeleton, nanotechnology, and HUD design without using copyrighted characters, marks, or artwork.
+A Next.js portfolio frontend with an engineering-inspired interface. Profile and experience content comes from the backend resume API.
 
 ## Experience
 
@@ -33,7 +33,7 @@ public/images/
   kai/ armor/ projects/ backgrounds/ textures/
 ```
 
-Static professional facts remain in HTML. Three.js is decorative and is not required to understand or navigate the portfolio.
+Professional profile content comes from the backend resume endpoint. Three.js is decorative and is not required to understand or navigate the portfolio.
 
 ## Three.js and performance
 
@@ -56,18 +56,30 @@ The site uses dynamic imports for the scene and lower-page sections, system font
 - `POST /api/assistant`: Next.js proxy preserving streaming NDJSON, session metadata, history, retry, cancellation, and errors
 - `POST /api/contacts`: contact submission through the configured backend
 - `POST /api/visits`: best-effort visitor tracking that never blocks rendering
-- `GET /api/github/projects`: server-side GitHub repository feed with loading, empty, and failure states
+- GitHub repository feed with loading, empty, and failure states
+
+The home page and `/resume` retrieve profile content from `GET /api/resumes/latest`. `NEXT_PUBLIC_BACKEND_API_URL` must point to the backend for resume, contact, visit tracking, and assistant responses. GitHub projects are fetched live from GitHub.
 
 ## Environment variables
 
 ```text
-NEXT_PUBLIC_BACKEND_API_URL  Backend base URL; localhost fallback in development
+NEXT_PUBLIC_BACKEND_API_URL  Backend base URL; required for profile data
+BACKEND_API_URL              Optional server-side backend URL for donation proxy (use backend service URL in containers)
 NEXT_PUBLIC_SITE_URL         Canonical and social metadata origin
 GITHUB_TOKEN                 Optional server-side GitHub authentication
+GITHUB_USER                  GitHub account whose repositories are displayed
 GITHUB_USER_AGENT            Optional GitHub request user agent
 GOOGLE_SITE_VERIFICATION     Optional search-console verification
 NEXT_PUBLIC_DEBUG_AI         Optional assistant debug logging
 ```
+
+## Donations
+
+Donations use PayPal Checkout. Set backend secrets `PayPal__ClientId` and `PayPal__ClientSecret`, plus `PayPal__Environment=sandbox` while testing. Set `PayPal__Environment=live` only after sandbox verification and PayPal account approval. Credentials belong only in the backend/deployment secret store; never use a `NEXT_PUBLIC_` prefix. The browser receives only the PayPal client ID, which is designed to be public.
+
+The checkout amount is validated and created by the backend; capture is performed by the backend and verified against the PayPal response before showing the donation publicly. Card entry is handled by PayPal. Available card options vary by PayPal eligibility, buyer country, and merchant account. Donor email is optional and used only to attempt a receipt; it is removed after the receipt attempt. Donor name, amount, and remark are public only when the donor opts in.
+
+Donation receipts use the existing SMTP configuration and a backend outbox with retries; SMTP failures do not reverse or fail a confirmed payment. Receipt email is optional. The public leaderboard shows up to 50 opted-in successful donations; aggregate totals include successful donations only. PayPal webhook events are verified using the configured backend-only `PayPal__WebhookId` before updating refund/reversal state. See the backend README for Sandbox and deployment configuration.
 
 ## Local development
 

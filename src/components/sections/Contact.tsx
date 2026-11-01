@@ -7,15 +7,15 @@ import {
   Linkedin,
   Github,
   Phone,
-  Globe,
   Briefcase,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { postContact } from "@/lib/contacts";
 import type { ContactRequest } from "@/lib/types";
 import { useState, FormEvent } from "react";
+import type { Resume } from "@/lib/resume";
 
-export default function Contact() {
+export default function Contact({ resume }: { resume: Resume | null }) {
   const [formState, setFormState] = useState({
     name: "",
     email: "",
@@ -94,8 +94,7 @@ export default function Contact() {
             Send a message to collaborate or say hello.
           </p>
           <p className="contact-availability">
-            Based in the United States <span aria-hidden="true"> / </span> Open
-            to opportunities
+            {resume?.experiences?.[0]?.location}
           </p>
         </motion.div>
 
@@ -116,41 +115,34 @@ export default function Contact() {
               {
                 icon: Mail,
                 label: "Email",
-                value: "hangkheangtaing@gmail.com",
-                href: "mailto:hangkheangtaing@gmail.com",
+                value: resume?.personals?.email,
+                href: resume?.personals?.email ? `mailto:${resume.personals.email}` : undefined,
               },
               {
                 icon: Phone,
                 label: "Phone",
-                value: "+1 (641) 233-0129",
-                href: "tel:+16412330129",
+                value: resume?.personals?.phone,
+                href: resume?.personals?.phone ? `tel:${resume.personals.phone}` : undefined,
               },
               {
                 icon: Linkedin,
                 label: "LinkedIn",
-                value: "linkedin.com/in/hang-kheang-taing",
-                href: "https://www.linkedin.com/in/hang-kheang-taing/",
+                value: resume?.personals?.linkedin,
+                href: resume?.personals?.linkedin,
               },
               {
                 icon: Github,
                 label: "GitHub",
-                value: "github.com/Kheang1409",
-                href: "https://github.com/Kheang1409",
-              },
-              {
-                icon: Globe,
-                label: "Website",
-                value: "kaitaing.netlify.app",
-                href: "https://kaitaing.netlify.app/",
+                value: resume?.personals?.github,
+                href: resume?.personals?.github,
               },
               {
                 icon: Briefcase,
                 label: "Work Authorization",
-                value:
-                  "Authorized to work in the U.S. without current or future employer sponsorship",
+                value: resume?.personals?.workAuthorization,
                 href: undefined,
               },
-            ].map((item, idx) => {
+            ].filter((item) => item.value).map((item, idx) => {
               const Icon = item.icon as any;
               const href = item.href ?? "";
               const isExternal = href.startsWith("http");

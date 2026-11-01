@@ -22,7 +22,7 @@ function getBackendBaseUrl(): string {
   const envBackend = process.env.NEXT_PUBLIC_BACKEND_API_URL;
   return envBackend && envBackend.trim().length > 0
     ? envBackend.replace(/\/$/, "")
-    : "http://localhost:5000";
+    : "";
 }
 
 function getOrCreateSessionId(): string {
@@ -103,7 +103,9 @@ export function buildVisitorPayload(): VisitorTrackPayload {
 }
 
 export async function trackVisit(payload: VisitorTrackPayload): Promise<void> {
-  const url = `${getBackendBaseUrl()}/api/visits`;
+  const baseUrl = getBackendBaseUrl();
+  if (!baseUrl) return;
+  const url = `${baseUrl}/api/visits`;
 
   try {
     await fetch(url, {

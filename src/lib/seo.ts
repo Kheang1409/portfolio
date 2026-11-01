@@ -4,34 +4,12 @@ const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://kaitaing.netlify.app";
 
 export const siteConfig = {
-  name: "Hang Kheang Taing",
-  fullTitle: "Hang Kheang Taing | Software Engineer",
-  description:
-    "Software Engineer with experience designing, developing, and maintaining scalable web applications using C#, .NET Core, and modern JavaScript frameworks. Strong background in RESTful API development, database optimization (SQL Server, PostgreSQL), cloud deployments on Azure and AWS, microservices, and event-driven architectures. Available to work in the U.S. without sponsorship.",
+  name: "Professional Portfolio",
+  fullTitle: "Professional Portfolio",
+  description: "Professional portfolio and experience.",
   url: siteUrl,
   locale: "en_US",
-  keywords: [
-    "Hang Kheang Taing",
-    "Software Engineer",
-    "C# developer",
-    ".NET Core",
-    "ASP.NET Core",
-    "React developer",
-    "Next.js",
-    "RESTful APIs",
-    "SQL Server",
-    "PostgreSQL",
-    "Azure",
-    "AWS",
-    "Microservices",
-    "Portfolio",
-    "Resume",
-    "Work Authorization",
-  ],
-  social: {
-    github: "https://github.com/Kheang1409",
-    linkedin: "https://www.linkedin.com/in/hang-kheang-taing/",
-  },
+  keywords: ["Portfolio"],
 };
 
 type PageMetadataInput = {
@@ -55,12 +33,9 @@ export function buildPageMetadata({
 
   return {
     metadataBase: new URL(siteConfig.url),
-    title,
+    title: { default: title, template: "%s" },
     description,
     keywords: mergedKeywords,
-    authors: [{ name: siteConfig.name, url: siteConfig.url }],
-    creator: siteConfig.name,
-    publisher: siteConfig.name,
     alternates: {
       canonical: path,
     },
@@ -80,13 +55,7 @@ export function buildPageMetadata({
         },
       ],
     },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: [image],
-      creator: "@Kheang1409",
-    },
+    twitter: { card: "summary_large_image", title, description, images: [image] },
     robots: {
       index: true,
       follow: true,
@@ -98,26 +67,5 @@ export function buildPageMetadata({
         "max-snippet": -1,
       },
     },
-  };
-}
-
-export function buildPersonJsonLd() {
-  return {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    name: siteConfig.name,
-    url: siteConfig.url,
-    jobTitle: "Software Engineer",
-    description: siteConfig.description,
-    image: `${siteConfig.url}/images/kai/kai-og.webp`,
-    sameAs: [siteConfig.social.github, siteConfig.social.linkedin],
-    knowsAbout: [
-      "C#",
-      ".NET Core",
-      "ASP.NET Core",
-      "React",
-      "Microservices",
-      "Cloud Architecture",
-    ],
   };
 }

@@ -11,6 +11,7 @@ const links = [
   ["04", "PROJECTS", "projects"],
   ["05", "EDUCATION", "education"],
   ["06", "CONTACT", "contact"],
+  ["07", "SUPPORT", "donate"],
 ];
 export default function Navigation() {
   const [open, setOpen] = useState(false);

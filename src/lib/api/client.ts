@@ -1,6 +1,5 @@
 import type { AiMetadata, ApiProblem } from "@/lib/api/types";
 
-const DEFAULT_BACKEND_URL = "http://localhost:5000";
 const DEFAULT_TIMEOUT_MS = 20_000;
 const DEFAULT_RETRIES = 2;
 const BASE_RETRY_DELAY_MS = 300;
@@ -44,9 +43,8 @@ export type ApiRequestOptions = {
 
 function getBackendBaseUrl(): string {
   const fromEnv = process.env.NEXT_PUBLIC_BACKEND_API_URL;
-  return fromEnv && fromEnv.trim()
-    ? fromEnv.trim().replace(/\/$/, "")
-    : DEFAULT_BACKEND_URL;
+  if (!fromEnv?.trim()) throw new Error("NEXT_PUBLIC_BACKEND_API_URL is required");
+  return fromEnv.trim().replace(/\/$/, "");
 }
 
 function resolveUrl(path: string, useAssistantProxy: boolean): string {
