@@ -7,6 +7,8 @@ import VisitorTracker from "@/components/VisitorTracker";
 import AssistantLauncher from "@/components/AssistantLauncher";
 import { buildPageMetadata, siteConfig } from "@/lib/seo";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   ...buildPageMetadata({
     title: siteConfig.fullTitle,

@@ -15,8 +15,6 @@ import {
   Minimize2,
   Activity,
   Cpu,
-  Radio,
-  ShieldCheck,
 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -28,6 +26,11 @@ import type { AiMetadata, ConversationMessage } from "@/lib/api/types";
 
 const STORAGE_KEY = "kai_assistant_history_v2";
 const plugins = [rehypeHighlight as Pluggable];
+const suggestedQuestions = [
+  "What projects has Kai worked on?",
+  "Which technologies does Kai use?",
+  "Tell me about Kai's experience",
+];
 type Message = {
   id: string;
   sender: "user" | "bot";
@@ -401,11 +404,11 @@ export default function Assistant() {
               <span className="kai-avatar-rings" />
               <Cpu size={19} />
             </span>
-            <div>
+            <div className="kai-heading">
               <h2>
-                KAI <span>// INTELLIGENCE CORE</span>
+                Kai <span>Portfolio assistant</span>
               </h2>
-              <p id="kai-description">ENGINEERING KNOWLEDGE INTERFACE</p>
+              <p id="kai-description">Ask about experience, skills, and work</p>
             </div>
             <div className="kai-header-actions">
               <button
@@ -454,17 +457,6 @@ export default function Assistant() {
               </button>
             </div>
           </header>
-          <div className="kai-telemetry" aria-label="Assistant system status">
-            <span>
-              <i /> CORE ONLINE
-            </span>
-            <span>
-              <ShieldCheck /> CONTEXT LOCKED
-            </span>
-            <span>
-              <Radio /> STREAM READY
-            </span>
-          </div>
           {confirmClear && (
             <div className="kai-clear">
               <p>
@@ -496,18 +488,31 @@ export default function Assistant() {
                   <i />
                   <i />
                 </div>
-                <span className="eyebrow">
-                  INTERFACE READY // AWAITING QUERY
-                </span>
+                <span className="eyebrow">YOUR PORTFOLIO GUIDE</span>
                 <h3>
-                  Access the
+                  What would you
                   <br />
-                  engineering <em>archive.</em>
+                  like to <em>know?</em>
                 </h3>
                 <p>
-                  Ask about the experience, skills, and projects in this
-                  portfolio. Responses are grounded in the latest resume data.
+                  Explore the experience, skills, and projects behind this
+                  portfolio.
                 </p>
+                <div
+                  className="kai-suggestions"
+                  aria-label="Suggested questions"
+                >
+                  {suggestedQuestions.map((question) => (
+                    <button
+                      key={question}
+                      type="button"
+                      onClick={() => void send(question)}
+                    >
+                      {question}
+                      <ArrowUpRight size={14} aria-hidden="true" />
+                    </button>
+                  ))}
+                </div>
               </div>
             )}
             {messages.map((message) => (
@@ -585,17 +590,6 @@ export default function Assistant() {
                 <span>{loading ? "Stop" : "Send"}</span>
               </button>
             </div>
-            <div className="kai-composer-note">
-              <span id="kai-input-hint">
-                {input.length > 1800
-                  ? `${input.length}/2000 characters`
-                  : "Enter to send · Shift + Enter for a new line"}
-              </span>
-            </div>
-            <p className="kai-disclaimer">
-              AI can make mistakes. <a href="/resume">View the resume</a> for
-              the source details.
-            </p>
           </form>
         </section>
       )}

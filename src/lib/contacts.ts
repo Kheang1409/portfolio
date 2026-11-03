@@ -7,7 +7,6 @@ export async function postContact(
   const { data } = await requestJson<ContactResponse>({
     path: "/api/contacts",
     body: payload,
-    useAssistantProxy: false,
   });
 
   return data ?? { message: "Message sent successfully." };

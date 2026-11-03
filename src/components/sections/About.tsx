@@ -1,31 +1,17 @@
 import SectionShell from "@/components/hud/SectionShell";
-import Image from "next/image";
 import type { Resume } from "@/lib/resume";
 export default function About({ resume }: { resume: Resume | null }) {
   return (
     <SectionShell
       id="about"
       index="01"
-      label="ENGINEERING PROFILE"
-      title="Built to solve the hard parts."
+      label="ABOUT"
+      title="A little about how I work."
       theme="theme-mark2"
       intro={resume?.summary ?? "Professional profile is not available."}
     >
       <div className="about-layout">
         <div className="profile-copy">
-          <figure className="section-portrait section-portrait--prototype">
-            <Image
-              src="/images/kai-classic-stance.webp"
-              alt="Professional profile portrait"
-              fill
-              sizes="(max-width: 760px) 100vw, 40vw"
-              className="section-portrait__image"
-            />
-            <figcaption>
-              <span>PROFILE // VERIFIED</span>
-              ENGINEERING PROFILE
-            </figcaption>
-          </figure>
           {resume?.summary && <p>{resume.summary}</p>}
           <dl className="data-register">
             <div>

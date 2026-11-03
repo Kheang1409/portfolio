@@ -1,26 +1,18 @@
 "use client";
 import { ArrowUpRight, BrainCircuit, Radio, ShieldCheck } from "lucide-react";
-import Image from "next/image";
 import SectionShell from "@/components/hud/SectionShell";
 export default function AICore() {
   return (
     <SectionShell
       id="ai-core"
       index="06"
-      label="INTELLIGENCE SYSTEM"
-      title="A guided interface to my work."
+      label="PORTFOLIO ASSISTANT"
+      title="An easier way to explore my work."
       theme="theme-ai"
       intro="Ask focused questions about experience, technical strengths, projects, and availability."
     >
       <div className="ai-showcase">
         <div className="ai-core-visual" aria-hidden="true">
-          <Image
-            src="/images/backgrounds/software-core.webp"
-            alt=""
-            fill
-            sizes="(max-width: 760px) 90vw, 40vw"
-            className="ai-core-visual__image"
-          />
           <span>
             <BrainCircuit />
           </span>
@@ -30,7 +22,7 @@ export default function AICore() {
         </div>
         <div>
           <p className="system-label">
-            <span>AI CORE</span> // PORTFOLIO KNOWLEDGE
+            <span>PORTFOLIO ASSISTANT</span>
           </p>
           <h3>Contextual. Conversational. Grounded.</h3>
           <p>
@@ -56,7 +48,7 @@ export default function AICore() {
                 ?.click()
             }
           >
-            OPEN AI CORE <ArrowUpRight />
+            Chat with Kai <ArrowUpRight />
           </button>
         </div>
       </div>

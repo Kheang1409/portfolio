@@ -1,3 +1,5 @@
+import { getBackendBaseUrl } from "@/lib/server/backend";
+
 export type Resume = {
   personals?: { legalName?: string; preferredName?: string; phone?: string; email?: string; linkedin?: string; github?: string; workAuthorization?: string };
   summary?: string;
@@ -9,12 +11,15 @@ export type Resume = {
 };
 
 export async function getResume(): Promise<Resume | null> {
-  const configuredUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL?.trim();
-  if (!configuredUrl) throw new Error("NEXT_PUBLIC_BACKEND_API_URL is required to load profile data");
-  const baseUrl = configuredUrl.replace(/\/$/, "");
-  const response = await fetch(`${baseUrl}/api/resumes/latest`, { next: { revalidate: 30 } });
+  const baseUrl = getBackendBaseUrl();
+  const response = await fetch(`${baseUrl}/api/resumes/latest`, {
+    cache: "no-store",
+    signal: AbortSignal.timeout(10_000),
+  });
   if (response.status === 404) return null;
-  if (!response.ok) throw new Error(`Resume request failed (${response.status})`);
+  if (!response.ok) {
+    throw new Error(`Resume request failed (${response.status}).`);
+  }
   return (await response.json()) as Resume;
 }
 

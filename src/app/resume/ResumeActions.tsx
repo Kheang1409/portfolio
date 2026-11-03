@@ -1,5 +1,7 @@
 "use client";
 
+import { ArrowLeft, Download, Printer } from "lucide-react";
+
 type ResumeActionsProps = {
   markdownHref: string;
 };
@@ -7,20 +9,26 @@ type ResumeActionsProps = {
 export default function ResumeActions({ markdownHref }: ResumeActionsProps) {
   return (
     <div className="resume-actions">
-      <a href="/">Back to portfolio</a>
+      <a href="/" className="resume-back-link">
+        <ArrowLeft aria-hidden="true" />
+        <span>Portfolio</span>
+      </a>
       <a
         href={markdownHref}
         download
-        className="px-md py-sm rounded-md bg-light-primary dark:bg-dark-primary text-white font-semibold"
+        className="resume-download"
       >
-        Download PDF
+        <Download aria-hidden="true" />
+        <span>Download PDF</span>
       </a>
       <button
         type="button"
         onClick={() => window.print()}
-        className="px-md py-sm rounded-md border border-light-border dark:border-dark-border"
+        aria-label="Print resume"
+        title="Print resume"
       >
-        Print
+        <Printer aria-hidden="true" />
+        <span>Print</span>
       </button>
     </div>
   );

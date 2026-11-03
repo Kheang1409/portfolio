@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { getBackendBaseUrl } from "@/lib/server/backend";
 
 const API_VERSION = "2022-11-28";
 
@@ -35,9 +36,48 @@ if (process.env.GITHUB_TOKEN) {
   baseHeaders.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
 }
 
+async function getGithubUser(): Promise<string> {
+  const configuredUser = process.env.GITHUB_USER?.trim();
+  if (configuredUser) return configuredUser;
+
+  const response = await fetch(
+    `${getBackendBaseUrl()}/api/resumes/latest`,
+    {
+      cache: "no-store",
+      signal: AbortSignal.timeout(10_000),
+    },
+  );
+  if (!response.ok) {
+    throw new Error(`Unable to load the GitHub profile (${response.status}).`);
+  }
+
+  const resume = (await response.json()) as {
+    personals?: { github?: string };
+  };
+  const profileUrl = resume.personals?.github;
+  if (!profileUrl) {
+    throw new Error("Set GITHUB_USER or add a GitHub URL to the resume profile.");
+  }
+
+  let url: URL;
+  try {
+    url = new URL(profileUrl);
+  } catch {
+    throw new Error("The resume GitHub profile URL is invalid.");
+  }
+  if (url.hostname !== "github.com" && url.hostname !== "www.github.com") {
+    throw new Error("The resume GitHub profile URL must use github.com.");
+  }
+
+  const githubUser = url.pathname.split("/").filter(Boolean)[0];
+  if (!githubUser || !/^[a-z\d](?:[a-z\d-]{0,37}[a-z\d])?$/i.test(githubUser)) {
+    throw new Error("The resume GitHub profile URL does not contain a valid username.");
+  }
+  return githubUser;
+}
+
 async function fetchProjects(): Promise<Project[]> {
-  const githubUser = process.env.GITHUB_USER;
-  if (!githubUser) return [];
+  const githubUser = await getGithubUser();
   const res = await fetch(
     `https://api.github.com/users/${encodeURIComponent(githubUser)}/repos?per_page=20&sort=updated`,
     {
@@ -129,8 +169,12 @@ export async function GET() {
       },
     );
   } catch (error) {
+    console.error("Unable to load GitHub projects.", error);
     const message =
-      error instanceof Error ? error.message : "Unable to fetch GitHub data";
+      error instanceof Error &&
+      error.message.startsWith("Set GITHUB_USER or add a GitHub URL")
+        ? error.message
+        : "GitHub projects are temporarily unavailable.";
     return NextResponse.json(
       { error: message },
       {

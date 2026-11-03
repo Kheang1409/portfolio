@@ -13,8 +13,12 @@ async function fetchRepos(): Promise<Project[]> {
   const res = await fetch("/api/github/projects", { cache: "no-store" });
 
   if (!res.ok) {
-    const text = await res.text().catch(() => "");
-    throw new Error(text || `GitHub request failed (${res.status})`);
+    const payload = (await res.json().catch(() => null)) as
+      | { error?: string }
+      | null;
+    throw new Error(
+      payload?.error || `GitHub request failed (${res.status})`,
+    );
   }
 
   const payload = (await res.json()) as { projects?: Project[] };
@@ -53,7 +57,13 @@ export default function Projects({ resume }: { resume: Resume | null }) {
           setProjects(repos);
         }
       } catch (e) {
-        if (mounted) setError("Unable to load GitHub projects right now.");
+        if (mounted) {
+          setError(
+            e instanceof Error
+              ? e.message
+              : "Unable to load GitHub projects right now.",
+          );
+        }
       } finally {
         if (mounted) setLoading(false);
       }
@@ -90,7 +100,7 @@ export default function Projects({ resume }: { resume: Resume | null }) {
               id="projects-heading"
               className="text-h2 font-bold text-light-text-primary dark:text-dark-text-primary mb-sm"
             >
-              Selected systems
+              Selected work
             </h2>
             <div className="section-level-divider w-full h-2 bg-light-primary dark:bg-dark-primary" />
           </div>
@@ -99,8 +109,8 @@ export default function Projects({ resume }: { resume: Resume | null }) {
         {!!resume?.projects?.length && <><div className="projects-group-heading">
           <span>01</span>
           <div>
-            <h3>Selected case studies</h3>
-            <p>Products with measurable business and user impact.</p>
+            <h3>Case studies</h3>
+            <p>Selected projects and the problems behind them.</p>
           </div>
         </div>
         <div className="project-case-studies grid md:grid-cols-2 gap-lg mb-3xl">
@@ -129,8 +139,8 @@ export default function Projects({ resume }: { resume: Resume | null }) {
         <div className="projects-group-heading">
           <span>02</span>
           <div>
-            <h3>Featured builds</h3>
-            <p>Highlighted repositories from my current engineering work.</p>
+            <h3>Featured projects</h3>
+            <p>A few projects from my GitHub profile.</p>
           </div>
         </div>
         <div
@@ -181,8 +191,8 @@ export default function Projects({ resume }: { resume: Resume | null }) {
         >
           <span>03</span>
           <div>
-            <h3>More repositories</h3>
-            <p>Additional experiments, services, and open-source work.</p>
+            <h3>More projects</h3>
+            <p>Additional experiments and open-source work.</p>
           </div>
         </motion.div>
 

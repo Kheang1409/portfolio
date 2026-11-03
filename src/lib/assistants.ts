@@ -187,7 +187,6 @@ export async function streamAssistant(
       signal: controller.signal,
       timeoutMs: options.timeoutMs,
       retries: options.retries,
-      useAssistantProxy: true,
     });
     await parseNdjsonStream(response, handlers, controller.signal);
   } catch (error) {

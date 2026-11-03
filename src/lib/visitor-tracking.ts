@@ -18,13 +18,6 @@ export type VisitorTrackPayload = {
 
 const SESSION_KEY = "visitor_session_id";
 
-function getBackendBaseUrl(): string {
-  const envBackend = process.env.NEXT_PUBLIC_BACKEND_API_URL;
-  return envBackend && envBackend.trim().length > 0
-    ? envBackend.replace(/\/$/, "")
-    : "";
-}
-
 function getOrCreateSessionId(): string {
   if (typeof window === "undefined") {
     return "server";
@@ -103,12 +96,8 @@ export function buildVisitorPayload(): VisitorTrackPayload {
 }
 
 export async function trackVisit(payload: VisitorTrackPayload): Promise<void> {
-  const baseUrl = getBackendBaseUrl();
-  if (!baseUrl) return;
-  const url = `${baseUrl}/api/visits`;
-
   try {
-    await fetch(url, {
+    const response = await fetch("/api/visits", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -117,7 +106,10 @@ export async function trackVisit(payload: VisitorTrackPayload): Promise<void> {
       keepalive: true,
       cache: "no-store",
     });
+    if (!response.ok) {
+      console.warn(`Visitor tracking failed with status ${response.status}.`);
+    }
   } catch {
-    // Best-effort telemetry should never break user navigation.
+    console.warn("Visitor tracking is temporarily unavailable.");
   }
 }

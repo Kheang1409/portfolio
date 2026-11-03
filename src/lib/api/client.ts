@@ -38,22 +38,13 @@ export type ApiRequestOptions = {
   signal?: AbortSignal;
   timeoutMs?: number;
   retries?: number;
-  useAssistantProxy?: boolean;
 };
 
-function getBackendBaseUrl(): string {
-  const fromEnv = process.env.NEXT_PUBLIC_BACKEND_API_URL;
-  if (!fromEnv?.trim()) throw new Error("NEXT_PUBLIC_BACKEND_API_URL is required");
-  return fromEnv.trim().replace(/\/$/, "");
-}
-
-function resolveUrl(path: string, useAssistantProxy: boolean): string {
-  if (useAssistantProxy) {
-    return path;
+function resolveUrl(path: string): string {
+  if (!path.startsWith("/")) {
+    throw new Error("API paths must be relative to the current site.");
   }
-
-  const cleanPath = path.startsWith("/") ? path : `/${path}`;
-  return `${getBackendBaseUrl()}${cleanPath}`;
+  return path;
 }
 
 function toBooleanHeader(value: string | null): boolean | undefined {
@@ -186,7 +177,7 @@ async function execute(options: ApiRequestOptions): Promise<Response> {
   const method = options.method ?? "POST";
   const timeoutMs = Math.max(1_000, options.timeoutMs ?? DEFAULT_TIMEOUT_MS);
   const retries = Math.max(0, options.retries ?? DEFAULT_RETRIES);
-  const url = resolveUrl(options.path, options.useAssistantProxy ?? false);
+  const url = resolveUrl(options.path);
 
   let attempt = 0;
   let lastError: unknown;

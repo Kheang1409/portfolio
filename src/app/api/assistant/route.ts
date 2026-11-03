@@ -1,14 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getBackendBaseUrl } from "@/lib/server/backend";
 import type { AssistantRequest } from "@/lib/api/types";
-
-function backendBaseUrl(): string | null {
-  const fromEnv = process.env.NEXT_PUBLIC_BACKEND_API_URL;
-  if (fromEnv && fromEnv.trim()) {
-    return fromEnv.trim().replace(/\/$/, "");
-  }
-
-  return null;
-}
 
 function pickForwardHeaders(request: NextRequest): HeadersInit {
   const headers = new Headers();
@@ -78,9 +70,8 @@ export async function POST(request: NextRequest) {
         .slice(-20)
         .map((m) => ({ ...m, content: m.content.slice(0, 8000) }))
     : [];
-  const baseUrl = backendBaseUrl();
-  if (!baseUrl) return NextResponse.json({ message: "Assistant service is not configured." }, { status: 503 });
   try {
+    const baseUrl = getBackendBaseUrl();
     const response = await fetch(`${baseUrl}/api/assistant`, {
       method: "POST",
       headers: pickForwardHeaders(request),
@@ -108,7 +99,8 @@ export async function POST(request: NextRequest) {
       status: response.status,
       headers: pickResponseHeaders(response.headers),
     });
-  } catch {
+  } catch (error) {
+    console.error("Assistant backend request failed.", error);
     return NextResponse.json(
       {
         message:

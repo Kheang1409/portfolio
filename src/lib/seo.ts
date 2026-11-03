@@ -25,7 +25,7 @@ export function buildPageMetadata({
   description,
   path = "/",
   keywords = [],
-  image = "/images/kai/kai-og.webp",
+  image,
 }: PageMetadataInput): Metadata {
   const mergedKeywords = Array.from(
     new Set([...siteConfig.keywords, ...keywords]),
@@ -46,16 +46,21 @@ export function buildPageMetadata({
       siteName: siteConfig.fullTitle,
       title,
       description,
-      images: [
+      ...(image ? { images: [
         {
           url: image,
           width: 1200,
           height: 630,
           alt: siteConfig.name,
         },
-      ],
+      ] } : {}),
     },
-    twitter: { card: "summary_large_image", title, description, images: [image] },
+    twitter: {
+      card: image ? "summary_large_image" : "summary",
+      title,
+      description,
+      ...(image ? { images: [image] } : {}),
+    },
     robots: {
       index: true,
       follow: true,
