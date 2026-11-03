@@ -5,6 +5,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import VisitorTracker from "@/components/VisitorTracker";
 import AssistantLauncher from "@/components/AssistantLauncher";
+import ServiceAvailability from "@/components/ServiceAvailability";
 import { buildPageMetadata, siteConfig } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
@@ -36,17 +37,19 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning className="font-sans">
         <Providers>
-          <a
-            href="#main-content"
-            className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] rounded-md bg-light-primary px-4 py-2 text-white"
-          >
-            Skip to main content
-          </a>
-          <VisitorTracker />
-          <Navigation />
-          {children}
-          <Footer />
-          <AssistantLauncher />
+          <ServiceAvailability>
+            <a
+              href="#main-content"
+              className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] rounded-md bg-light-primary px-4 py-2 text-white"
+            >
+              Skip to main content
+            </a>
+            <VisitorTracker />
+            <Navigation />
+            {children}
+            <Footer />
+            <AssistantLauncher />
+          </ServiceAvailability>
         </Providers>
       </body>
     </html>

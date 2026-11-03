@@ -17,9 +17,10 @@ The visual system uses light neutral surfaces, black typography, restrained bord
 - Unknown URLs render the root `not-found.tsx` page with the supplied 404 illustration.
 - `error.tsx` handles route rendering failures; `global-error.tsx` covers failures in the root layout. Both log the error in the browser console without displaying server details and provide a retry action.
 - `/maintenance` is a public, non-indexable maintenance information page using the supplied maintenance illustration. It does not activate a site-wide maintenance mode or change backend health.
+- The root layout checks the API liveness proxy at `/api/health/live`. If the backend is unavailable, the site shows an illustrated 503 page with manual retry and automatic 30-second rechecks; the normal site returns when the API is healthy again.
 - The home greeting and all status pages use the existing illustrations in `public/images/`. They are loaded as local Next.js image assets and have descriptive alternative text.
 
-Backend liveness and readiness remain available at `/health/live` and `/health/ready` on the .NET API. The frontend does not infer a site-wide maintenance state from these endpoints; API features retain their own loading and failure handling.
+The liveness check detects whether the API process is reachable; it does not imply that every integration is configured or healthy. Individual features retain their own loading and failure handling for integration-specific problems.
 
 ## Architecture
 
