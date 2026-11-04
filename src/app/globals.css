@@ -5318,8 +5318,7 @@ textarea:focus-visible {
   background: #1d1d1f;
 }
 
-.kai-message--user .kai-message-author,
-.kai-message--user p {
+.kai-message--user .kai-message-author {
   color: #fff;
 }
 
@@ -5339,6 +5338,10 @@ textarea:focus-visible {
   color: #1d1d1f;
   font-size: 13px;
   line-height: 1.6;
+}
+
+.kai-message--user p {
+  color: #fff;
 }
 
 .kai-message p:last-child {
