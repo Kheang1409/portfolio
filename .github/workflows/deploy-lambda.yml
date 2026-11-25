@@ -1,0 +1,163 @@
+name: Deploy to AWS Lambda
+
+on:
+  push:
+    branches:
+      - production
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  AWS_REGION: us-east-1
+  DOTNET_VERSION: "10.0.x"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Install AWS SAM CLI
+        uses: aws-actions/setup-sam@v2
+        with:
+          use-installer: true
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+          role-session-name: KaiAssistantGitHubActions
+
+      - name: Verify assumed AWS role
+        run: aws sts get-caller-identity
+
+      - name: Validate CloudFormation execution role
+        env:
+          CLOUDFORMATION_EXECUTION_ROLE_ARN: ${{ secrets.AWS_CLOUDFORMATION_EXECUTION_ROLE_ARN }}
+        run: |
+          set -euo pipefail
+          if [[ ! "$CLOUDFORMATION_EXECUTION_ROLE_ARN" =~ ^arn:aws:iam::[0-9]{12}:role/.+ ]]; then
+            echo "::error::Set the AWS_CLOUDFORMATION_EXECUTION_ROLE_ARN repository secret to the CloudFormation execution role ARN."
+            exit 1
+          fi
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Audit NuGet dependencies
+        run: dotnet list KaiAssistant.sln package --vulnerable --include-transitive
+
+      - name: Build solution
+        run: dotnet build KaiAssistant.sln --configuration Release --no-restore
+
+      - name: Validate SAM template
+        run: sam validate --template infra/template.yaml
+
+      - name: SAM Build
+        run: sam build --template infra/template.yaml
+
+      - name: Validate PayPal deployment secrets
+        env:
+          PAYPAL_CLIENT_ID: ${{ secrets.PAYPAL_CLIENT_ID }}
+          PAYPAL_CLIENT_SECRET: ${{ secrets.PAYPAL_CLIENT_SECRET }}
+          PAYPAL_ENVIRONMENT: ${{ secrets.PAYPAL_ENVIRONMENT }}
+          PAYPAL_WEBHOOK_ID: ${{ secrets.PAYPAL_WEBHOOK_ID }}
+        run: |
+          set -euo pipefail
+          if [[ -z "$PAYPAL_CLIENT_ID" || -z "$PAYPAL_CLIENT_SECRET" || -z "$PAYPAL_WEBHOOK_ID" ]]; then
+            echo "::error::Configure PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET, and PAYPAL_WEBHOOK_ID as GitHub Actions secrets before deploying. Use the PayPal webhook ID, not its listener URL."
+            exit 1
+          fi
+          if [[ "$PAYPAL_ENVIRONMENT" != "sandbox" && "$PAYPAL_ENVIRONMENT" != "live" ]]; then
+            echo "::error::Set PAYPAL_ENVIRONMENT to exactly sandbox or live."
+            exit 1
+          fi
+          if [[ "$PAYPAL_WEBHOOK_ID" == http* || "$PAYPAL_WEBHOOK_ID" == */* ]]; then
+            echo "::error::PAYPAL_WEBHOOK_ID must be the ID from PayPal, not a URL."
+            exit 1
+          fi
+
+      - name: Check and clean failed stack
+        run: |
+          STACK_STATUS=$(aws cloudformation describe-stacks --stack-name kaiassistant-api-stack --query 'Stacks[0].StackStatus' --output text 2>/dev/null || echo "DOES_NOT_EXIST")
+          if [ "$STACK_STATUS" = "ROLLBACK_COMPLETE" ]; then
+            echo "Stack in ROLLBACK_COMPLETE state, deleting..."
+            aws cloudformation delete-stack --stack-name kaiassistant-api-stack
+            aws cloudformation wait stack-delete-complete --stack-name kaiassistant-api-stack
+            echo "Stack deleted successfully"
+          fi
+
+      - name: SAM Deploy
+        env:
+          CLOUDFORMATION_EXECUTION_ROLE_ARN: ${{ secrets.AWS_CLOUDFORMATION_EXECUTION_ROLE_ARN }}
+          PAYPAL_CLIENT_ID: ${{ secrets.PAYPAL_CLIENT_ID }}
+          PAYPAL_CLIENT_SECRET: ${{ secrets.PAYPAL_CLIENT_SECRET }}
+          PAYPAL_ENVIRONMENT: ${{ secrets.PAYPAL_ENVIRONMENT }}
+          PAYPAL_WEBHOOK_ID: ${{ secrets.PAYPAL_WEBHOOK_ID }}
+          PAYPAL_MERCHANT_ID: ${{ secrets.PAYPAL_MERCHANT_ID }}
+        run: |
+          set -euo pipefail
+          # Gmail app passwords are often shown with spaces; strip all whitespace to avoid truncation/splitting.
+          SMTP_SENDER_PASSWORD_CLEAN="$(printf '%s' "${{ secrets.SMTP_SENDER_PASSWORD }}" | tr -d '[:space:]')"
+          PARAM_OVERRIDES=(
+            "ParameterKey=MongoConnectionString,ParameterValue=${{ secrets.MONGODB_CONNECTIONSTRING }}"
+            "ParameterKey=RedisConnectionString,ParameterValue=${{ secrets.REDIS__CONNECTIONSTRING }}"
+            "ParameterKey=MongoDatabaseName,ParameterValue=${{ secrets.MONGODB_DATABASE }}"
+            "ParameterKey=AllowedOrigins,ParameterValue=${{ secrets.ALLOWED_ORIGINS }}"
+            "ParameterKey=PayPalClientId,ParameterValue=$PAYPAL_CLIENT_ID"
+            "ParameterKey=PayPalClientSecret,ParameterValue=$PAYPAL_CLIENT_SECRET"
+            "ParameterKey=PayPalEnvironment,ParameterValue=$PAYPAL_ENVIRONMENT"
+            "ParameterKey=PayPalWebhookId,ParameterValue=$PAYPAL_WEBHOOK_ID"
+            "ParameterKey=PayPalMerchantId,ParameterValue=$PAYPAL_MERCHANT_ID"
+            "ParameterKey=SmtpSenderEmail,ParameterValue=${{ secrets.SMTP_SENDER_EMAIL }}"
+            "ParameterKey=SmtpReceiverEmail,ParameterValue=${{ secrets.SMTP_RECEIVER_EMAIL }}"
+            "ParameterKey=SmtpSenderPassword,ParameterValue=$SMTP_SENDER_PASSWORD_CLEAN"
+            "ParameterKey=SmtpEnabled,ParameterValue=false"
+            "ParameterKey=ASPNetCoreEnvironment,ParameterValue=Production"
+            "ParameterKey=GeminiApiKey,ParameterValue=${{ secrets.GEMINI_API_KEY }}"
+          )
+          sam deploy \
+            --template .aws-sam/build/template.yaml \
+            --no-confirm-changeset \
+            --no-fail-on-empty-changeset \
+            --stack-name kaiassistant-api-stack \
+            --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM \
+            --s3-bucket kaiassistant-lambda-deployments \
+            --role-arn "$CLOUDFORMATION_EXECUTION_ROLE_ARN" \
+            --parameter-overrides "${PARAM_OVERRIDES[@]}"
+
+      - name: Get CloudFormation events on failure
+        if: failure()
+        run: |
+          aws cloudformation describe-stack-events \
+            --stack-name kaiassistant-api-stack \
+            --max-items 20 \
+            --query 'StackEvents[?ResourceStatus==`CREATE_FAILED`].[LogicalResourceId,ResourceStatusReason]' \
+            --output table
+
+      - name: Get API URL
+        run: |
+          API_URL=$(aws cloudformation describe-stacks \
+            --stack-name kaiassistant-api-stack \
+            --query 'Stacks[0].Outputs[?OutputKey==`ApiUrl`].OutputValue' \
+            --output text)
+          echo "API_URL=$API_URL" >> $GITHUB_ENV
+          echo "🚀 API deployed to: $API_URL"

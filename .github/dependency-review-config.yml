@@ -1,0 +1,24 @@
+# Dependency Review Configuration
+# https://github.com/actions/dependency-review-action#configuration-options
+
+# Fail the build if any vulnerability with severity high or critical is found
+fail-on-severity: high
+
+# Allow specific vulnerabilities by GHSA ID (use sparingly, document why)
+# allow-ghsas:
+#   - GHSA-xxxx-xxxx-xxxx  # Reason: ...
+
+# Scope of check (default: all)
+# scope: production  # or development, all
+
+# Ignore specific package ecosystems (if needed)
+# ignore-ecosystems:
+#   - npm
+
+# Configuration for auto-triage
+# auto-triage:
+#   enabled: true
+#   auto-dismiss: false
+
+# Custom vulnerability database (optional)
+# vulnerability-database: 'github-advisory-database'

@@ -1,0 +1,58 @@
+services:
+  redis:
+    image: redis:7.0
+    container_name: redis
+    restart: unless-stopped
+  backend:
+    build:
+      context: ./backend
+    env_file:
+      - .env
+    environment:
+      - SMTP_SERVER=${SMTP_SERVER}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_SENDER_EMAIL=${SMTP_SENDER_EMAIL}
+      - SMTP_SENDER_PASSWORD=${SMTP_SENDER_PASSWORD}
+      - SMTP_RECEIVER_EMAIL=${SMTP_RECEIVER_EMAIL}
+      - SMTP_ENABLED=${SMTP_ENABLED}
+      - PayPal__ClientId=${PAYPAL_CLIENT_ID}
+      - PayPal__ClientSecret=${PAYPAL_CLIENT_SECRET}
+      - PayPal__Environment=${PAYPAL_ENVIRONMENT}
+      - PayPal__WebhookId=${PAYPAL_WEBHOOK_ID}
+      - PayPal__MerchantId=${PAYPAL_MERCHANT_ID}
+      - PayPal__EmailRetentionDays=${PAYPAL_EMAIL_RETENTION_DAYS}
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
+      - ASPNETCORE_URLS=http://+:8080
+      - MONGODB_CONNECTIONSTRING=${MONGODB_CONNECTIONSTRING}
+      - MONGODB_DATABASE=${MONGODB_DATABASE}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - GEMINI_MODEL_NAMES=${GEMINI_MODEL_NAMES}
+      - GEMINI_ENDPOINT=${GEMINI_ENDPOINT}
+      - GEMINI_SYSTEM_PROMPT=${GEMINI_SYSTEM_PROMPT}
+      - GEMINI_PROMPT_MAX_CHARS=${GEMINI_PROMPT_MAX_CHARS}
+      - GEMINI_INCLUDE_PERSONAL_DETAILS=${GEMINI_INCLUDE_PERSONAL_DETAILS}
+      - GEMINI_TEMPERATURE=${GEMINI_TEMPERATURE}
+      - GEMINI_TOPK=${GEMINI_TOPK}
+      - GEMINI_TOPP=${GEMINI_TOPP}
+      - GEMINI_MAX_OUTPUT_TOKENS=${GEMINI_MAX_OUTPUT_TOKENS}
+      - GEMINI_CANDIDATE_COUNT=${GEMINI_CANDIDATE_COUNT}
+    ports:
+      - 5000:8080
+    depends_on:
+      - redis
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+    environment:
+      - NODE_ENV=production
+      - BACKEND_API_URL=http://backend:8080
+      - GITHUB_USER=${GITHUB_USER:-}
+      - GITHUB_TOKEN=${GITHUB_TOKEN:-}
+      - GITHUB_USER_AGENT=${GITHUB_USER_AGENT:-kai-portfolio-site}
+    depends_on:
+      - backend
+    ports:
+      - 3000:3000
+    restart: unless-stopped
