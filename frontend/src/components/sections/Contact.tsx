@@ -1,0 +1,344 @@
+"use client";
+
+import {
+  Mail,
+  Loader2,
+  CheckCircle2,
+  Linkedin,
+  Github,
+  Phone,
+  Briefcase,
+} from "lucide-react";
+import { motion } from "framer-motion";
+import { postContact } from "@/lib/contacts";
+import type { ContactRequest } from "@/lib/types";
+import { useState, FormEvent } from "react";
+import type { Resume } from "@/lib/resume";
+
+export default function Contact({ resume }: { resume: Resume | null }) {
+  const [formState, setFormState] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
+
+  const fadeInVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+  };
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = e.target;
+    setFormState((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+    setSubmitStatus("loading");
+
+    const payload: ContactRequest = {
+      name: formState.name.trim(),
+      email: formState.email.trim(),
+      message: formState.message.trim(),
+    };
+
+    if (!payload.name || !payload.message) {
+      setSubmitStatus("error");
+      setIsSubmitting(false);
+      return;
+    }
+    try {
+      await postContact(payload);
+      setSubmitStatus("success");
+      setFormState({ name: "", email: "", message: "" });
+    } catch (error) {
+      setSubmitStatus("error");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <section
+      id="contact"
+      aria-labelledby="contact-heading"
+      className="webgl-section system-section theme-contact"
+    >
+      <div className="relative z-10 max-w-container mx-auto px-sm md:px-lg">
+        <motion.div
+          initial={false}
+          whileInView="visible"
+          variants={fadeInVariants}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true, margin: "-100px" }}
+          className="mb-3xl text-center"
+        >
+          <div className="section-title-lockup mx-auto">
+            <h2
+              id="contact-heading"
+              className="text-h2 font-bold text-light-text-primary dark:text-dark-text-primary mb-sm"
+            >
+              Good things begin with a conversation.
+            </h2>
+            <div className="section-level-divider w-full h-2 bg-light-primary dark:bg-dark-primary mb-md" />
+          </div>
+          <p className="text-lg text-light-text-secondary dark:text-dark-text-secondary max-w-2xl mx-auto">
+            Send a message to collaborate or say hello.
+          </p>
+          <p className="contact-availability">
+            {resume?.experiences?.[0]?.location}
+          </p>
+        </motion.div>
+
+        <div className="contact-layout grid md:grid-cols-[0.82fr_1.18fr] gap-3xl max-w-5xl mx-auto">
+          <motion.div
+            initial={false}
+            whileInView="visible"
+            variants={fadeInVariants}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            viewport={{ once: true, margin: "-100px" }}
+            className="contact-directory space-y-lg"
+          >
+            <h3 className="text-h3 font-semibold text-light-text-primary dark:text-dark-text-primary">
+              Contact details
+            </h3>
+
+            {[
+              {
+                icon: Mail,
+                label: "Email",
+                value: resume?.personals?.email,
+                href: resume?.personals?.email ? `mailto:${resume.personals.email}` : undefined,
+              },
+              {
+                icon: Phone,
+                label: "Phone",
+                value: resume?.personals?.phone,
+                href: resume?.personals?.phone ? `tel:${resume.personals.phone}` : undefined,
+              },
+              {
+                icon: Linkedin,
+                label: "LinkedIn",
+                value: resume?.personals?.linkedin,
+                href: resume?.personals?.linkedin,
+              },
+              {
+                icon: Github,
+                label: "GitHub",
+                value: resume?.personals?.github,
+                href: resume?.personals?.github,
+              },
+              {
+                icon: Briefcase,
+                label: "Work Authorization",
+                value: resume?.personals?.workAuthorization,
+                href: undefined,
+              },
+            ].filter((item) => item.value).map((item, idx) => {
+              const Icon = item.icon as any;
+              const href = item.href ?? "";
+              const isExternal = href.startsWith("http");
+              const Element: any = href ? motion.a : motion.div;
+              const commonProps = {
+                "aria-label": `${item.label}: ${item.value}`,
+                initial: "hidden",
+                whileInView: "visible",
+                variants: fadeInVariants,
+                transition: { duration: 0.4, delay: 0.1 + idx * 0.05 },
+                viewport: { once: true, margin: "-100px" },
+                className:
+                  "contact-method flex items-start gap-md p-md rounded-lg bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border hover:border-light-primary/50 dark:hover:border-dark-primary/50 transition-all group",
+              };
+
+              return (
+                <Element
+                  key={idx}
+                  {...commonProps}
+                  href={href || undefined}
+                  target={isExternal ? "_blank" : undefined}
+                  rel={isExternal ? "noopener noreferrer" : undefined}
+                >
+                  <div className="p-2xs rounded-md bg-light-primary/10 dark:bg-dark-primary/10 text-light-primary dark:text-dark-primary group-hover:bg-light-primary/20 dark:group-hover:bg-dark-primary/20 transition-colors flex-shrink-0">
+                    <Icon className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <p className="text-small font-medium text-light-text-secondary dark:text-dark-text-secondary mb-xs">
+                      {item.label}
+                    </p>
+                    <p className="text-body font-semibold text-light-text-primary dark:text-dark-text-primary group-hover:text-light-primary dark:group-hover:text-dark-primary transition-colors">
+                      {item.value}
+                    </p>
+                  </div>
+                </Element>
+              );
+            })}
+          </motion.div>
+
+          <motion.form
+            onSubmit={handleSubmit}
+            aria-label="Contact form"
+            initial={false}
+            whileInView="visible"
+            variants={fadeInVariants}
+            transition={{ duration: 0.5, delay: 0.15 }}
+            viewport={{ once: true, margin: "-100px" }}
+            className="contact-message-card space-y-md p-lg"
+          >
+            <div className="contact-message-card__header">
+              <div>
+                <span>DIRECT MESSAGE</span>
+                <h3 className="text-h3 font-semibold text-light-text-primary dark:text-dark-text-primary">
+                  Send a message
+                </h3>
+              </div>
+              <span className="contact-message-card__status">
+                <i /> LET&apos;S CONNECT
+              </span>
+            </div>
+            <p className="contact-message-card__intro">
+              Tell me what you&apos;re building, where you need help, and what
+              success looks like.
+            </p>
+
+            <motion.div
+              initial={false}
+              whileInView="visible"
+              variants={fadeInVariants}
+              transition={{ duration: 0.4, delay: 0.2 }}
+              viewport={{ once: true, margin: "-100px" }}
+            >
+              <label
+                htmlFor="contact-name"
+                className="block text-small font-medium text-light-text-primary dark:text-dark-text-primary mb-xs"
+              >
+                Name
+              </label>
+              <input
+                id="contact-name"
+                type="text"
+                name="name"
+                autoComplete="name"
+                value={formState.name}
+                onChange={handleChange}
+                required
+                className="w-full px-md py-sm rounded-md bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-text-primary dark:text-dark-text-primary focus:outline-none focus:border-light-primary dark:focus:border-dark-primary focus:ring-2 focus:ring-light-primary/20 dark:focus:ring-dark-primary/20 transition-all"
+                placeholder="Your name"
+              />
+            </motion.div>
+
+            <motion.div
+              initial={false}
+              whileInView="visible"
+              variants={fadeInVariants}
+              transition={{ duration: 0.4, delay: 0.25 }}
+              viewport={{ once: true, margin: "-100px" }}
+            >
+              <label
+                htmlFor="contact-email"
+                className="block text-small font-medium text-light-text-primary dark:text-dark-text-primary mb-xs"
+              >
+                Email
+              </label>
+              <input
+                id="contact-email"
+                type="email"
+                name="email"
+                autoComplete="email"
+                value={formState.email}
+                onChange={handleChange}
+                required
+                className="w-full px-md py-sm rounded-md bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-text-primary dark:text-dark-text-primary focus:outline-none focus:border-light-primary dark:focus:border-dark-primary focus:ring-2 focus:ring-light-primary/20 dark:focus:ring-dark-primary/20 transition-all"
+                placeholder="example@gmail.com"
+              />
+            </motion.div>
+
+            <motion.div
+              initial={false}
+              whileInView="visible"
+              variants={fadeInVariants}
+              transition={{ duration: 0.4, delay: 0.3 }}
+              viewport={{ once: true, margin: "-100px" }}
+            >
+              <label
+                htmlFor="contact-message"
+                className="block text-small font-medium text-light-text-primary dark:text-dark-text-primary mb-xs"
+              >
+                Message
+              </label>
+              <textarea
+                id="contact-message"
+                name="message"
+                value={formState.message}
+                onChange={handleChange}
+                required
+                rows={4}
+                className="w-full px-md py-sm rounded-md bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border text-light-text-primary dark:text-dark-text-primary focus:outline-none focus:border-light-primary dark:focus:border-dark-primary focus:ring-2 focus:ring-light-primary/20 dark:focus:ring-dark-primary/20 transition-all resize-none"
+                placeholder="Your message here..."
+              />
+            </motion.div>
+
+            <motion.button
+              initial={false}
+              whileInView="visible"
+              variants={fadeInVariants}
+              transition={{ duration: 0.4, delay: 0.35 }}
+              viewport={{ once: true, margin: "-100px" }}
+              type="submit"
+              disabled={isSubmitting || submitStatus === "success"}
+              className="w-full px-md py-sm rounded-md bg-light-primary dark:bg-dark-primary text-white font-semibold hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 min-h-[44px]"
+            >
+              {submitStatus === "loading" && (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  Sending...
+                </>
+              )}
+              {submitStatus === "success" && (
+                <>
+                  <CheckCircle2 className="w-5 h-5" />
+                  Message Sent!
+                </>
+              )}
+              {(submitStatus === "idle" || submitStatus === "error") &&
+                "Send message"}
+            </motion.button>
+
+            {submitStatus === "success" && (
+              <p
+                aria-live="polite"
+                className="text-small text-green-600 dark:text-green-400 text-center"
+              >
+                Thanks for your message! I&apos;ll get back to you soon.
+              </p>
+            )}
+            {submitStatus === "success" && (
+              <button
+                type="button"
+                className="button-line"
+                onClick={() => setSubmitStatus("idle")}
+              >
+                Send another message
+              </button>
+            )}
+            {submitStatus === "error" && (
+              <p
+                aria-live="polite"
+                className="text-small text-red-600 dark:text-red-400 text-center"
+              >
+                Something went wrong. Please try again.
+              </p>
+            )}
+          </motion.form>
+        </div>
+      </div>
+    </section>
+  );
+}

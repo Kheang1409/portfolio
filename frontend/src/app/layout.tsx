@@ -1,0 +1,57 @@
+import type { Metadata } from "next";
+import "./globals.css";
+import { Providers } from "./providers";
+import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
+import VisitorTracker from "@/components/VisitorTracker";
+import AssistantLauncher from "@/components/AssistantLauncher";
+import ServiceAvailability from "@/components/ServiceAvailability";
+import { buildPageMetadata, siteConfig } from "@/lib/seo";
+
+export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  ...buildPageMetadata({
+    title: siteConfig.fullTitle,
+    description: siteConfig.description,
+    path: "/",
+  }),
+  title: {
+    default: siteConfig.fullTitle,
+    template: "%s",
+  },
+  verification: {
+    google: process.env.GOOGLE_SITE_VERIFICATION,
+  },
+  icons: {
+    icon: "/icon.svg",
+  },
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body suppressHydrationWarning className="font-sans">
+        <Providers>
+          <ServiceAvailability>
+            <a
+              href="#main-content"
+              className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] rounded-md bg-light-primary px-4 py-2 text-white"
+            >
+              Skip to main content
+            </a>
+            <VisitorTracker />
+            <Navigation />
+            {children}
+            <Footer />
+            <AssistantLauncher />
+          </ServiceAvailability>
+        </Providers>
+      </body>
+    </html>
+  );
+}
