@@ -1,0 +1,154 @@
+# =============================================================================
+# PORTFOLIO PROJECT — CONSOLIDATED .gitignore
+# Single source of truth for all ignore patterns (replaces backend/.gitignore, frontend/.gitignore)
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# ENVIRONMENT & SECRETS (never commit)
+# -----------------------------------------------------------------------------
+.env
+.env.local
+.env.*.local
+.env.*
+!.env.example
+
+# Certificates & Private Keys (CRITICAL)
+*.pem
+*.key
+*.crt
+*.pfx
+*.p12
+*.jks
+*.cer
+*.der
+
+# -----------------------------------------------------------------------------
+# IDE & EDITOR ARTIFACTS
+# -----------------------------------------------------------------------------
+.vscode/
+.idea/
+*.code-workspace
+.vs/
+*.user
+*.suo
+*.rsuser
+*.sln.docstates
+*.swp
+*.swo
+*~
+
+# -----------------------------------------------------------------------------
+# OS ARTIFACTS
+# -----------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# -----------------------------------------------------------------------------
+# DEPENDENCIES
+# -----------------------------------------------------------------------------
+# Node.js / Frontend
+node_modules/
+**/node_modules/
+
+# .NET / Backend (NuGet)
+*.nupkg
+*.snupkg
+packages/
+.nuget/
+
+# -----------------------------------------------------------------------------
+# BUILD OUTPUTS
+# -----------------------------------------------------------------------------
+# Frontend (Next.js)
+.next/
+**/.next/
+out/
+**/out/
+build/
+**/build/
+dist/
+**/dist/
+
+# .NET
+bin/
+**/bin/
+obj/
+**/obj/
+out/
+**/out/
+publish/
+wwwroot/dist/
+
+# -----------------------------------------------------------------------------
+# TEST & COVERAGE ARTIFACTS
+# -----------------------------------------------------------------------------
+test-results/
+**/test-results/
+playwright-report/
+**/playwright-report/
+coverage/
+**/coverage/
+.nyc_output/
+**/.nyc_output/
+
+# -----------------------------------------------------------------------------
+# LOGS & TEMP FILES
+# -----------------------------------------------------------------------------
+*.log
+logs/
+Log/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.tmp
+*.bak
+*.orig
+
+# -----------------------------------------------------------------------------
+# DOCKER ARTIFACTS
+# -----------------------------------------------------------------------------
+.docker/
+docker-compose.override.yml
+docker-compose.prod.local.yml
+
+# -----------------------------------------------------------------------------
+# GIT & VERSION CONTROL (exclude from Docker context, not from repo)
+# -----------------------------------------------------------------------------
+# These are in .dockerignore, not here
+
+# -----------------------------------------------------------------------------
+# LANGUAGE-SPECIFIC
+# -----------------------------------------------------------------------------
+# TypeScript
+*.tsbuildinfo
+
+# C# / .NET
+*.dotCover
+.ReSharper/
+*.dotSettings.user
+
+# Database files
+*.db
+*.db-shm
+*.db-wal
+
+# Turbo (if used)
+.turbo/
+**/.turbo/
+
+# ESLint cache
+.eslintcache
+
+# -----------------------------------------------------------------------------
+# BACKEND-SPECIFIC (ASP.NET Core)
+# -----------------------------------------------------------------------------
+**/appsettings.Development.json
+**/secrets.json
+
+# -----------------------------------------------------------------------------
+# FRONTEND-SPECIFIC
+# -----------------------------------------------------------------------------
+# (covered by patterns above: .next/, node_modules/, dist/, etc.)

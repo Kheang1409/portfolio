@@ -1,0 +1,33 @@
+# Repository-controlled cross-platform line endings.
+* text=auto
+
+# Source and project files
+*.cs text eol=lf
+*.csproj text eol=lf
+*.sln text eol=lf
+*.js text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.css text eol=lf
+
+# Configuration and documentation
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.toml text eol=lf
+*.md text eol=lf
+*.http text eol=lf
+.env* text eol=lf
+
+# Container and scripts
+Dockerfile text eol=lf
+Dockerfile.* text eol=lf
+*.ps1 text eol=lf
+*.sh text eol=lf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binary assets
+*.ico binary
+*.png binary
+*.pdf binary

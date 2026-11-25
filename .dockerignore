@@ -1,0 +1,136 @@
+# =============================================================================
+# PORTFOLIO PROJECT — CONSOLIDATED .dockerignore
+# Single source of truth for Docker build context (replaces backend/.dockerignore, frontend/.dockerignore)
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# GIT & VERSION CONTROL
+# -----------------------------------------------------------------------------
+.git
+.gitignore
+.gitattributes
+.github/
+
+# -----------------------------------------------------------------------------
+# ENVIRONMENT & SECRETS (never copy into image)
+# -----------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+
+# -----------------------------------------------------------------------------
+# IDE & EDITOR ARTIFACTS
+# -----------------------------------------------------------------------------
+.vscode/
+.idea/
+.vs/
+*.swp
+*.swo
+*.user
+*.suo
+*.rsuser
+*.sln.docstates
+*.code-workspace
+
+# -----------------------------------------------------------------------------
+# OS ARTIFACTS
+# -----------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# -----------------------------------------------------------------------------
+# DEPENDENCIES (installed in container, not copied)
+# -----------------------------------------------------------------------------
+# Node.js / Frontend
+node_modules/
+**/node_modules/
+
+# .NET / Backend (NuGet packages restored in container)
+*.nupkg
+*.snupkg
+packages/
+.nuget/
+
+# -----------------------------------------------------------------------------
+# BUILD OUTPUTS (built in container, not copied)
+# -----------------------------------------------------------------------------
+# Frontend (Next.js)
+.next/
+**/.next/
+out/
+**/out/
+build/
+**/build/
+dist/
+**/dist/
+
+# .NET
+bin/
+**/bin/
+obj/
+**/obj/
+publish/
+wwwroot/dist/
+
+# -----------------------------------------------------------------------------
+# TEST & COVERAGE ARTIFACTS
+# -----------------------------------------------------------------------------
+test-results/
+**/test-results/
+playwright-report/
+**/playwright-report/
+coverage/
+**/coverage/
+.nyc_output/
+**/.nyc_output/
+
+# -----------------------------------------------------------------------------
+# LOGS & TEMP FILES
+# -----------------------------------------------------------------------------
+*.log
+logs/
+Log/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.tmp
+*.bak
+*.orig
+
+# -----------------------------------------------------------------------------
+# DOCKER & CI FILES (not needed in build context)
+# -----------------------------------------------------------------------------
+docker-compose*.yml
+Dockerfile*
+.docker/
+
+# -----------------------------------------------------------------------------
+# LANGUAGE-SPECIFIC CACHE
+# -----------------------------------------------------------------------------
+# TypeScript
+*.tsbuildinfo
+
+# ESLint
+.eslintcache
+
+# Turbo (if used)
+.turbo/
+**/.turbo/
+
+# -----------------------------------------------------------------------------
+# BACKEND-SPECIFIC
+# -----------------------------------------------------------------------------
+**/appsettings.Development.json
+**/secrets.json
+
+# -----------------------------------------------------------------------------
+# DOCUMENTATION & SCRIPTS (not needed in runtime image)
+# -----------------------------------------------------------------------------
+*.md
+docs/
+deploy/
+smoke-tests.ps1
+DATA_PROTECTION_STRATEGY.md
