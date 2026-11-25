@@ -70,9 +70,11 @@ jobs:
 
       - name: Validate SAM template
         run: sam validate --template infra/template.yaml
+        working-directory: .
 
       - name: SAM Build
         run: sam build --template infra/template.yaml
+        working-directory: .
 
       - name: Validate PayPal deployment secrets
         env:
@@ -143,6 +145,7 @@ jobs:
             --s3-bucket kaiassistant-lambda-deployments \
             --role-arn "$CLOUDFORMATION_EXECUTION_ROLE_ARN" \
             --parameter-overrides "${PARAM_OVERRIDES[@]}"
+        working-directory: .
 
       - name: Get CloudFormation events on failure
         if: failure()
