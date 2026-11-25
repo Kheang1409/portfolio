@@ -1,0 +1,247 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: KaiAssistant API - Lambda + API Gateway
+
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 512
+    Runtime: dotnet10
+    Architectures:
+      - x86_64
+
+Parameters:
+  MongoConnectionString:
+    Type: String
+    NoEcho: true
+    Description: MongoDB Atlas connection string
+
+  RedisConnectionString:
+    Type: String
+    NoEcho: true
+    Default: ""
+    Description: Redis connection string (supports rediss:// for managed Redis)
+
+  MongoDatabaseName:
+    Type: String
+    Default: kai-data-model
+    Description: MongoDB database name
+
+  AllowedOrigins:
+    Type: String
+    Default: http://localhost:3000
+    Description: CORS allowed origins
+
+  SmtpServer:
+    Type: String
+    Default: smtp.gmail.com
+    Description: SMTP server for email
+
+  SmtpPort:
+    Type: String
+    Default: "465"
+    Description: SMTP port
+
+  SmtpSenderEmail:
+    Type: String
+    Description: SMTP sender email address
+
+  SmtpReceiverEmail:
+    Type: String
+    Description: SMTP receiver email address
+
+  SmtpSenderPassword:
+    Type: String
+    NoEcho: true
+    Description: SMTP sender password
+
+  GeminiApiKey:
+    Type: String
+    NoEcho: true
+    Description: Google Gemini API key
+
+  PayPalClientId:
+    Type: String
+    Default: ""
+    Description: PayPal REST application client ID (public identifier)
+
+  PayPalClientSecret:
+    Type: String
+    NoEcho: true
+    Default: ""
+    Description: PayPal REST application client secret
+
+  PayPalEnvironment:
+    Type: String
+    Default: sandbox
+    AllowedValues:
+      - sandbox
+      - live
+    Description: PayPal environment; use sandbox until verification is complete
+
+  PayPalWebhookId:
+    Type: String
+    Default: ""
+    Description: PayPal webhook ID for signature verification
+
+  PayPalMerchantId:
+    Type: String
+    Default: ""
+    Description: Optional expected PayPal merchant ID for capture validation
+
+  SmtpEnabled:
+    Type: String
+    Default: "true"
+    Description: Enable SMTP sending (true/false)
+
+  ASPNetCoreEnvironment:
+    Type: String
+    Default: Production
+    Description: .NET environment name (Production/Development)
+
+  GeminiModelNames:
+    Type: String
+    Default: gemini-3.1-flash-lite-preview:generateContent,gemini-3-flash-preview:generateContent,gemini-2.5-flash:generateContent,gemini-2.5-flash-lite:generateContent
+    Description: Comma/semicolon separated Gemini model names
+
+  GeminiEndpoint:
+    Type: String
+    Default: https://generativelanguage.googleapis.com/v1beta/models/
+    Description: Gemini API endpoint base URL
+
+  GeminiSystemPrompt:
+    Type: String
+    Default: You are Mr.Taing's professional AI assistant. Represent Mr.Taing professionally and help visitors learn about his background, skills, and experience.
+    Description: System prompt for the assistant
+
+  GeminiPromptMaxChars:
+    Type: String
+    Default: "10000"
+    Description: Maximum prompt size in characters
+
+  GeminiIncludePersonalDetails:
+    Type: String
+    Default: "true"
+    Description: Whether to include personal details (true/false)
+
+  GeminiTemperature:
+    Type: String
+    Default: "0.4"
+    Description: Gemini temperature
+
+  GeminiTopK:
+    Type: String
+    Default: "20"
+    Description: Gemini top-k
+
+  GeminiTopP:
+    Type: String
+    Default: "0.85"
+    Description: Gemini top-p
+
+  GeminiMaxOutputTokens:
+    Type: String
+    Default: "768"
+    Description: Gemini max output tokens
+
+  GeminiCandidateCount:
+    Type: String
+    Default: "1"
+    Description: Gemini candidate count
+
+  GeminiTopChunks:
+    Type: String
+    Default: "8"
+    Description: Max resume chunks used for context selection
+
+  GeminiLastSuccessfulModelCacheTtlSeconds:
+    Type: String
+    Default: "120"
+    Description: Preferred-model cache TTL in seconds
+
+  GeminiSkipRetryDelayThresholdSeconds:
+    Type: String
+    Default: "3"
+    Description: Skip retries when RetryInfo delay exceeds this threshold
+
+  GeminiDeprioritizeOn429Count:
+    Type: String
+    Default: "1"
+    Description: 429 count threshold before model deprioritization/skip
+
+  GeminiDeprioritizeSkip:
+    Type: String
+    Default: "true"
+    Description: Skip model after threshold (true/false)
+
+Resources:
+  KaiAssistantFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: kaiassistant-api
+      Handler: KaiAssistant.API
+      CodeUri: ../backend/KaiAssistant.API/
+      Description: KaiAssistant API Lambda Function
+      Environment:
+        Variables:
+          MONGODB_CONNECTIONSTRING: !Ref MongoConnectionString
+          MONGODB_DATABASE: !Ref MongoDatabaseName
+          REDIS__CONNECTIONSTRING: !Ref RedisConnectionString
+          ASPNETCORE_ENVIRONMENT: !Ref ASPNetCoreEnvironment
+          ALLOWED_ORIGINS: !Ref AllowedOrigins
+          SMTP_SERVER: !Ref SmtpServer
+          SMTP_PORT: !Ref SmtpPort
+          SMTP_SENDER_EMAIL: !Ref SmtpSenderEmail
+          SMTP_RECEIVER_EMAIL: !Ref SmtpReceiverEmail
+          SMTP_SENDER_PASSWORD: !Ref SmtpSenderPassword
+          SMTP_ENABLED: !Ref SmtpEnabled
+          GEMINI_API_KEY: !Ref GeminiApiKey
+          PAYPAL_CLIENT_ID: !Ref PayPalClientId
+          PAYPAL_CLIENT_SECRET: !Ref PayPalClientSecret
+          PAYPAL_ENVIRONMENT: !Ref PayPalEnvironment
+          PAYPAL_WEBHOOK_ID: !Ref PayPalWebhookId
+          PAYPAL_MERCHANT_ID: !Ref PayPalMerchantId
+          GEMINI_MODEL_NAMES: !Ref GeminiModelNames
+          GEMINI_ENDPOINT: !Ref GeminiEndpoint
+          GEMINI_SYSTEM_PROMPT: !Ref GeminiSystemPrompt
+          GEMINI_PROMPT_MAX_CHARS: !Ref GeminiPromptMaxChars
+          GEMINI_INCLUDE_PERSONAL_DETAILS: !Ref GeminiIncludePersonalDetails
+          GEMINI_TEMPERATURE: !Ref GeminiTemperature
+          GEMINI_TOPK: !Ref GeminiTopK
+          GEMINI_TOPP: !Ref GeminiTopP
+          GEMINI_MAX_OUTPUT_TOKENS: !Ref GeminiMaxOutputTokens
+          GEMINI_CANDIDATE_COUNT: !Ref GeminiCandidateCount
+          GEMINI_TOP_CHUNKS: !Ref GeminiTopChunks
+          GEMINISETTINGS__LASTSUCCESSFULMODELCACHETTLSECONDS: !Ref GeminiLastSuccessfulModelCacheTtlSeconds
+          GEMINISETTINGS__SKIPRETRYDELAYTHRESHOLDSECONDS: !Ref GeminiSkipRetryDelayThresholdSeconds
+          GEMINISETTINGS__DEPRIORITIZEON429COUNT: !Ref GeminiDeprioritizeOn429Count
+          GEMINISETTINGS__DEPRIORITIZESKIP: !Ref GeminiDeprioritizeSkip
+      Events:
+        ApiEvent:
+          Type: HttpApi
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+            ApiId: !Ref KaiAssistantApi
+
+  KaiAssistantApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      StageName: $default
+      CorsConfiguration:
+        AllowOrigins:
+          - !Ref AllowedOrigins
+        AllowHeaders:
+          - "*"
+        AllowMethods:
+          - "*"
+        MaxAge: 600
+
+Outputs:
+  ApiUrl:
+    Description: API Gateway endpoint URL
+    Value: !Sub "https://${KaiAssistantApi}.execute-api.${AWS::Region}.amazonaws.com"
+
+  FunctionArn:
+    Description: Lambda Function ARN
+    Value: !GetAtt KaiAssistantFunction.Arn
